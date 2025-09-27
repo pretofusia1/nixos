@@ -1,0 +1,3 @@
+* { font-family: "JetBrainsMono Nerd Font", "FiraCode Nerd Font", monospace; }
+window { background: rgba(20,20,26,0.85); }
+#workspaces button.active { background: #303542; }
