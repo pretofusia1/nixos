@@ -1,3 +1,21 @@
-* { font-family: "JetBrainsMono Nerd Font", "FiraCode Nerd Font", monospace; }
-window { background: rgba(20,20,26,0.85); }
-#workspaces button.active { background: #303542; }
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrainsMono Nerd Font";
+  font-size: 14px;
+  min-height: 0;
+}
+
+window#waybar {
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+}
+
+#clock {
+  font-weight: bold;
+  padding: 0 10px;
+}
+
+#cpu, #memory, #battery {
+  padding: 0 10px;
+}
