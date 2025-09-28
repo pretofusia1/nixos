@@ -6,7 +6,7 @@
   environment.systemPackages = with pkgs; [ git gnupg htop btop wget curl unzip ripgrep fd bat eza nil ];
   fonts = {
     packages = with pkgs; [
-      noto-fonts noto-fonts-cjk noto-fonts-emoji
+      noto-fonts noto-fonts-cjk-sans noto-fonts-emoji
       nerd-fonts.fira-code nerd-fonts.jetbrains-mono
     ];
     enableDefaultPackages = true;
