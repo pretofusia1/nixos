@@ -25,22 +25,11 @@
   ## Wallpapers (landen unter ~/.config/wallpapers)
   xdg.configFile."wallpapers".source = ./wallpapers;
 
-  ## Eigene Skripte (aus ~/.config/nixos/home/preto/scripts → ~/.local/bin)
-  home.file.".local/bin/screenshot-area.sh" = {
-    source = ./scripts/screenshot-area.sh;
-    executable = true;
-  };
-  home.file.".local/bin/screenshot-full.sh" = {
-    source = ./scripts/screenshot-full.sh;
-    executable = true;
-  };
-  home.file.".local/bin/wallpaper-wal.sh" = {
-    source = ./scripts/wallpaper-wal.sh;
-    executable = true;
-  };
-  home.file.".local/bin/fastfetch-colored.sh" = {
-    source = ./scripts/fastfetch-colored.sh;
-    executable = true;
+  ## Eigene Skripte: gesamter scripts/-Ordner nach ~/.config/hypr/scripts
+  xdg.configFile."hypr/scripts" = {
+    source = ./scripts;
+    recursive = true;   # alle Dateien & Unterordner
+    force = true;       # überschreibt evtl. vorhandene
   };
 
   ## Autostart Waybar via systemd user service
@@ -58,6 +47,7 @@
     };
   };
 
-  ## Optional: PATH-Ergänzung, falls ~/.local/bin nicht drin
-  # home.sessionPath = [ "$HOME/.local/bin" ];
+  ## Optional: PATH-Ergänzung, falls du Skripte in ~/.config/hypr/scripts
+  ## ohne Pfad starten willst:
+  # home.sessionPath = [ "$HOME/.config/hypr/scripts" ];
 }
