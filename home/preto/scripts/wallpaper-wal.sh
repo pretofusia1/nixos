@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 1) Wallpaper-Ordner finden
+# Wallpaper-Ordner suchen (erster gefundener wird genommen)
 CANDIDATES=(
   "$HOME/Pictures/wallpapers"
   "$HOME/.config/wallpapers"
@@ -11,29 +11,38 @@ DIR=""
 for d in "${CANDIDATES[@]}"; do
   [[ -d "$d" ]] && DIR="$d" && break
 done
-[[ -z "$DIR" ]] && { echo "Kein Wallpaper-Ordner gefunden."; exit 1; }
+[[ -z "$DIR" ]] && { echo "[wall] Kein Wallpaper-Ordner gefunden."; exit 1; }
 
-# 2) Zufälliges Bild wählen
+# Zufälliges Bild auswählen
 mapfile -t FILES < <(find "$DIR" -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' \))
-[[ ${#FILES[@]} -eq 0 ]] && { echo "Keine Bilder in $DIR."; exit 1; }
+[[ ${#FILES[@]} -eq 0 ]] && { echo "[wall] Keine Bilder in $DIR."; exit 1; }
 IMG="${FILES[RANDOM % ${#FILES[@]}]}"
 
-# 3) pywal-Farben generieren (setzt auch ~/.cache/wal/wal auf den Bildpfad)
+# Pywal-Farben generieren
 wal -n -i "$IMG" --saturate 0.7
 
-# 4) Tatsächlichen Bildpfad ermitteln/prüfen
+# Aus Pywal den finalen Bildpfad übernehmen
 IMG="$(cat "$HOME/.cache/wal/wal")"
-[[ -f "$IMG" ]] || { echo "pywal hat keinen gültigen Bildpfad geliefert: $IMG"; exit 1; }
+[[ -f "$IMG" ]] || { echo "[wall] Ungültiger Bildpfad: $IMG"; exit 1; }
 
-# 5) Hyprpaper nur starten, wenn nicht schon läuft
+# Hyprpaper starten, falls nicht aktiv
 if ! pgrep -x hyprpaper >/dev/null; then
   hyprpaper & disown
-  # kurz warten, bis IPC bereit ist
-  sleep 0.4
 fi
 
-# 6) Wallpaper setzen (alle Monitore)
-hyprctl hyprpaper preload "$IMG"
-for mon in $(hyprctl monitors -j | jq -r '.[].name'); do
-  hyprctl hyprpaper wallpaper "$mon,$IMG"
+# Auf IPC warten (max. 6 Sekunden)
+for _ in {1..30}; do
+  hyprctl hyprpaper listpreloaded >/dev/null 2>&1 && break
+  sleep 0.2
 done
+
+# Wallpaper auf allen Monitoren setzen
+hyprctl hyprpaper preload "$IMG" || true
+for mon in $(hyprctl monitors -j | jq -r '.[].name'); do
+  hyprctl hyprpaper wallpaper "$mon,$IMG" || true
+done
+
+# Kitty live neu einfärben (falls Listener aktiv)
+if command -v kitty >/dev/null; then
+  kitty @ --to unix:/tmp/kitty set-colors --all "$HOME/.cache/wal/colors-kitty.conf" >/dev/null 2>&1 || true
+fi
