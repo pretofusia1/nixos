@@ -1,5 +1,4 @@
 {
-  // Minimal, clean, keine exotischen Optionen
   "layer": "top",
   "position": "top",
   "height": 28,
@@ -39,11 +38,7 @@
     "format-plugged": " {capacity}%",
     "format-alt": "{time}",
     "interval": 20,
-    "states": {
-      "good": 80,
-      "warning": 30,
-      "critical": 15
-    },
+    "states": { "good": 80, "warning": 30, "critical": 15 },
     "icons": ["", "", "", "", ""]
   },
 
@@ -52,13 +47,11 @@
     "format-muted": "",
     "on-click": "pavucontrol",
     "scroll-step": 2,
-    "icons": {
-      "default": ["", "", ""]
-    }
+    "icons": { "default": ["", "", ""] }
   },
 
   "tray": {
     "icon-size": 16,
-    "spacing": 6"
+    "spacing": 6
   }
 }
