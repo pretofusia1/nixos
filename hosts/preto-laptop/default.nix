@@ -34,7 +34,6 @@
   users.users.preto = {
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "audio" "input" "networkmanager" ];
-    initialPassword = "changeme"; # beim ersten Login ändern!
   };
 
   ## Bootloader (UEFI)
