@@ -1,15 +1,5 @@
-k/* Waybar GTK CSS – clean, einheitliche Farbe */
+k/* Waybar GTK CSS – clean & einfarbig, ohne @define-color */
 
-/* Farbdefinitionen (GTK-Syntax) */
-@define-color bg rgba(24,24,27,0.88);
-@define-color bgsolid #18181b;
-@define-color fg #e5e7eb;
-@define-color fgdim #cbd5e1;
-@define-color accent #89b4fa;
-@define-color warn #f59e0b;
-@define-color crit #ef4444;
-
-/* Global */
 * {
   border: none;
   min-height: 0;
@@ -18,19 +8,18 @@ k/* Waybar GTK CSS – clean, einheitliche Farbe */
 }
 
 window#waybar {
-  background: transparent;   /* Rahmen selbst zeichnen */
-  color: @fg;
+  background: transparent;              /* Panel selbst gezeichnet */
+  color: #e5e7eb;                       /* fg */
 }
 
 /* Container links/mitte/rechts */
 .modules-left,
 .modules-center,
 .modules-right {
-  background: @bg;
+  background: rgba(24, 24, 27, 0.88);   /* bg */
   border-radius: 10px;
   padding: 4px 10px;
   margin: 6px;
-  /* box-shadow existiert in GTK-CSS nicht zuverlässig -> weggelassen */
 }
 
 /* Einheitliche Module-Pads */
@@ -44,28 +33,28 @@ window#waybar {
   margin: 0 3px;
   border-radius: 8px;
   background: transparent;
-  color: @fgdim;
+  color: #cbd5e1;                       /* dim fg */
 }
 #workspaces button.active {
-  background: @accent;
+  background: #89b4fa;                  /* accent */
   color: #0b1220;
   font-weight: bold;
 }
 #workspaces button:hover {
-  background: rgba(137,180,250,0.15); /* leichtes Accent-Highlight */
-  color: @fg;
+  background: rgba(137, 180, 250, 0.15);
+  color: #e5e7eb;
 }
 
 /* Zustände/Icons */
-#battery.warning { color: @warn; }
-#battery.critical { color: @crit; }
-#pulseaudio.muted { color: @fgdim; }
+#battery.warning { color: #f59e0b; }
+#battery.critical { color: #ef4444; }
+#pulseaudio.muted { color: #cbd5e1; }
 
 /* Dezente Trenner innerhalb eines Containers */
 .modules-left > * + *,
 .modules-center > * + *,
 .modules-right > * + * {
-  border-left: 1px solid rgba(255,255,255,0.08);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
   padding-left: 10px;
   margin-left: 6px;
 }
