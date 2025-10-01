@@ -1,113 +1,64 @@
 {
-  // Waybar – solide Defaults
+  // Minimal, clean, keine exotischen Optionen
   "layer": "top",
   "position": "top",
-  "margin": "0",
-  "spacing": 8,
+  "height": 28,
+  "margin-top": 0,
+  "margin-bottom": 0,
+  "margin-left": 6,
+  "margin-right": 6,
 
-  // Module-Anordnung
-  "modules-left":   ["clock", "cpu", "memory"],
+  "modules-left": ["clock", "cpu", "memory"],
   "modules-center": ["hyprland/workspaces"],
-  "modules-right":  ["battery", "pulseaudio", "network", "bluetooth", "tray"],
+  "modules-right": ["battery", "pulseaudio", "tray"],
 
-  // ----- LEFT -----
   "clock": {
-    // WICHTIG: Zeitformat in {:%H:%M:%S}, sonst „kaputt“
-    "format": "{:%H:%M:%S}",
-    "tooltip-format": "{:%A, %d.%m.%Y}\nKalenderwoche {:%V}"
+    "format": "{:%H:%M:%S  %d.%m.%Y}",
+    "tooltip-format": "{:%A, %d. %B %Y}"
   },
 
   "cpu": {
-    "interval": 2,
-    "format": "{usage}% {icon}",
-    "tooltip": true,
-    "tooltip-format": "CPU: {usage}%\nLoad: {load:2}",
-    // Font Awesome (robust): 
-    "format-icons": [""]
-    // Alternativ neuere NF-Glyphe: ["󰻠"]
+    "format": " {usage:>2}%",
+    "interval": 2
   },
 
   "memory": {
-    "interval": 5,
-    "format": "{used:0.1f}G {icon}",
-    "format-alt": "{percentage}% {icon}",
-    "tooltip": true,
-    "tooltip-format": "RAM: {used:0.1f}G / {total:0.1f}G",
-    // FA: 
-    "format-icons": [""]
-    // Alternative NF: ["󰍛"]
+    "format": " {used:0.1f}G",
+    "interval": 5
   },
 
-  // ----- CENTER -----
   "hyprland/workspaces": {
-    "format": "{icon}",
-    "on-click": "hyprctl dispatch workspace {name}",
-    "persistent-workspaces": {
-      "*": 5
-    },
-    // einfache Icons 1–5
-    "format-icons": {
-      "1": "1", "2": "2", "3": "3", "4": "4", "5": "5"
-    }
+    "format": "{name}",
+    "on-click": "activate",
+    "disable-scroll": false
   },
 
-  // ----- RIGHT -----
   "battery": {
-    "interval": 5,
-    "states": { "warning": 20, "critical": 10 },
-    "format": "{capacity}% {icon}",
-    "format-charging": "{capacity}% ",   // FA bolt
-    "format-plugged":  "{capacity}% ",   // FA plug
-    // FA-Reihe (leer → voll) – sehr kompatibel
-    "format-icons": ["","","","",""],
-    "tooltip": true,
-    "tooltip-format": "Akku: {capacity}%\nStatus: {status}"
-    // Wenn du lieber die neueren MDI-Icons willst: ["󰁺","󰁼","󰁾","󰂀","󰁹"]
+    "format": "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-alt": "{time}",
+    "interval": 20,
+    "states": {
+      "good": 80,
+      "warning": 30,
+      "critical": 15
+    },
+    "icons": ["", "", "", "", ""]
   },
 
   "pulseaudio": {
-    "format": "{volume}% {icon}",
-    "format-muted": "muted ",           // FA volume-mute
+    "format": "{icon} {volume}%",
+    "format-muted": "",
+    "on-click": "pavucontrol",
     "scroll-step": 2,
-    "tooltip": true,
-    "tooltip-format": "{desc}\nLautstärke: {volume}%",
-    "format-icons": {
-      "headphones": "",
-      "handsfree": "",
-      "headset": "",
-      "phone": "",
-      "car": "",
-      "default": ["","",""]          // leise → laut
-    },
-    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
-    "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +2%",
-    "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -2%"
-  },
-
-  "network": {
-    // Wenn du eine bestimmte Schnittstelle möchtest:
-    // "interface": "wlan0",
-    // "interface-exclude": ["lo"],
-    "interval": 2,
-    "format-wifi": "{signalStrength}% ",
-    "format-ethernet": "{bandwidthUpBits}↑ {bandwidthDownBits}↓ 󰈀",
-    "format-disconnected": "offline 󰖪",
-    "tooltip": true,
-    "tooltip-format": "{ifname} {ipaddr}/{cidr}\n↑ {bandwidthUpBits}  ↓ {bandwidthDownBits}"
-  },
-
-  "bluetooth": {
-    "interval": 5,
-    "format": "{status} ",
-    "format-connected": "{device_alias} ",
-    "format-connected-battery": "{device_alias} {device_battery_percentage}% ",
-    "tooltip": true,
-    "tooltip-format": "{controller_alias}\n{num_connections} verbunden",
-    "on-click": "blueman-manager"
+    "icons": {
+      "default": ["", "", ""]
+    }
   },
 
   "tray": {
     "icon-size": 16,
-    "spacing": 8
+    "spacing": 6"
   }
 }
