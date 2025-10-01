@@ -51,3 +51,27 @@
   ## ohne Pfad starten willst:
   # home.sessionPath = [ "$HOME/.config/hypr/scripts" ];
 }
+  # --- Skripte nach ~/bin verlinken (aus dem Repo) ---
+  home.file."bin/unzip_prompt.sh" = {
+    source = ./scripts/unzip_prompt.sh;
+    executable = true;
+  };
+  home.file."bin/wlan_connect.sh" = {
+    source = ./scripts/wlan_connect.sh;
+    executable = true;
+  };
+  home.file."bin/git_commit_push_rebuild.sh" = {
+    source = ./scripts/git_commit_push_rebuild.sh;
+    executable = true;
+  };
+  home.file."bin/git_commit_push_rebuild_gc.sh" = {
+    source = ./scripts/git_commit_push_rebuild_gc.sh;
+    executable = true;
+  };
+  home.file."bin/update_system.sh" = {
+    source = ./scripts/update_system.sh;
+    executable = true;
+  };
+
+  # Damit ~/bin im PATH ist
+  home.sessionPath = [ "$HOME/bin" ];
