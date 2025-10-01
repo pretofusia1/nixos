@@ -2,17 +2,20 @@
   "layer": "top",
   "position": "top",
   "height": 28,
+
+  // Keine Außenränder
   "margin-top": 0,
   "margin-bottom": 0,
-  "margin-left": 6,
-  "margin-right": 6,
+  "margin-left": 0,
+  "margin-right": 0,
 
-  "modules-left": ["clock", "cpu", "memory"],
-  "modules-center": ["hyprland/workspaces"],
-  "modules-right": ["battery", "pulseaudio", "tray"],
+  // Links nur die Uhr, rechts alles andere
+  "modules-left": ["clock"],
+  "modules-center": [],
+  "modules-right": ["cpu", "memory", "battery", "pulseaudio", "tray"],
 
   "clock": {
-    "format": "{:%H:%M:%S  %d.%m.%Y}",
+    "format": "{:%H:%M}",
     "tooltip-format": "{:%A, %d. %B %Y}"
   },
 
@@ -26,12 +29,6 @@
     "interval": 5
   },
 
-  "hyprland/workspaces": {
-    "format": "{name}",
-    "on-click": "activate",
-    "disable-scroll": false
-  },
-
   "battery": {
     "format": "{icon} {capacity}%",
     "format-charging": " {capacity}%",
@@ -39,7 +36,8 @@
     "format-alt": "{time}",
     "interval": 20,
     "states": { "good": 80, "warning": 30, "critical": 15 },
-    "icons": ["", "", "", "", ""]
+    // WICHTIG: bei battery heißt es "format-icons", nicht "icons"
+    "format-icons": ["", "", "", "", ""]
   },
 
   "pulseaudio": {

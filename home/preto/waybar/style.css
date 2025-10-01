@@ -1,4 +1,4 @@
-k/* Waybar GTK CSS – clean & einfarbig, ohne @define-color */
+/* Clean & kompakt, ohne freie Flächen */
 
 * {
   border: none;
@@ -8,54 +8,35 @@ k/* Waybar GTK CSS – clean & einfarbig, ohne @define-color */
 }
 
 window#waybar {
-  background: transparent;              /* Panel selbst gezeichnet */
-  color: #e5e7eb;                       /* fg */
-}
-
-/* Container links/mitte/rechts */
-.modules-left,
-.modules-center,
-.modules-right {
-  background: rgba(24, 24, 27, 0.88);   /* bg */
-  border-radius: 10px;
-  padding: 4px 10px;
-  margin: 6px;
-}
-
-/* Einheitliche Module-Pads */
-#clock, #cpu, #memory, #battery, #pulseaudio, #tray, #workspaces {
-  padding: 0 8px;
-}
-
-/* Workspaces als Chips */
-#workspaces button {
-  padding: 2px 8px;
-  margin: 0 3px;
-  border-radius: 8px;
-  background: transparent;
-  color: #cbd5e1;                       /* dim fg */
-}
-#workspaces button.active {
-  background: #89b4fa;                  /* accent */
-  color: #0b1220;
-  font-weight: bold;
-}
-#workspaces button:hover {
-  background: rgba(137, 180, 250, 0.15);
+  background: rgba(24, 24, 27, 0.88);
   color: #e5e7eb;
 }
 
-/* Zustände/Icons */
+/* Links/Rechts-Gruppen: keine Außenabstände */
+.modules-left,
+.modules-right,
+.modules-center {
+  margin: 0;
+  padding: 4px 8px;
+}
+
+/* Einheitliche Abstände zwischen Modulen rechts */
+.modules-right > * + * {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  margin-left: 8px;
+  padding-left: 8px;
+}
+
+/* Uhr links etwas Luft */
+#clock { padding: 0 10px; }
+
+/* Workspaces deaktiviert – falls später aktiv, so sähen Chips aus:
+#workspaces button {
+  padding: 2px 8px; margin: 0 3px; border-radius: 8px;
+  background: transparent; color: #cbd5e1;
+}
+#workspaces button.active { background:#89b4fa; color:#0b1220; font-weight:bold; }
+*/
 #battery.warning { color: #f59e0b; }
 #battery.critical { color: #ef4444; }
 #pulseaudio.muted { color: #cbd5e1; }
-
-/* Dezente Trenner innerhalb eines Containers */
-.modules-left > * + *,
-.modules-center > * + *,
-.modules-right > * + * {
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-  padding-left: 10px;
-  margin-left: 6px;
-}
-
