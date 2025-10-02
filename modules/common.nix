@@ -37,6 +37,7 @@
     p7zip
     libarchive           # liefert bsdtar (Fallback fürs Entpack-Skript)
     networkmanager       # bringt nmcli fürs WLAN-Skript
+    gedit
   ];
 
   fonts = {
