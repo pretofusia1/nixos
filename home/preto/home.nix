@@ -14,9 +14,22 @@
   xdg.configFile."waybar/config".source = ./waybar/config.jsonc;
   xdg.configFile."waybar/style.css".source = ./waybar/style.css;
 
-  xdg.configFile."hypr/hyprland.conf".source = ./hypr/hyprland.conf;
+  # Hyprland: Configs & Skripte an die Stellen, die Hyprland erwartet
+  xdg.configFile."hypr/hyprland.conf" = {
+    source = ./hypr/hyprland.conf;
+    force = true;    # überschreibt auto-generierte Datei
+  };
+  xdg.configFile."hypr/hyprpaper.conf" = {
+    source = ./hypr/hyprpaper.conf;
+    force = true;
+  };
+  xdg.configFile."hypr/scripts" = {
+    source = ./scripts;   # enthält screenshot-area.sh, screenshot-full.sh, …
+    recursive = true;
+    force = true;
+  };
 
-  # Skripte aus dem Repo nach ~/bin verlinken (mit Executable-Bit)
+  # OPTIONAL: falls du einzelne Skripte zusätzlich in ~/bin ausführbar haben willst
   home.file."bin/unzip_prompt.sh" = {
     source = ./scripts/unzip_prompt.sh;
     executable = true;
