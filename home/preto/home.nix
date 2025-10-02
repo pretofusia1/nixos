@@ -14,7 +14,7 @@
   xdg.configFile."waybar/config".source = ./waybar/config.jsonc;
   xdg.configFile."waybar/style.css".source = ./waybar/style.css;
 
-  xdg.configFile."hypr/hyperland.conf".source = ./hyper/hyperland.conf;
+  xdg.configFile."hypr/hyperland.conf".source = ./hypr/hyprland.conf;
 
   # Skripte aus dem Repo nach ~/bin verlinken (mit Executable-Bit)
   home.file."bin/unzip_prompt.sh" = {
