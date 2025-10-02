@@ -8,26 +8,32 @@
   programs.git.enable = true;
   programs.kitty.enable = true;
 
-  # Waybar
+  ############################
+  ## Waybar (aus Repo)
+  ############################
   xdg.configFile."waybar/config".source = ./waybar/config.jsonc;
   xdg.configFile."waybar/style.css".source = ./waybar/style.css;
 
-  # Hyprland
+  ############################
+  ## Hyprland: Configs & Skripte
+  ############################
   xdg.configFile."hypr/hyprland.conf" = {
     source = ./hypr/hyprland.conf;
-    force = true;
+    force = true;    # überschreibt evtl. vorhandene Auto-Config
   };
   xdg.configFile."hypr/hyprpaper.conf" = {
     source = ./hypr/hyprpaper.conf;
     force = true;
   };
   xdg.configFile."hypr/scripts" = {
-    source = ./scripts;
+    source = ./scripts;   # enthält screenshot-area.sh, screenshot-full.sh, …
     recursive = true;
     force = true;
   };
 
-  # ~/bin Scripts ausführbar verlinken
+  ############################
+  ## ~/bin: Skripte ausführbar
+  ############################
   home.file."bin/wlan_connect.sh" = {
     source = ./scripts/wlan_connect.sh;
     executable = true;
@@ -48,7 +54,9 @@
   # ~/bin in den PATH aufnehmen
   home.sessionPath = [ "$HOME/bin" ];
 
-  # Bash-Login initialisieren (PATH inkl. ~/bin laden)
+  ############################
+  ## Shell-Init: HM-Variablen laden (inkl. PATH)
+  ############################
   programs.bash = {
     enable = true;
     initExtra = ''
@@ -59,7 +67,7 @@
     '';
   };
 
-  # Falls du Zsh nutzt, alternativ/zusätzlich:
+  # (Optional, falls du zsh nutzt)
   # programs.zsh = {
   #   enable = true;
   #   initExtra = ''
@@ -68,5 +76,45 @@
   #     fi
   #   '';
   # };
+
+  ############################
+  ## Dark-Themes: GTK + Firefox
+  ############################
+  gtk = {
+    enable = true;
+    theme = {
+      name = "adw-gtk3-dark";        # GTK3 Theme
+      package = pkgs.adw-gtk3;
+    };
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+  };
+
+  # GTK4/Libadwaita: "prefer dark" explizit setzen (für gedit etc.)
+  xdg.configFile."gtk-4.0/settings.ini".text = ''
+    [Settings]
+    gtk-application-prefer-dark-theme=1
+    gtk-icon-theme-name=Papirus-Dark
+  '';
+
+  programs.firefox = {
+    enable = true;
+    profiles.default = {
+      # Webseiten dunkel bevorzugen
+      settings = {
+        "layout.css.prefers-color-scheme.content-override" = 2; # 0=System, 1=Hell, 2=Dunkel
+        "ui.systemUsesDarkTheme" = 1;                           # UI-Hinweis auf dunkel
+      };
+    };
+  };
+
+  # benötigte Pakete (gedit, Themes/Icons)
+  home.packages = with pkgs; [
+    gedit
+    adw-gtk3
+    papirus-icon-theme
+  ];
 }
 
