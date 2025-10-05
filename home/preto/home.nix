@@ -82,17 +82,31 @@
   ############################
   gtk = {
     enable = true;
+
+    # GTK3 Theme
     theme = {
-      name = "adw-gtk3-dark";        # GTK3 Theme
+      name = "adw-gtk3-dark";
       package = pkgs.adw-gtk3;
     };
+
+    # Dunkles Icon-Theme (wirkt auch in Thunar)
     iconTheme = {
       name = "Papirus-Dark";
       package = pkgs.papirus-icon-theme;
     };
+
+    # WICHTIG: Dark-Preference und Icon-Namen auch in GTK3/4 setzen
+    gtk3.extraConfig = {
+      "gtk-application-prefer-dark-theme" = 1;
+      "gtk-icon-theme-name" = "Papirus-Dark";
+    };
+    gtk4.extraConfig = {
+      "gtk-application-prefer-dark-theme" = 1;
+      "gtk-icon-theme-name" = "Papirus-Dark";
+    };
   };
 
-  # GTK4/Libadwaita: "prefer dark" explizit setzen (für gedit etc.)
+  # GTK4/Libadwaita: zusätzlich settings.ini schreiben
   xdg.configFile."gtk-4.0/settings.ini".text = ''
     [Settings]
     gtk-application-prefer-dark-theme=1
@@ -102,10 +116,9 @@
   programs.firefox = {
     enable = true;
     profiles.default = {
-      # Webseiten dunkel bevorzugen
       settings = {
         "layout.css.prefers-color-scheme.content-override" = 2; # 0=System, 1=Hell, 2=Dunkel
-        "ui.systemUsesDarkTheme" = 1;                           # UI-Hinweis auf dunkel
+        "ui.systemUsesDarkTheme" = 1;
       };
     };
   };
@@ -116,5 +129,17 @@
     adw-gtk3
     papirus-icon-theme
   ];
+
+  ############################################
+  ## XSettings für GTK/Icons: xfsettingsd (neu)
+  ############################################
+  systemd.user.services.xfsettingsd = {
+    Unit.Description = "XFCE Settings Daemon";
+    Service = {
+      ExecStart = "${pkgs.xfce.xfsettingsd}/bin/xfsettingsd";
+      Restart = "on-failure";
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
 }
 
