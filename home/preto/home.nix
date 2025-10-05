@@ -8,32 +8,32 @@
   programs.git.enable = true;
   programs.kitty.enable = true;
 
-  ############################
-  ## Waybar (aus Repo)
-  ############################
+  ################################
+  ## Waybar (aus dem Repo)
+  ################################
   xdg.configFile."waybar/config".source = ./waybar/config.jsonc;
   xdg.configFile."waybar/style.css".source = ./waybar/style.css;
 
-  ############################
+  ################################
   ## Hyprland: Configs & Skripte
-  ############################
+  ################################
   xdg.configFile."hypr/hyprland.conf" = {
     source = ./hypr/hyprland.conf;
-    force = true;    # überschreibt evtl. vorhandene Auto-Config
+    force = true;   # überschreibt ggf. vorhandene Auto-Config
   };
   xdg.configFile."hypr/hyprpaper.conf" = {
     source = ./hypr/hyprpaper.conf;
     force = true;
   };
   xdg.configFile."hypr/scripts" = {
-    source = ./scripts;   # enthält screenshot-area.sh, screenshot-full.sh, …
+    source = ./scripts;   # enthält screenshot-*.sh, wallpaper-wal.sh, ...
     recursive = true;
     force = true;
   };
 
-  ############################
+  ################################
   ## ~/bin: Skripte ausführbar
-  ############################
+  ################################
   home.file."bin/wlan_connect.sh" = {
     source = ./scripts/wlan_connect.sh;
     executable = true;
@@ -54,9 +54,9 @@
   # ~/bin in den PATH aufnehmen
   home.sessionPath = [ "$HOME/bin" ];
 
-  ############################
-  ## Shell-Init: HM-Variablen laden (inkl. PATH)
-  ############################
+  ################################
+  ## Shell-Init (hm-session-vars)
+  ################################
   programs.bash = {
     enable = true;
     initExtra = ''
@@ -66,8 +66,7 @@
       fi
     '';
   };
-
-  # (Optional, falls du zsh nutzt)
+  # Optional, falls du zsh verwendest
   # programs.zsh = {
   #   enable = true;
   #   initExtra = ''
@@ -77,25 +76,25 @@
   #   '';
   # };
 
-  ############################
+  ################################
   ## Dark-Themes: GTK + Firefox
-  ############################
+  ################################
   gtk = {
     enable = true;
 
-    # GTK3 Theme
+    # GTK3 Theme (dunkel)
     theme = {
       name = "adw-gtk3-dark";
       package = pkgs.adw-gtk3;
     };
 
-    # Dunkles Icon-Theme (wirkt auch in Thunar)
+    # Dunkles Icon-Theme (wirkt in Thunar & Co.)
     iconTheme = {
       name = "Papirus-Dark";
       package = pkgs.papirus-icon-theme;
     };
 
-    # WICHTIG: Dark-Preference und Icon-Namen auch in GTK3/4 setzen
+    # Dark-Preference und Icon-Name explizit für GTK3/4
     gtk3.extraConfig = {
       "gtk-application-prefer-dark-theme" = 1;
       "gtk-icon-theme-name" = "Papirus-Dark";
@@ -106,40 +105,44 @@
     };
   };
 
-  # GTK4/Libadwaita: zusätzlich settings.ini schreiben
-  xdg.configFile."gtk-4.0/settings.ini".text = ''
-    [Settings]
-    gtk-application-prefer-dark-theme=1
-    gtk-icon-theme-name=Papirus-Dark
-  '';
-
   programs.firefox = {
     enable = true;
     profiles.default = {
       settings = {
-        "layout.css.prefers-color-scheme.content-override" = 2; # 0=System, 1=Hell, 2=Dunkel
+        # 0=System, 1=Hell, 2=Dunkel
+        "layout.css.prefers-color-scheme.content-override" = 2;
         "ui.systemUsesDarkTheme" = 1;
       };
     };
   };
 
-  # benötigte Pakete (gedit, Themes/Icons)
+  ################################
+  ## Pakete
+  ################################
   home.packages = with pkgs; [
     gedit
     adw-gtk3
     papirus-icon-theme
+    xfce.xfconf          # optional nützlich für xfconf-query
+    xfce.xfce4-settings  # Paket, das xfsettingsd enthält
   ];
 
-  ############################################
-  ## XSettings für GTK/Icons: xfsettingsd (neu)
-  ############################################
+  #########################################################
+  ## XSettings-Daemon: setzt Theme/Icon live (empfohlen)
+  #########################################################
   systemd.user.services.xfsettingsd = {
     Unit.Description = "XFCE Settings Daemon";
     Service = {
-      ExecStart = "${pkgs.xfce.xfsettingsd}/bin/xfsettingsd";
+      # Richtiger Pfad zum Binary im Paket xfce4-settings:
+      ExecStart = "${pkgs.xfce.xfce4-settings}/libexec/xfsettingsd";
       Restart = "on-failure";
     };
     Install.WantedBy = [ "graphical-session.target" ];
   };
+
+  ################################
+  ## Home-Manager CLI (optional)
+  ################################
+  programs.home-manager.enable = true;
 }
 
