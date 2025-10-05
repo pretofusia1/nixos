@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   home.username = "preto";
@@ -123,22 +123,43 @@
     gedit
     adw-gtk3
     papirus-icon-theme
-    xfce.xfconf          # optional nützlich für xfconf-query
-    xfce.xfce4-settings  # Paket, das xfsettingsd enthält
+    papirus-folders        # für Ordnerfarb-Umstellung
+    xfce.xfconf            # optional nützlich für xfconf-query
+    xfce.xfce4-settings    # enthält xfsettingsd
   ];
 
   #########################################################
-  ## XSettings-Daemon: setzt Theme/Icon live (empfohlen)
+  ## XSettings-Daemon: setzt Theme/Icon live (optional)
   #########################################################
   systemd.user.services.xfsettingsd = {
     Unit.Description = "XFCE Settings Daemon";
     Service = {
-      # Richtiger Pfad zum Binary im Paket xfce4-settings:
+      # Richtiger Pfad im Paket xfce4-settings:
       ExecStart = "${pkgs.xfce.xfce4-settings}/libexec/xfsettingsd";
       Restart = "on-failure";
     };
     Install.WantedBy = [ "graphical-session.target" ];
   };
+
+  ####################################################################
+  ## Deklarativ: Papirus-Ordnerfarbe dauerhaft auf "grey" umstellen
+  ## - spiegelt Papirus-Dark ins User-Theme (~/.local/share/icons)
+  ## - färbt Ordner mit papirus-folders (ohne sudo, idempotent)
+  ####################################################################
+  home.activation.setPapirusFolderColor =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      set -eu
+      THEME_SRC="$HOME/.nix-profile/share/icons/Papirus-Dark"
+      THEME_DST="$HOME/.local/share/icons/Papirus-Dark"
+
+      if [ -d "$THEME_SRC" ]; then
+        mkdir -p "$HOME/.local/share/icons"
+        rsync -a --delete "$THEME_SRC/" "$THEME_DST/"
+        ${pkgs.papirus-folders}/bin/papirus-folders -C grey -t Papirus-Dark -u || true
+      else
+        echo "Warnung: Papirus-Dark nicht im Nutzerprofil gefunden."
+      fi
+    '';
 
   ################################
   ## Home-Manager CLI (optional)
