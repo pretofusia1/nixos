@@ -4,7 +4,7 @@ let
   # === deine VPN-Parameter hier anpassen ===
   endpointHost = "168.119.159.48"; # z.B. 49.13.x.x
   endpointPort = 51820;
-  serverPubKey = "zo6fnTRP/r+Lac8wvpwIsV+QVDmfie0Gbg26LPrglo=";    # aus /etc/wireguard/server_public.key
+  serverPubKey = "pzo6fnTRP/r+Lac8wvpwIsV+QVDmfie0Gbg26LPrglo=";    # aus /etc/wireguard/server_public.key
   # Pfad zur privaten Laptop-Keydatei (nicht ins Repo legen!)
   privKeyFile  = "/etc/secret/wireguard/laptop_private.key";
 in
