@@ -9,6 +9,7 @@
     ./hardware-configuration.nix
     ../../modules/desktop/hyprland.nix
     ../../modules/desktop/greetd.nix
+    ../../modules/network/wireguard.nix
     inputs.home-manager.nixosModules.home-manager
   ];
 
