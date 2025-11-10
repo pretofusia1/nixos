@@ -51,6 +51,18 @@
     executable = true;
   };
 
+  ################################
+  ## Claude Launcher Scripts
+  ################################
+  home.file.".config/hypr/scripts/claude-launcher.sh" = {
+    source = ./scripts/claude/claude-launcher.sh;
+    executable = true;
+  };
+  home.file.".config/hypr/scripts/get-wallpaper-colors.sh" = {
+    source = ./scripts/claude/get-wallpaper-colors.sh;
+    executable = true;
+  };
+
   # ~/bin in den PATH aufnehmen
   home.sessionPath = [ "$HOME/bin" ];
 
@@ -166,4 +178,3 @@
   ################################
   programs.home-manager.enable = true;
 }
-
