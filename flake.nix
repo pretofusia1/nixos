@@ -17,7 +17,12 @@
       nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs; };
-        modules = [ ./hosts/${host} ./modules/common.nix home-manager.nixosModules.home-manager ];
+        modules = [
+          ./hosts/${host}
+          ./modules/common.nix
+          inputs.sops-nix.nixosModules.sops
+          home-manager.nixosModules.home-manager
+        ];
       };
     in {
       nixosConfigurations = {
