@@ -55,11 +55,11 @@
   ## Claude Launcher Scripts
   ################################
   home.file.".config/hypr/scripts/claude-launcher.sh" = {
-    source = ./scripts/claude/claude-launcher.sh;
+    source = ./scripts/claude-launcher.sh;
     executable = true;
   };
   home.file.".config/hypr/scripts/get-wallpaper-colors.sh" = {
-    source = ./scripts/claude/get-wallpaper-colors.sh;
+    source = ./scripts/get-wallpaper-colors.sh;
     executable = true;
   };
 

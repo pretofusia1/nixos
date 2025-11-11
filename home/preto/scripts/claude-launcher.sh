@@ -45,13 +45,25 @@ C4="${COLOR_ARRAY[3]}"
 C5="${COLOR_ARRAY[4]}"
 C6="${COLOR_ARRAY[5]}"
 
+# ANSI-Codes für Logo
 c1=$(hex_to_ansi "$C1")
 c2=$(hex_to_ansi "$C2")
 c3=$(hex_to_ansi "$C3")
 c4=$(hex_to_ansi "$C4")
 c5=$(hex_to_ansi "$C5")
 c6=$(hex_to_ansi "$C6")
+
+# Farben für Menü (aus Pywal)
+menu_border=$(hex_to_ansi "$C2")      # Rahmen/Borders
+menu_text=$(hex_to_ansi "$C6")        # Text
+menu_number=$(hex_to_ansi "$C4")      # Nummern (1-5)
+menu_title=$(hex_to_ansi "$C5")       # Titel (bold)
+menu_status_ok=$(hex_to_ansi "$C3")   # WireGuard OK
+menu_status_err=$(hex_to_ansi "$C1")  # Fehler
+menu_quit=$(hex_to_ansi "$C1")        # Quit-Option
+menu_prompt=$(hex_to_ansi "$C3")      # Eingabe-Prompt
 reset="\e[0m"
+bold="\e[1m"
 
 # Claude Logo ASCII Art (mit Wallpaper-Farben)
 print_claude_logo() {
@@ -68,20 +80,20 @@ print_claude_logo() {
 # Prüfe WireGuard-Verbindung
 check_wireguard() {
     if ! ip link show "$WG_INTERFACE" &>/dev/null; then
-        echo -e "\e[38;5;196m✗\e[0m WireGuard Interface '$WG_INTERFACE' nicht gefunden!"
-        echo -e "\e[38;5;240m  Bitte WireGuard starten: sudo wg-quick up $WG_INTERFACE\e[0m"
+        echo -e "${menu_status_err}✗${reset} WireGuard Interface '$WG_INTERFACE' nicht gefunden!"
+        echo -e "${menu_text}  Bitte WireGuard starten: sudo wg-quick up $WG_INTERFACE${reset}"
         return 1
     fi
 
     if ! ip addr show "$WG_INTERFACE" | grep -q "inet "; then
-        echo -e "\e[38;5;196m✗\e[0m WireGuard Interface '$WG_INTERFACE' hat keine IP!"
+        echo -e "${menu_status_err}✗${reset} WireGuard Interface '$WG_INTERFACE' hat keine IP!"
         return 1
     fi
 
     # Prüfe ob Remote-Host erreichbar ist
     if ! ping -c 1 -W 2 "$REMOTE_HOST" &>/dev/null; then
-        echo -e "\e[38;5;196m✗\e[0m Cloud-Server '$REMOTE_HOST' nicht erreichbar!"
-        echo -e "\e[38;5;240m  Prüfe WireGuard-Konfiguration\e[0m"
+        echo -e "${menu_status_err}✗${reset} Cloud-Server '$REMOTE_HOST' nicht erreichbar!"
+        echo -e "${menu_text}  Prüfe WireGuard-Konfiguration${reset}"
         return 1
     fi
 
@@ -96,7 +108,7 @@ show_menu() {
 
     # WireGuard Status
     if check_wireguard; then
-        echo -e "\e[38;5;82m●\e[0m WireGuard aktiv - Server erreichbar"
+        echo -e "${menu_status_ok}●${reset} WireGuard aktiv - Server erreichbar"
     else
         echo ""
         read -p "Drücke Enter zum Beenden..."
@@ -104,19 +116,19 @@ show_menu() {
     fi
 
     echo ""
-    echo -e "\e[38;5;75m╔═══════════════════════════════════════════╗\e[0m"
-    echo -e "\e[38;5;75m║\e[0m  \e[1mClaude Launcher - Agent wählen\e[0m         \e[38;5;75m║\e[0m"
-    echo -e "\e[38;5;75m╚═══════════════════════════════════════════╝\e[0m"
+    echo -e "${menu_border}╔═══════════════════════════════════════════╗${reset}"
+    echo -e "${menu_border}║${reset}  ${bold}${menu_title}Claude Launcher - Agent wählen${reset}         ${menu_border}║${reset}"
+    echo -e "${menu_border}╚═══════════════════════════════════════════╝${reset}"
     echo ""
-    echo -e "  \e[38;5;82m1)\e[0m \e[1mIT-Agent\e[0m         - IT-Infrastruktur & Server"
-    echo -e "  \e[38;5;82m2)\e[0m \e[1mBasic-Agent\e[0m      - Allgemeine Fragen & Wissen"
-    echo -e "  \e[38;5;82m3)\e[0m \e[1mReport-Agent\e[0m     - Strukturierte Reports"
-    echo -e "  \e[38;5;82m4)\e[0m \e[1mEmail-Agent\e[0m      - Professionelle Emails"
-    echo -e "  \e[38;5;82m5)\e[0m \e[1mClaude Normal\e[0m    - Ohne speziellen Agenten"
+    echo -e "  ${menu_number}1)${reset} ${bold}IT-Agent${reset}         ${menu_text}- IT-Infrastruktur & Server${reset}"
+    echo -e "  ${menu_number}2)${reset} ${bold}Basic-Agent${reset}      ${menu_text}- Allgemeine Fragen & Wissen${reset}"
+    echo -e "  ${menu_number}3)${reset} ${bold}Report-Agent${reset}     ${menu_text}- Strukturierte Reports${reset}"
+    echo -e "  ${menu_number}4)${reset} ${bold}Email-Agent${reset}      ${menu_text}- Professionelle Emails${reset}"
+    echo -e "  ${menu_number}5)${reset} ${bold}Claude Normal${reset}    ${menu_text}- Ohne speziellen Agenten${reset}"
     echo ""
-    echo -e "  \e[38;5;196mq)\e[0m Beenden"
+    echo -e "  ${menu_quit}q)${reset} Beenden"
     echo ""
-    echo -ne "\e[38;5;75m➜\e[0m Auswahl: "
+    echo -ne "${menu_prompt}➜${reset} Auswahl: "
 }
 
 # SSH zu Agent verbinden
@@ -125,8 +137,8 @@ connect_to_agent() {
     local ssh_host="claude-${agent_type}"
 
     echo ""
-    echo -e "\e[38;5;82m→\e[0m Verbinde zu ${agent_type}-Agent..."
-    echo -e "\e[38;5;240m  (Tippe 'exit' um zurückzukehren)\e[0m"
+    echo -e "${menu_status_ok}→${reset} Verbinde zu ${agent_type}-Agent..."
+    echo -e "${menu_text}  (Tippe 'exit' um zurückzukehren)${reset}"
     echo ""
     sleep 1
 
@@ -134,23 +146,23 @@ connect_to_agent() {
     ssh "$ssh_host"
 
     echo ""
-    echo -e "\e[38;5;226m←\e[0m Verbindung beendet"
+    echo -e "${menu_prompt}←${reset} Verbindung beendet"
     sleep 1
 }
 
 # Claude Normal (ohne Agent) starten
 start_normal_claude() {
     echo ""
-    echo -e "\e[38;5;82m→\e[0m Verbinde zu Claude Server..."
-    echo -e "\e[38;5;240m  (Normaler Claude-Modus ohne Agent)\e[0m"
+    echo -e "${menu_status_ok}→${reset} Verbinde zu Claude Server..."
+    echo -e "${menu_text}  (Normaler Claude-Modus ohne Agent)${reset}"
     echo ""
     sleep 1
 
     # Normale SSH-Verbindung mit interaktiver Shell
-    ssh -t "${SSH_USER}@${REMOTE_HOST}" "cd /workspace && exec bash -l"
+    ssh claude
 
     echo ""
-    echo -e "\e[38;5;226m←\e[0m Verbindung beendet"
+    echo -e "${menu_prompt}←${reset} Verbindung beendet"
     sleep 1
 }
 
@@ -178,13 +190,13 @@ while true; do
         q|Q)
             clear
             echo ""
-            echo -e "\e[38;5;196m✗\e[0m Claude Launcher beendet."
+            echo -e "${menu_quit}✗${reset} Claude Launcher beendet."
             echo ""
             exit 0
             ;;
         *)
             echo ""
-            echo -e "\e[38;5;196m✗\e[0m Ungültige Auswahl. Bitte erneut versuchen."
+            echo -e "${menu_status_err}✗${reset} Ungültige Auswahl. Bitte erneut versuchen."
             sleep 2
             ;;
     esac
