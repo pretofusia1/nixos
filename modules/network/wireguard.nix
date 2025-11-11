@@ -37,7 +37,7 @@ in
         publicKey = serverPubKey;
         endpoint  = "${endpointHost}:${toString endpointPort}";
         persistentKeepalive = 25;
-        allowedIPs = [ "0.0.0.0/0" "::-0/0" ];
+        allowedIPs = [ "0.0.0.0/0" "::/0" ];  # IPv6 CIDR korrigiert
       }];
       # mtu = 1420;
     };
@@ -52,10 +52,21 @@ in
     wg-stat    = "sudo wg show";
   };
 
-  # Firewall-Regeln (falls NixOS-Firewall genutzt wird)
+  # Firewall-Regeln für WireGuard Client
+  # WICHTIG: Als Client brauchen wir KEINE offenen Ports!
+  # WireGuard baut ausgehende Verbindungen auf (stateful firewall erlaubt Antworten)
   networking.firewall = {
     enable = true;
-    allowedUDPPorts = [ endpointPort ];
+    # KEINE offenen Ports - Laptop ist Client, nicht Server!
+    allowedUDPPorts = [ ];
+    allowedTCPPorts = [ ];
+
+    # WireGuard-Interfaces als vertrauenswürdig markieren
+    trustedInterfaces = [ "wg0" "wg0full" ];
+
+    # Logging für Debugging (optional, kann später deaktiviert werden)
+    logRefusedConnections = false;  # Zu viel Spam in Logs
+    logRefusedPackets = false;
   };
 
   # Stelle sicher, dass das Secret existiert / korrekte Rechte hat

@@ -23,7 +23,17 @@ if git diff --staged --quiet; then
   echo "Keine Änderungen zum Commit."
 else
   git commit -m "$COMMIT_MSG"
-  git push
+
+  # Push mit Error Handling
+  if ! git push; then
+    echo "FEHLER: git push fehlgeschlagen!"
+    echo "Mögliche Ursachen:"
+    echo "  - Keine Internet-Verbindung"
+    echo "  - SSH Key nicht korrekt"
+    echo "  - Branch existiert remote nicht"
+    read -rp "Trotzdem mit Rebuild fortfahren? (j/N) " cont
+    [[ "$cont" =~ ^[JjYy]$ ]] || exit 1
+  fi
 fi
 
 if [ -f flake.nix ]; then

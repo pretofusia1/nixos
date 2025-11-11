@@ -37,12 +37,45 @@
     extraGroups = [ "wheel" "video" "audio" "input" "networkmanager" ];
   };
 
+  ## Sudo-Konfiguration (explizit und sicher)
+  security.sudo = {
+    enable = true;
+    # Wheel-Gruppe braucht Passwort (außer für spezifische Befehle)
+    wheelNeedsPassword = true;
+
+    # Ausnahmen: Diese Befehle ohne Passwort (Komfort beim Entwickeln)
+    extraRules = [{
+      users = [ "preto" ];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/nixos-rebuild";
+          options = [ "NOPASSWD" ];
+        }
+        {
+          command = "/run/current-system/sw/bin/nix-collect-garbage";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }];
+  };
+
   ## Bootloader (UEFI)
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot = {
+    enable = true;
+    # Behalte nur letzte 10 Generationen (spart Platz auf /boot)
+    configurationLimit = 10;
+  };
   boot.loader.efi.canTouchEfiVariables = true;
 
-  ## Firewall
-  networking.firewall.enable = true;
+  ## Firewall - Sichere Standardkonfiguration
+  networking.firewall = {
+    enable = true;
+    # Keine offenen Ports standardmäßig (WireGuard-Modul setzt trustedInterfaces)
+    allowedTCPPorts = [ ];
+    allowedUDPPorts = [ ];
+    # Ping erlauben (für Netzwerk-Troubleshooting)
+    allowPing = true;
+  };
 
   ## Home-Manager an System anbinden
   home-manager = {

@@ -22,7 +22,13 @@ else
   read -rp "Commit-Nachricht: " msg
   msg="${msg:-Update $(date +'%F %T')}"
   git commit -m "$msg"
-  git push
+
+  # Push mit Error Handling
+  if ! git push; then
+    echo "FEHLER: git push fehlgeschlagen!"
+    read -rp "Trotzdem mit Rebuild fortfahren? (j/N) " cont
+    [[ "$cont" =~ ^[JjYy]$ ]] || exit 1
+  fi
 fi
 
 if [ -f flake.nix ]; then

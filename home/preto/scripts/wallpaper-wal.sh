@@ -31,15 +31,31 @@ if ! pgrep -x hyprpaper >/dev/null; then
 fi
 
 # Auf IPC warten (max. 6 Sekunden)
+READY=false
 for _ in {1..30}; do
-  hyprctl hyprpaper listpreloaded >/dev/null 2>&1 && break
+  if hyprctl hyprpaper listpreloaded >/dev/null 2>&1; then
+    READY=true
+    break
+  fi
   sleep 0.2
 done
 
+# Abbruch wenn hyprpaper nicht bereit
+if [ "$READY" != "true" ]; then
+  echo "[wall] FEHLER: hyprpaper nicht bereit nach 6 Sekunden"
+  exit 1
+fi
+
 # Wallpaper auf allen Monitoren setzen
-hyprctl hyprpaper preload "$IMG" || true
+if ! hyprctl hyprpaper preload "$IMG"; then
+  echo "[wall] FEHLER: Konnte Wallpaper nicht preloaden"
+  exit 1
+fi
+
 for mon in $(hyprctl monitors -j | jq -r '.[].name'); do
-  hyprctl hyprpaper wallpaper "$mon,$IMG" || true
+  if ! hyprctl hyprpaper wallpaper "$mon,$IMG"; then
+    echo "[wall] WARNUNG: Konnte Wallpaper nicht auf Monitor $mon setzen"
+  fi
 done
 
 # Kitty live neu einfärben (falls Listener aktiv)

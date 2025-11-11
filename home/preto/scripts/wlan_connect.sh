@@ -36,10 +36,12 @@ security="$(echo "$line" | awk '{print $(NF-2)}')"
 
 echo "Ausgewählt: '$ssid' (Sicherheit: $security)"
 if [[ "$security" == "--" || "$security" == "NONE" ]]; then
-  sudo nmcli device wifi connect "$ssid" && { echo "Verbunden."; exit 0; }
+  # Kein sudo nötig - User ist in networkmanager Gruppe
+  nmcli device wifi connect "$ssid" && { echo "Verbunden."; exit 0; }
   echo "Verbindung fehlgeschlagen."; exit 1
 else
   read -rsp "Passwort: " pw; echo
-  sudo nmcli device wifi connect "$ssid" password "$pw" && { echo "Verbunden."; exit 0; }
+  # Kein sudo nötig - User ist in networkmanager Gruppe
+  nmcli device wifi connect "$ssid" password "$pw" && { echo "Verbunden."; exit 0; }
   echo "Verbindung fehlgeschlagen."; exit 1
 fi

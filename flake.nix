@@ -1,9 +1,14 @@
 {
   description = "NixOS Flake Starter (Hyprland + Home-Manager)";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
+    # Stable Branch für Produktiv-System (getestet, keine Breaking Changes)
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+
+    # Home-Manager auf matching stable release
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    # SOPS-nix (Secret Management)
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };

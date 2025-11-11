@@ -8,11 +8,26 @@ REPO_DIR="${1:-.}"
 FLAKE_TARGET="${2:-.}"
 
 cd "$REPO_DIR"
-git pull --rebase || true
+
+# Git Pull mit Error Handling
+echo "Pulling latest changes from remote..."
+if ! git pull --rebase; then
+  echo "FEHLER: git pull fehlgeschlagen!"
+  echo "Mögliche Ursachen:"
+  echo "  - Merge-Konflikt (löse mit: git rebase --abort)"
+  echo "  - Keine Internet-Verbindung"
+  echo "  - Branch wurde umbenannt"
+  read -rp "Trotzdem fortfahren? (j/N) " cont
+  [[ "$cont" =~ ^[JjYy]$ ]] || exit 1
+fi
 
 if [ -f flake.nix ] && command -v nix >/dev/null 2>&1; then
   echo "flake.nix gefunden -> nix flake update ..."
-  nix flake update || echo "flake update fehlgeschlagen (weiter mit Rebuild)."
+  if ! nix flake update; then
+    echo "WARNUNG: flake update fehlgeschlagen"
+    read -rp "Trotzdem mit Rebuild fortfahren? (j/N) " cont
+    [[ "$cont" =~ ^[JjYy]$ ]] || exit 1
+  fi
 fi
 
 git add -A
