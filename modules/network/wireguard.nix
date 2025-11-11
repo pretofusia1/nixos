@@ -5,8 +5,13 @@ let
   endpointHost = "168.119.159.48"; # z.B. 49.13.x.x
   endpointPort = 51820;
   serverPubKey = "pzo6fnTRP/r+Lac8wvpwIsV+QVDmfie0Gbg26LPrglo=";    # aus /etc/wireguard/server_public.key
-  # Pfad zur privaten Laptop-Keydatei (nicht ins Repo legen!)
-  privKeyFile  = "/etc/secret/wireguard/laptop_private.key";
+
+  # SICHERHEIT: Private Key über sops-nix (verschlüsselt)
+  # Falls sops-nix nicht eingerichtet ist, nutze Fallback auf unverschlüsselten Pfad
+  # TODO: Migriere zu sops-nix! Siehe: https://github.com/Mic92/sops-nix
+  privKeyFile = if config.sops.secrets ? "wireguard/laptop_private"
+                then config.sops.secrets."wireguard/laptop_private".path
+                else "/etc/secret/wireguard/laptop_private.key";
 in
 {
   imports = [ ];
@@ -61,16 +66,39 @@ in
     allowedUDPPorts = [ ];
     allowedTCPPorts = [ ];
 
-    # WireGuard-Interfaces als vertrauenswürdig markieren
-    trustedInterfaces = [ "wg0" "wg0full" ];
+    # SICHERHEIT: NICHT blind vertrauen! Nur spezifische Ports über WireGuard erlauben
+    # Falls du SSH über WireGuard nutzen möchtest, entkommentiere:
+    # interfaces.wg0.allowedTCPPorts = [ 22 ];
+    # interfaces.wg0full.allowedTCPPorts = [ 22 ];
 
-    # Logging für Debugging (optional, kann später deaktiviert werden)
-    logRefusedConnections = false;  # Zu viel Spam in Logs
-    logRefusedPackets = false;
+    # VERALTET (zu permissiv): trustedInterfaces = [ "wg0" "wg0full" ];
+    # Begründung: Falls VPN-Server kompromittiert wird, hätte ein Angreifer
+    # vollen Zugriff auf deinen Laptop. Besser: Explicit Deny by Default!
   };
 
   # Stelle sicher, dass das Secret existiert / korrekte Rechte hat
   systemd.tmpfiles.rules = [
     "d /etc/secret/wireguard 0700 root root -"
   ];
+
+  # === SOPS-NIX SETUP (Optional, aber empfohlen!) ===
+  # Aktiviere dies, um WireGuard-Keys verschlüsselt zu speichern:
+  #
+  # 1. Erstelle secrets.yaml mit sops:
+  #    $ sops secrets/secrets.yaml
+  #    wireguard:
+  #      laptop_private: |
+  #        <dein-private-key-hier>
+  #
+  # 2. Aktiviere in hosts/preto-laptop/default.nix:
+  #    imports = [ inputs.sops-nix.nixosModules.sops ];
+  #    sops.defaultSopsFile = ../../secrets/secrets.yaml;
+  #    sops.age.keyFile = "/home/preto/.config/sops/age/keys.txt";
+  #
+  # 3. Entkommentiere hier:
+  # sops.secrets."wireguard/laptop_private" = {
+  #   mode = "0400";
+  #   owner = "root";
+  #   group = "root";
+  # };
 }

@@ -105,15 +105,14 @@
       name = "Papirus-Dark";
       package = pkgs.papirus-icon-theme;
     };
+  };
 
-    # Dark-Preference und Icon-Name explizit für GTK3/4
-    gtk3.extraConfig = {
-      "gtk-application-prefer-dark-theme" = 1;
-      "gtk-icon-theme-name" = "Papirus-Dark";
-    };
-    gtk4.extraConfig = {
-      "gtk-application-prefer-dark-theme" = 1;
-      "gtk-icon-theme-name" = "Papirus-Dark";
+  # Modern: dconf für GTK-Theme-Einstellungen (ersetzt deprecated gtk3/gtk4.extraConfig)
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      gtk-theme = "adw-gtk3-dark";
+      icon-theme = "Papirus-Dark";
     };
   };
 
