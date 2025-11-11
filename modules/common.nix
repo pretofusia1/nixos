@@ -45,9 +45,7 @@
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-color-emoji  # Umbenannt in nixos-24.11
-      nerd-fonts.fira-code
-      nerd-fonts.jetbrains-mono
-      nerd-fonts.symbols-only
+      (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "NerdFontsSymbolsOnly" ]; })
     ];
     enableDefaultPackages = true;
   };
