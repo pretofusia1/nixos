@@ -15,6 +15,11 @@
   xdg.configFile."waybar/style.css".source = ./waybar/style.css;
 
   ################################
+  ## Dunst Notification Daemon
+  ################################
+  xdg.configFile."dunst/dunstrc".source = ./dunst/dunstrc;
+
+  ################################
   ## Hyprland: Configs & Skripte
   ################################
   xdg.configFile."hypr/hyprland.conf" = {
