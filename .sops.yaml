@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 keys:
   - &preto_laptop age1xaz67qn7atmu3f42c8rh0vca4kjeqdlmlagq5qm7jg6c39j6neeqjc8zgu
 
@@ -6,3 +7,13 @@ creation_rules:
     key_groups:
       - age:
           - *preto_laptop
+=======
+  keys:
+    - &preto_laptop age1xaz67qn7atmu3f42c8rh0vca4kjeqdlmlagq5qm7jg6c39j6neeqjc8zgu
+
+  creation_rules:
+    - path_regex: secrets/secrets\.yaml$
+      key_groups:
+        - age:
+            - *preto_laptop
+>>>>>>> b2e07b4 (Add SOPS configuration and encrypted WireGuard secrets)
