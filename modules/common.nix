@@ -38,6 +38,8 @@
     libarchive           # liefert bsdtar (Fallback fürs Entpack-Skript)
     networkmanager       # bringt nmcli fürs WLAN-Skript
     gedit
+    sops                 # Secret Management
+    age                  # Verschlüsselung für sops-nix
   ];
 
   fonts = {
