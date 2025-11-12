@@ -81,24 +81,11 @@ in
     "d /etc/secret/wireguard 0700 root root -"
   ];
 
-  # === SOPS-NIX SETUP (Optional, aber empfohlen!) ===
-  # Aktiviere dies, um WireGuard-Keys verschlüsselt zu speichern:
+  # === SOPS-NIX SETUP ===
+  # SOPS ist jetzt konfiguriert! Der verschlüsselte Private Key wird aus
+  # secrets/secrets.yaml geladen. Die SOPS-Secret-Definition befindet sich
+  # in hosts/preto-laptop/default.nix.
   #
-  # 1. Erstelle secrets.yaml mit sops:
-  #    $ sops secrets/secrets.yaml
-  #    wireguard:
-  #      laptop_private: |
-  #        <dein-private-key-hier>
-  #
-  # 2. Aktiviere in hosts/preto-laptop/default.nix:
-  #    imports = [ inputs.sops-nix.nixosModules.sops ];
-  #    sops.defaultSopsFile = ../../secrets/secrets.yaml;
-  #    sops.age.keyFile = "/home/preto/.config/sops/age/keys.txt";
-  #
-  # 3. Entkommentiere hier:
-  # sops.secrets."wireguard/laptop_private" = {
-  #   mode = "0400";
-  #   owner = "root";
-  #   group = "root";
-  # };
+  # Der entschlüsselte Key wird zur Laufzeit bereitgestellt unter:
+  # config.sops.secrets."wireguard/laptop_private".path
 }

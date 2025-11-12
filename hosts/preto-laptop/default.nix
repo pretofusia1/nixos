@@ -37,6 +37,18 @@
     extraGroups = [ "wheel" "video" "audio" "input" "networkmanager" ];
   };
 
+  ## SOPS - Secret Management
+  sops = {
+    defaultSopsFile = ../../secrets/secrets.yaml;
+    age.keyFile = "/home/preto/.config/sops/age/keys.txt";
+
+    secrets."wireguard/laptop_private" = {
+      mode = "0400";
+      owner = "root";
+      group = "root";
+    };
+  };
+
   ## Sudo-Konfiguration (explizit und sicher)
   security.sudo = {
     enable = true;
