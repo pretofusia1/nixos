@@ -1,0 +1,47 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 28,
+
+  "margin-top": 0,
+  "margin-bottom": 0,
+  "margin-left": 0,
+  "margin-right": 0,
+
+  "modules-left": ["clock"],
+  "modules-center": [],
+  "modules-right": ["cpu", "memory", "battery", "pulseaudio", "tray"],
+
+  "clock": { "format": "{:%H:%M}", "tooltip-format": "{:%A, %d. %B %Y}" },
+
+  "cpu": { "format": " {usage:>2}%", "interval": 2 },
+  "memory": { "format": " {used:0.1f}G", "interval": 5 },
+
+  "battery": {
+    "format": "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-alt": "{time}",
+    "interval": 20,
+    "states": { "good": 80, "warning": 30, "critical": 15 },
+    "format-icons": ["", "", "", "", ""]
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "",
+    "format-icons": {
+      "headphones": "",
+      "handsfree": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", "", ""]
+    },
+    "scroll-step": 2,
+    "on-click": "pavucontrol"
+  },
+
+  "tray": { "icon-size": 16, "spacing": 6 }
+}

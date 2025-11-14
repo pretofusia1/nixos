@@ -1,0 +1,19 @@
+* { border: none; min-height: 0; font-family: "JetBrainsMono Nerd Font", monospace; font-size: 12.5px; }
+
+window#waybar { background: rgba(24,24,27,0.88); color: #e5e7eb; }
+
+.modules-left, .modules-right, .modules-center { margin: 0; padding: 4px 10px; }
+
+/* Mehr Luft zwischen den rechten Modulen */
+.modules-right > * + * {
+  border-left: 1px solid rgba(255,255,255,0.08);
+  margin-left: 14px;      /* vorher 8px */
+  padding-left: 12px;     /* vorher 8px */
+}
+
+/* Uhr links etwas Luft */
+#clock { padding: 0 12px; }
+
+#battery.warning { color: #f59e0b; }
+#battery.critical { color: #ef4444; }
+#pulseaudio.muted { color: #cbd5e1; }
