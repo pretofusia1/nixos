@@ -19,11 +19,20 @@ mapfile -t FILES < <(find "$DIR" -type f \( -iname '*.png' -o -iname '*.jpg' -o 
 IMG="${FILES[RANDOM % ${#FILES[@]}]}"
 
 # Pywal-Farben generieren
+echo "[wall] Generiere Pywal-Farben..."
 wal -n -i "$IMG" --saturate 0.7
+
+# Prüfe ob Pywal erfolgreich war
+if [ ! -f "$HOME/.cache/wal/colors.sh" ]; then
+  echo "[wall] FEHLER: Pywal konnte keine Farben generieren"
+  exit 1
+fi
 
 # Pywal-Sequenzen für Fastfetch exportieren
 # Die Sequenzen setzen Terminal-Farben, die Fastfetch automatisch nutzt
 cat "$HOME/.cache/wal/sequences" &
+
+echo "[wall] Pywal-Farben erfolgreich generiert"
 
 # Aus Pywal den finalen Bildpfad übernehmen
 IMG="$(cat "$HOME/.cache/wal/wal")"

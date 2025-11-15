@@ -14,6 +14,14 @@ SSH_KEY="$HOME/.ssh/id_ed25519"
 # Hole Wallpaper-Farben (wie in Workspace 1 Terminal)
 get_pywal_colors() {
     local colors_sh="$HOME/.cache/wal/colors.sh"
+    local max_wait=10  # Max 5 Sekunden warten
+
+    # Warte auf Pywal-Farben (falls gerade beim Boot)
+    local elapsed=0
+    while [ ! -f "$colors_sh" ] && [ $elapsed -lt $max_wait ]; do
+        sleep 0.5
+        elapsed=$((elapsed + 1))
+    done
 
     if [ -f "$colors_sh" ]; then
         source "$colors_sh"
