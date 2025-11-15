@@ -51,28 +51,22 @@ window#waybar > box {
 #workspaces button {
   padding: 0 12px;
   margin: 0 4px;
-  background: alpha(@color0, 0.2);
   color: @color8;
-  border-radius: 12px;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   min-width: 40px;
 }
 
 #workspaces button.active {
   color: @color4;
-  background: alpha(@color4, 0.25);
   font-weight: bold;
-  box-shadow: 0 0 8px alpha(@color4, 0.4);
 }
 
 #workspaces button.urgent {
   color: @color1;
-  background: alpha(@color1, 0.25);
   animation: blink-urgent 1s ease-in-out infinite;
 }
 
 #workspaces button:hover {
-  background: alpha(@color8, 0.3);
   color: @foreground;
 }
 
@@ -82,13 +76,6 @@ window#waybar > box {
   padding: 0 20px;
   color: @color5;
   font-weight: 700;
-  background: alpha(@color5, 0.15);
-  border-radius: 12px;
-  border-left: 3px solid @color5;
-}
-
-#clock:hover {
-  background: alpha(@color5, 0.25);
 }
 
 /* ===== MODULE (rechts) ===== */
@@ -100,18 +87,6 @@ window#waybar > box {
 #tray {
   padding: 0 14px;
   margin: 0 6px;
-  background: alpha(@color0, 0.2);
-  border-radius: 12px;
-  transition: all 0.2s ease;
-}
-
-/* Hover-Effekt */
-#network:hover,
-#pulseaudio:hover,
-#cpu:hover,
-#memory:hover,
-#battery:hover {
-  background: alpha(@color4, 0.25);
 }
 
 /* ===== FARBEN FÜR MODULE ===== */
@@ -122,7 +97,6 @@ window#waybar > box {
 
 #network.disconnected {
   color: @color1;
-  background: alpha(@color1, 0.15);
 }
 
 #pulseaudio {
@@ -142,12 +116,10 @@ window#waybar > box {
 
 #cpu.warning {
   color: @color3;
-  background: alpha(@color3, 0.2);
 }
 
 #cpu.critical {
   color: @color1;
-  background: alpha(@color1, 0.25);
   animation: blink-critical 1s linear infinite;
 }
 
@@ -158,12 +130,10 @@ window#waybar > box {
 
 #memory.warning {
   color: @color3;
-  background: alpha(@color3, 0.2);
 }
 
 #memory.critical {
   color: @color1;
-  background: alpha(@color1, 0.25);
   animation: blink-critical 1s linear infinite;
 }
 
@@ -174,17 +144,14 @@ window#waybar > box {
 
 #battery.charging {
   color: @color2;
-  background: alpha(@color2, 0.15);
 }
 
 #battery.warning {
   color: @color3;
-  background: alpha(@color3, 0.2);
 }
 
 #battery.critical {
   color: @color1;
-  background: alpha(@color1, 0.25);
   animation: blink-critical 1s linear infinite;
 }
 

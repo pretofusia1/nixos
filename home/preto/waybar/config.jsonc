@@ -7,9 +7,9 @@
   "margin-left": 12,
   "margin-right": 12,
 
-  "modules-left": ["network", "pulseaudio", "cpu", "memory", "battery", "tray"],
+  "modules-left": ["network", "pulseaudio", "cpu", "memory", "battery"],
   "modules-center": ["hyprland/workspaces"],
-  "modules-right": ["clock"],
+  "modules-right": ["tray", "clock"],
 
   "hyprland/workspaces": {
     "format": "{icon}",
