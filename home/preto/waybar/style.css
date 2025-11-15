@@ -112,7 +112,6 @@ window#waybar > box {
 #memory:hover,
 #battery:hover {
   background: alpha(@color4, 0.25);
-  transform: translateY(-1px);
 }
 
 /* ===== FARBEN FÜR MODULE ===== */
