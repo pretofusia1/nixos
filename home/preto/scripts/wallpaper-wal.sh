@@ -20,7 +20,7 @@ IMG="${FILES[RANDOM % ${#FILES[@]}]}"
 
 # Pywal-Farben generieren
 echo "[wall] Generiere Pywal-Farben..."
-wal -n -i "$IMG" --saturate 0.7
+wal -n -i "$IMG"
 
 # Prüfe ob Pywal erfolgreich war
 if [ ! -f "$HOME/.cache/wal/colors.sh" ]; then
