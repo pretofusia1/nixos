@@ -21,6 +21,10 @@ IMG="${FILES[RANDOM % ${#FILES[@]}]}"
 # Pywal-Farben generieren
 wal -n -i "$IMG" --saturate 0.7
 
+# Pywal-Sequenzen für Fastfetch exportieren
+# Die Sequenzen setzen Terminal-Farben, die Fastfetch automatisch nutzt
+cat "$HOME/.cache/wal/sequences" &
+
 # Aus Pywal den finalen Bildpfad übernehmen
 IMG="$(cat "$HOME/.cache/wal/wal")"
 [[ -f "$IMG" ]] || { echo "[wall] Ungültiger Bildpfad: $IMG"; exit 1; }
