@@ -1,0 +1,70 @@
+# ========================================
+# FIX: Fehlende Skripte in home.nix deployen
+# ========================================
+#
+# PROBLEM: waybar-launcher.sh und andere Skripte existieren in GitHub,
+#          werden aber nicht auf das System deployed
+#
+# ========================================
+# In home/preto/home.nix HINZUFÜGEN:
+# ========================================
+
+# Nach den existierenden home.file Einträgen HINZUFÜGEN:
+
+  # Hyprland-Skripte deployen
+  home.file.".config/hypr/scripts/waybar-launcher.sh" = {
+    source = ./scripts/waybar-launcher.sh;
+    executable = true;
+  };
+
+  home.file.".config/hypr/scripts/wallpaper-wal.sh" = {
+    source = ./scripts/wallpaper-wal.sh;
+    executable = true;
+  };
+
+  home.file.".config/hypr/scripts/fastfetch-colored.sh" = {
+    source = ./scripts/fastfetch-colored.sh;
+    executable = true;
+  };
+
+  home.file.".config/hypr/scripts/screenshot-area.sh" = {
+    source = ./scripts/screenshot-area.sh;
+    executable = true;
+  };
+
+  home.file.".config/hypr/scripts/screenshot-full.sh" = {
+    source = ./scripts/screenshot-full.sh;
+    executable = true;
+  };
+
+  home.file.".config/hypr/scripts/waybar-debug.sh" = {
+    source = ./scripts/waybar-debug.sh;
+    executable = true;
+  };
+
+  home.file.".config/hypr/scripts/unzip_prompt.sh" = {
+    source = ./scripts/unzip_prompt.sh;
+    executable = true;
+  };
+
+# ========================================
+# ZUSATZ-FIX: Claude-Launcher nicht beim Boot
+# ========================================
+# In home/preto/hypr/hyprland.conf:
+#
+# ENTFERNEN:
+#   exec-once = bash -lc 'while [ ! -f ~/.cache/wal/colors-kitty.conf ]; do sleep 0.1; done; kitty --class claudelauncher --title "Claude Launcher" -e bash -lc "~/.config/hypr/scripts/claude-launcher.sh; exec bash"'
+#
+# HINZUFÜGEN (bei den bind-Einträgen):
+#   bind = SUPER, C, exec, bash -lc 'kitty --class claudelauncher --title "Claude Launcher" -e bash -lc "~/.config/hypr/scripts/claude-launcher.sh; exec bash"'
+#
+# ========================================
+# NACH DEM FIX:
+# ========================================
+# 1. Auf Laptop: cd /etc/nixos
+# 2. home/preto/home.nix editieren (oben hinzufügen)
+# 3. sudo nixos-rebuild switch --flake .#preto-laptop
+# 4. Reboot
+# 5. Waybar sollte automatisch starten ✅
+# 6. Claude-Launcher manuell mit SUPER+C ✅
+# ========================================
