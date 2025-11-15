@@ -1,61 +1,84 @@
-/* Waybar Style mit Pywal-Integration */
+/* ===================================
+ * Waybar Style - LibrePhoenix Inspired
+ * Runde Ecken, Transparenz, zentrierte Workspaces
+ * ===================================*/
 @import '/home/preto/.cache/wal/colors-waybar.css';
 
 * {
   font-family: "JetBrainsMono Nerd Font";
-  font-size: 13px;
+  font-size: 14px;
   border: none;
   border-radius: 0;
   min-height: 0;
 }
 
+/* ===== WAYBAR FENSTER ===== */
 window#waybar {
-  background: @background;
+  background: transparent;
   color: @foreground;
 }
 
-/* ===== WORKSPACES ===== */
+/* ===== BAR CONTAINER (runde Ecken, Transparenz, Padding an Seiten) ===== */
+window#waybar > box {
+  background: alpha(@background, 0.85);
+  border-radius: 16px;
+  margin: 0;
+  padding: 0 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== WORKSPACES (zentriert) ===== */
 #workspaces {
-  margin: 0 8px;
+  margin: 0 12px;
   padding: 0;
 }
 
 #workspaces button {
-  padding: 0 10px;
-  margin: 0 2px;
-  background: transparent;
+  padding: 0 12px;
+  margin: 0 4px;
+  background: alpha(@color0, 0.2);
   color: @color8;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  min-width: 40px;
 }
 
 #workspaces button.active {
   color: @color4;
-  background: alpha(@color4, 0.15);
+  background: alpha(@color4, 0.25);
+  font-weight: bold;
+  box-shadow: 0 0 8px alpha(@color4, 0.4);
 }
 
 #workspaces button.urgent {
   color: @color1;
-  background: alpha(@color1, 0.15);
-  animation: blink 1s ease-in-out infinite;
+  background: alpha(@color1, 0.25);
+  animation: blink-urgent 1s ease-in-out infinite;
 }
 
 #workspaces button:hover {
-  background: alpha(@color8, 0.2);
+  background: alpha(@color8, 0.3);
+  color: @foreground;
 }
 
-@keyframes blink {
+@keyframes blink-urgent {
+  0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
 
-/* ===== CLOCK ===== */
+/* ===== CLOCK (ganz rechts) ===== */
 #clock {
-  margin-left: 16px;
-  padding: 0 16px;
+  margin: 0 8px 0 16px;
+  padding: 0 20px;
   color: @color5;
-  font-weight: 600;
-  background: alpha(@color0, 0.15);
-  border-radius: 8px;
+  font-weight: 700;
+  background: alpha(@color5, 0.15);
+  border-radius: 12px;
+  border-left: 3px solid @color5;
+}
+
+#clock:hover {
+  background: alpha(@color5, 0.25);
 }
 
 /* ===== MODULE (rechts) ===== */
@@ -63,19 +86,13 @@ window#waybar {
 #pulseaudio,
 #cpu,
 #memory,
-#battery {
-  padding: 0 12px;
-  margin: 0 6px;
-  background: alpha(@color0, 0.15);
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
+#battery,
 #tray {
-  padding: 0 8px;
+  padding: 0 14px;
   margin: 0 6px;
-  background: alpha(@color0, 0.15);
-  border-radius: 8px;
+  background: alpha(@color0, 0.2);
+  border-radius: 12px;
+  transition: all 0.2s ease;
 }
 
 /* Hover-Effekt */
@@ -84,63 +101,89 @@ window#waybar {
 #cpu:hover,
 #memory:hover,
 #battery:hover {
-  background: alpha(@color4, 0.2);
+  background: alpha(@color4, 0.25);
+  transform: translateY(-1px);
 }
 
 /* ===== FARBEN FÜR MODULE ===== */
 #network {
   color: @color2;
+  font-weight: 600;
 }
 
 #network.disconnected {
   color: @color1;
+  background: alpha(@color1, 0.15);
 }
 
 #pulseaudio {
   color: @color3;
+  font-weight: 600;
 }
 
 #pulseaudio.muted {
   color: @color8;
+  text-decoration: line-through;
 }
 
 #cpu {
   color: @color6;
+  font-weight: 600;
 }
 
 #cpu.warning {
   color: @color3;
+  background: alpha(@color3, 0.2);
 }
 
 #cpu.critical {
   color: @color1;
+  background: alpha(@color1, 0.25);
+  animation: blink-critical 1s linear infinite;
 }
 
 #memory {
   color: @color4;
+  font-weight: 600;
 }
 
 #memory.warning {
   color: @color3;
+  background: alpha(@color3, 0.2);
 }
 
 #memory.critical {
   color: @color1;
+  background: alpha(@color1, 0.25);
+  animation: blink-critical 1s linear infinite;
 }
 
 #battery {
   color: @color2;
+  font-weight: 600;
 }
 
 #battery.charging {
   color: @color2;
+  background: alpha(@color2, 0.15);
 }
 
 #battery.warning {
   color: @color3;
+  background: alpha(@color3, 0.2);
 }
 
 #battery.critical {
   color: @color1;
-  animation: blink 1s linear infinite;
+  background: alpha(@color1, 0.25);
+  animation: blink-critical 1s linear infinite;
+}
+
+#tray {
+  padding: 0 10px;
+}
+
+@keyframes blink-critical {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }

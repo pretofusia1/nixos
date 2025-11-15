@@ -3,10 +3,13 @@
   "position": "top",
   "height": 40,
   "spacing": 12,
+  "margin-top": 8,
+  "margin-left": 12,
+  "margin-right": 12,
 
-  "modules-left": ["hyprland/workspaces", "clock"],
-  "modules-center": [],
-  "modules-right": ["network", "pulseaudio", "cpu", "memory", "battery", "tray"],
+  "modules-left": [],
+  "modules-center": ["hyprland/workspaces"],
+  "modules-right": ["network", "pulseaudio", "cpu", "memory", "battery", "tray", "clock"],
 
   "hyprland/workspaces": {
     "format": "{icon}",
@@ -26,7 +29,7 @@
   },
 
   "clock": {
-    "format": "{:%H:%M  %a %d.%m}",
+    "format": "󰥔 {:%H:%M  %a %d.%m}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
   },
 
