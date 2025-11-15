@@ -9,7 +9,6 @@
 window#waybar {
   background: rgba(30, 30, 46, 0.9);
   color: #cdd6f4;
-  backdrop-filter: blur(10px);
 }
 
 /* ===== WORKSPACES ===== */
