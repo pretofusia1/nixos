@@ -2,6 +2,27 @@
  * Waybar Style - LibrePhoenix Inspired
  * Runde Ecken, Transparenz, zentrierte Workspaces
  * ===================================*/
+
+/* Keyframes MÜSSEN vor @import stehen! */
+@keyframes blink-urgent {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes blink-critical {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Pywal-Farben importieren - NACH keyframes! */
 @import '/home/preto/.cache/wal/colors-waybar.css';
 
 * {
@@ -59,15 +80,6 @@ window#waybar > box {
 #workspaces button:hover {
   background: alpha(@color8, 0.3);
   color: @foreground;
-}
-
-@keyframes blink-urgent {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
 }
 
 /* ===== CLOCK (ganz rechts) ===== */
@@ -185,13 +197,4 @@ window#waybar > box {
 
 #tray {
   padding: 0 10px;
-}
-
-@keyframes blink-critical {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
 }
