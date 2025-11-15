@@ -66,3 +66,10 @@ done
 if command -v kitty >/dev/null; then
   kitty @ --to unix:/tmp/kitty set-colors --all "$HOME/.cache/wal/colors-kitty.conf" >/dev/null 2>&1 || true
 fi
+
+# Waybar mit neuen Pywal-Farben neustarten
+if pgrep -x waybar >/dev/null; then
+  killall waybar
+  sleep 0.5
+  waybar --config "$HOME/.config/waybar/config.jsonc" --style "$HOME/.config/waybar/style.css" & disown
+fi

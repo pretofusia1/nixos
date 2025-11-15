@@ -1,3 +1,6 @@
+/* Waybar Style mit Pywal-Integration */
+@import '/home/preto/.cache/wal/colors-waybar.css';
+
 * {
   font-family: "JetBrainsMono Nerd Font";
   font-size: 13px;
@@ -7,8 +10,8 @@
 }
 
 window#waybar {
-  background: rgba(30, 30, 46, 0.9);
-  color: #cdd6f4;
+  background: @background;
+  color: @foreground;
 }
 
 /* ===== WORKSPACES ===== */
@@ -21,24 +24,24 @@ window#waybar {
   padding: 0 10px;
   margin: 0 2px;
   background: transparent;
-  color: #6c7086;
+  color: @color8;
   border-radius: 8px;
   transition: all 0.3s ease;
 }
 
 #workspaces button.active {
-  color: #89b4fa;
-  background: rgba(137, 180, 250, 0.15);
+  color: @color4;
+  background: alpha(@color4, 0.15);
 }
 
 #workspaces button.urgent {
-  color: #f38ba8;
-  background: rgba(243, 139, 168, 0.15);
+  color: @color1;
+  background: alpha(@color1, 0.15);
   animation: blink 1s ease-in-out infinite;
 }
 
 #workspaces button:hover {
-  background: rgba(108, 112, 134, 0.2);
+  background: alpha(@color8, 0.2);
 }
 
 @keyframes blink {
@@ -49,9 +52,9 @@ window#waybar {
 #clock {
   margin-left: 16px;
   padding: 0 16px;
-  color: #f5e0dc;
+  color: @color5;
   font-weight: 600;
-  background: rgba(108, 112, 134, 0.15);
+  background: alpha(@color0, 0.15);
   border-radius: 8px;
 }
 
@@ -63,7 +66,7 @@ window#waybar {
 #battery {
   padding: 0 12px;
   margin: 0 6px;
-  background: rgba(108, 112, 134, 0.15);
+  background: alpha(@color0, 0.15);
   border-radius: 8px;
   transition: all 0.2s ease;
 }
@@ -71,7 +74,7 @@ window#waybar {
 #tray {
   padding: 0 8px;
   margin: 0 6px;
-  background: rgba(108, 112, 134, 0.15);
+  background: alpha(@color0, 0.15);
   border-radius: 8px;
 }
 
@@ -81,43 +84,63 @@ window#waybar {
 #cpu:hover,
 #memory:hover,
 #battery:hover {
-  background: rgba(137, 180, 250, 0.2);
+  background: alpha(@color4, 0.2);
 }
 
-/* ===== STATUS-FARBEN ===== */
+/* ===== FARBEN FÜR MODULE ===== */
+#network {
+  color: @color2;
+}
+
 #network.disconnected {
-  color: #f38ba8;
+  color: @color1;
+}
+
+#pulseaudio {
+  color: @color3;
 }
 
 #pulseaudio.muted {
-  color: #6c7086;
+  color: @color8;
 }
 
-#battery.charging {
-  color: #a6e3a1;
-}
-
-#battery.warning {
-  color: #f9e2af;
-}
-
-#battery.critical {
-  color: #f38ba8;
-  animation: blink 1s linear infinite;
+#cpu {
+  color: @color6;
 }
 
 #cpu.warning {
-  color: #f9e2af;
+  color: @color3;
 }
 
 #cpu.critical {
-  color: #f38ba8;
+  color: @color1;
+}
+
+#memory {
+  color: @color4;
 }
 
 #memory.warning {
-  color: #f9e2af;
+  color: @color3;
 }
 
 #memory.critical {
-  color: #f38ba8;
+  color: @color1;
+}
+
+#battery {
+  color: @color2;
+}
+
+#battery.charging {
+  color: @color2;
+}
+
+#battery.warning {
+  color: @color3;
+}
+
+#battery.critical {
+  color: @color1;
+  animation: blink 1s linear infinite;
 }
