@@ -20,7 +20,7 @@ IMG="${FILES[RANDOM % ${#FILES[@]}]}"
 
 # Pywal-Farben generieren
 echo "[wall] Generiere Pywal-Farben..."
-wal -n -i "$IMG"
+wal -n -i "$IMG" --backend colorz
 
 # Prüfe ob Pywal erfolgreich war
 if [ ! -f "$HOME/.cache/wal/colors.sh" ]; then
@@ -43,9 +43,9 @@ if ! pgrep -x hyprpaper >/dev/null; then
   hyprpaper & disown
 fi
 
-# Auf IPC warten (max. 6 Sekunden)
+# Auf IPC warten (max. 3 Sekunden - verkürzt für schnelleren Boot)
 READY=false
-for _ in {1..30}; do
+for _ in {1..15}; do
   if hyprctl hyprpaper listpreloaded >/dev/null 2>&1; then
     READY=true
     break
@@ -55,7 +55,7 @@ done
 
 # Abbruch wenn hyprpaper nicht bereit
 if [ "$READY" != "true" ]; then
-  echo "[wall] FEHLER: hyprpaper nicht bereit nach 6 Sekunden"
+  echo "[wall] FEHLER: hyprpaper nicht bereit nach 3 Sekunden"
   exit 1
 fi
 
@@ -76,9 +76,8 @@ if command -v kitty >/dev/null; then
   kitty @ --to unix:/tmp/kitty set-colors --all "$HOME/.cache/wal/colors-kitty.conf" >/dev/null 2>&1 || true
 fi
 
-# Waybar mit neuen Pywal-Farben neustarten
-if pgrep -x waybar >/dev/null; then
-  killall waybar
-  sleep 0.5
-  waybar --config "$HOME/.config/waybar/config.jsonc" --style "$HOME/.config/waybar/style.css" & disown
-fi
+echo "[wall] ✅ Wallpaper & Pywal erfolgreich initialisiert"
+
+# WAYBAR NEUSTART ENTFERNT!
+# Waybar wird vom waybar-launcher.sh gestartet, der auf Pywal-Farben wartet
+# Das verhindert Race Conditions beim Boot

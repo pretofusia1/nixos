@@ -14,7 +14,7 @@ PYWAL_WAYBAR="$HOME/.cache/wal/colors-waybar.css"
 WAYBAR_CONFIG="$HOME/.config/waybar/config.jsonc"
 WAYBAR_STYLE="$HOME/.config/waybar/style.css"
 
-MAX_WAIT=40  # 40 * 0.5s = 20 Sekunden
+MAX_WAIT=60  # 60 * 0.2s = 12 Sekunden (schnellere Polls)
 ELAPSED=0
 
 echo "[1/5] Warte auf Pywal-Initialisierung..."
@@ -22,23 +22,23 @@ echo "[1/5] Warte auf Pywal-Initialisierung..."
 # Warten bis BEIDE Pywal-Dateien existieren
 while [ $ELAPSED -lt $MAX_WAIT ]; do
     if [ -f "$PYWAL_KITTY" ] && [ -f "$PYWAL_WAYBAR" ]; then
-        echo "[2/5] ✅ Pywal-Farben gefunden!"
+        echo "[2/5] ✅ Pywal-Farben gefunden! (${ELAPSED}x0.2s)"
         echo "  - Kitty:  $PYWAL_KITTY"
         echo "  - Waybar: $PYWAL_WAYBAR"
         break
     fi
 
-    if [ $ELAPSED -eq 10 ]; then
-        echo "  ⏳ Immer noch am Warten... (10s)"
+    if [ $ELAPSED -eq 25 ]; then  # Nach 5 Sekunden
+        echo "  ⏳ Immer noch am Warten... (5s)"
     fi
 
-    sleep 0.5
+    sleep 0.2  # Schnellere Polls (war 0.5s)
     ELAPSED=$((ELAPSED + 1))
 done
 
 # Falls Pywal-Farben IMMER NOCH nicht da sind
 if [ ! -f "$PYWAL_WAYBAR" ]; then
-    echo "[2/5] ⚠️  WARNUNG: Pywal-Waybar-Farben fehlen nach ${ELAPSED}x0.5s!"
+    echo "[2/5] ⚠️  WARNUNG: Pywal-Waybar-Farben fehlen nach ${ELAPSED}x0.2s!"
     echo "  Starte Waybar trotzdem - könnte fehlschlagen..."
 fi
 
