@@ -11,7 +11,7 @@
   ################################
   ## Waybar (aus dem Repo)
   ################################
-  xdg.configFile."waybar/config".source = ./waybar/config.jsonc;
+  xdg.configFile."waybar/config.jsonc".source = ./waybar/config.jsonc;
   xdg.configFile."waybar/style.css".source = ./waybar/style.css;
 
   ################################
