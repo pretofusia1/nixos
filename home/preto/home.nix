@@ -57,6 +57,14 @@
   };
 
   ################################
+  ## ~/scripts: Fastfetch Script
+  ################################
+  home.file."scripts/fastfetch-colored.sh" = {
+    source = ./scripts/fastfetch-colored.sh;
+    executable = true;
+  };
+
+  ################################
   ## Claude Launcher Scripts
   ################################
   home.file.".config/hypr/scripts/claude-launcher.sh" = {
