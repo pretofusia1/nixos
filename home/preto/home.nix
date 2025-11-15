@@ -75,6 +75,10 @@
     source = ./scripts/get-wallpaper-colors.sh;
     executable = true;
   };
+  home.file.".config/hypr/scripts/waybar-launcher.sh" = {
+    source = ./scripts/waybar-launcher.sh;
+    executable = true;
+  };
 
   # ~/bin in den PATH aufnehmen
   home.sessionPath = [ "$HOME/bin" ];
