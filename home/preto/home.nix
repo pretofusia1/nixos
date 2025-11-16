@@ -31,7 +31,7 @@
     force = true;
   };
   xdg.configFile."hypr/scripts" = {
-    source = ./scripts;   # enthält screenshot-*.sh, wallpaper-wal.sh, ...
+    source = ./hypr/scripts;   # enthält toggle-scratchpad.sh, ha-kiosk.sh
     recursive = true;
     force = true;
   };
@@ -150,6 +150,7 @@
   home.packages = with pkgs; [
     gedit
     chromium               # für HA-Dashboard Kiosk-Mode (optimal ohne UI)
+    spotify                # für Music Scratchpad (MOD+M)
     adw-gtk3
     papirus-icon-theme
     papirus-folders        # für Ordnerfarb-Umstellung
