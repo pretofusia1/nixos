@@ -149,6 +149,7 @@
   ################################
   home.packages = with pkgs; [
     gedit
+    chromium               # für HA-Dashboard Kiosk-Mode (optimal ohne UI)
     adw-gtk3
     papirus-icon-theme
     papirus-folders        # für Ordnerfarb-Umstellung
