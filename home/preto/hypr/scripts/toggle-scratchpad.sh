@@ -20,8 +20,15 @@ else
     # Fenster existiert nicht - starte es
     if [ -n "$START_CMD" ]; then
         eval "$START_CMD" &
-        # Warte kurz, damit das Fenster erscheint
-        sleep 0.3
+        # Warte bis das Fenster im special workspace erscheint (max 3 Sekunden)
+        for i in {1..30}; do
+            if hyprctl clients | grep -q "workspace: special:$WORKSPACE"; then
+                hyprctl dispatch togglespecialworkspace "$WORKSPACE"
+                exit 0
+            fi
+            sleep 0.1
+        done
+        echo "Warnung: Fenster nicht gefunden nach 3 Sekunden"
         hyprctl dispatch togglespecialworkspace "$WORKSPACE"
     else
         echo "Fehler: Kein Start-Command angegeben!"
