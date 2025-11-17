@@ -30,6 +30,10 @@
     source = ./hypr/hyprpaper.conf;
     force = true;
   };
+  xdg.configFile."hypr/pyprland.toml" = {
+    source = ./hypr/pyprland.toml;
+    force = true;
+  };
 
   # Hyprland-Skripte einzeln (ausführbar)
   home.file.".config/hypr/scripts/toggle-scratchpad.sh" = {
@@ -173,6 +177,7 @@
     papirus-folders        # für Ordnerfarb-Umstellung
     xfce.xfconf            # optional nützlich für xfconf-query
     xfce.xfce4-settings    # enthält xfsettingsd
+    pyprland               # Scratchpad-Manager für Hyprland
   ];
 
   #########################################################
