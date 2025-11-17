@@ -76,6 +76,10 @@
     source = ./scripts/update_system.sh;
     executable = true;
   };
+  home.file."bin/unzip_prompt.sh" = {
+    source = ./scripts/unzip_prompt.sh;
+    executable = true;
+  };
 
   ################################
   ## ~/scripts: Fastfetch Script
@@ -169,15 +173,33 @@
   ## Pakete
   ################################
   home.packages = with pkgs; [
+    # Editoren & Browser
     gedit
     chromium               # für HA-Dashboard Kiosk-Mode (optimal ohne UI)
+
+    # Office & Produktivität
+    onlyoffice-bin         # Office-Suite (Word, Excel, PowerPoint)
+
+    # Media
     spotify                # für Music Scratchpad (MOD+M)
+
+    # Themes & Icons
     adw-gtk3
     papirus-icon-theme
     papirus-folders        # für Ordnerfarb-Umstellung
+
+    # Desktop-Tools
     xfce.xfconf            # optional nützlich für xfconf-query
     xfce.xfce4-settings    # enthält xfsettingsd
     pyprland               # Scratchpad-Manager für Hyprland
+
+    # Dateimanager & Archive
+    xfce.thunar            # falls nicht schon installiert
+    xfce.thunar-archive-plugin  # Archive-Integration in Thunar
+    xarchiver              # GUI für Archive (ZIP, 7Z, RAR, etc.)
+
+    # Scanner-Frontend
+    simple-scan            # einfaches Scanner-GUI (GNOME)
   ];
 
   #########################################################
@@ -188,6 +210,18 @@
     Service = {
       # Richtiger Pfad im Paket xfce4-settings:
       ExecStart = "${pkgs.xfce.xfce4-settings}/libexec/xfsettingsd";
+      Restart = "on-failure";
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  #########################################################
+  ## Cliphist: Clipboard-History Daemon
+  #########################################################
+  systemd.user.services.cliphist = {
+    Unit.Description = "Clipboard History Daemon";
+    Service = {
+      ExecStart = "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store";
       Restart = "on-failure";
     };
     Install.WantedBy = [ "graphical-session.target" ];
