@@ -53,7 +53,7 @@ fi
 
 # Pywal-Farben generieren
 log "Generiere Pywal-Farben aus: $(basename "$IMG")"
-if ! wal -n -i "$IMG" --backend colorz 2>&1 | tee -a /tmp/wallpaper-wal.log; then
+if ! wal -n -i "$IMG" 2>&1 | tee -a /tmp/wallpaper-wal.log; then
   log "FEHLER: Pywal konnte keine Farben generieren!"
   exit 1
 fi
