@@ -30,10 +30,27 @@
     source = ./hypr/hyprpaper.conf;
     force = true;
   };
-  xdg.configFile."hypr/scripts" = {
-    source = ./hypr/scripts;   # enthält toggle-scratchpad.sh, ha-kiosk.sh
-    recursive = true;
-    force = true;
+
+  # Hyprland-Skripte einzeln (ausführbar)
+  home.file.".config/hypr/scripts/toggle-scratchpad.sh" = {
+    source = ./hypr/scripts/toggle-scratchpad.sh;
+    executable = true;
+  };
+  home.file.".config/hypr/scripts/ha-kiosk.sh" = {
+    source = ./hypr/scripts/ha-kiosk.sh;
+    executable = true;
+  };
+  home.file.".config/hypr/scripts/wallpaper-wal.sh" = {
+    source = ./scripts/wallpaper-wal.sh;
+    executable = true;
+  };
+  home.file.".config/hypr/scripts/screenshot-area.sh" = {
+    source = ./scripts/screenshot-area.sh;
+    executable = true;
+  };
+  home.file.".config/hypr/scripts/screenshot-full.sh" = {
+    source = ./scripts/screenshot-full.sh;
+    executable = true;
   };
 
   ################################
