@@ -11,6 +11,12 @@ plugins = [
 # SCRATCHPADS CONFIGURATION
 # ===================================
 
+# Globale Scratchpad-Optionen (MÜSSEN VOR den einzelnen Definitionen stehen!)
+[scratchpads]
+preserve_aspect = false
+margin = 50
+multi_window = false  # Nur ein Fenster pro Scratchpad
+
 # Terminal Scratchpad (SUPER + Space)
 [scratchpads.term]
 command = "kitty --class scratchpad-term"
@@ -40,13 +46,3 @@ position = "5% 5%"
 animation = "fromTop"
 lazy = true
 unfocus = "hide"
-
-# ===================================
-# SCRATCHPAD OPTIONEN
-# ===================================
-
-# Scratchpads folgen dem aktiven Monitor
-[scratchpads]
-preserve_aspect = false
-margin = 50
-multi_window = false  # Nur ein Fenster pro Scratchpad
