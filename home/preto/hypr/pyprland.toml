@@ -35,7 +35,7 @@ unfocus = "hide"
 
 # Home Assistant Dashboard (SUPER + A)
 [scratchpads.ha]
-command = "chromium --app=http://home-assist.fritz.box:8123 --class=ha-dashboard"
+command = "chromium --app=https://ha.fruehlingszimmer.de --class=ha-dashboard"
 class = "ha-dashboard"
 size = "90% 90%"
 position = "5% 5%"
