@@ -24,7 +24,7 @@ unfocus = "hide"  # Versteckt sich automatisch bei Fokusverlust
 # Spotify Scratchpad (SUPER + M)
 [scratchpads.spotify]
 command = "spotify"
-class = "scratchpad-spotify"
+class = "Spotify"
 size = "70% 80%"
 position = "15% 10%"
 animation = "fromTop"
