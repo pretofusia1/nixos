@@ -72,11 +72,6 @@
     '';
   };
 
-  # GUI für USBGuard (optional, für einfachere Verwaltung)
-  environment.systemPackages = with pkgs; [
-    # usbguard-notifier  # Benachrichtigungen bei neuen USB-Geräten
-  ];
-
   # -------------------------------------------
   # 4. MAC-Adress-Randomisierung
   # -------------------------------------------
@@ -181,8 +176,9 @@
     # Firejail-Tools
     firejail
 
-    # USBGuard-GUI (optional)
-    # usbguard-qt
+    # USBGuard-Tools (optional)
+    # usbguard-notifier  # Benachrichtigungen bei neuen USB-Geräten
+    # usbguard-qt        # GUI für USBGuard
 
     # Security-Audit-Tools
     lynis          # Security-Audit
