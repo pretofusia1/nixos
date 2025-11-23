@@ -73,15 +73,15 @@
   };
 
   # -------------------------------------------
-  # 4. MAC-Adress-Randomisierung
+  # 4. MAC-Adress-Randomisierung (DEAKTIVIERT)
   # -------------------------------------------
-  # Verhindert WiFi/Ethernet-Tracking
-  networking.networkmanager = {
-    wifi.macAddress = "random";
-    ethernet.macAddress = "random";
-    # Randomisiere bei jedem Connect (nicht nur Boot)
-    wifi.scanRandMacAddress = true;
-  };
+  # HINWEIS: Kann DNS-Probleme verursachen wenn Router MAC-basiert konfiguriert ist
+  # Auskommentiert auf Wunsch des Users
+  # networking.networkmanager = {
+  #   wifi.macAddress = "random";
+  #   ethernet.macAddress = "random";
+  #   wifi.scanRandMacAddress = true;
+  # };
 
   # -------------------------------------------
   # 5. Erweiterte Netzwerk-Härtung
