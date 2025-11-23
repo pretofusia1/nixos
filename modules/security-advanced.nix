@@ -145,25 +145,24 @@
   # 8. Audit-System erweitern
   # -------------------------------------------
   # Du hast bereits auditd aktiviert, hier zusätzliche Regeln
+  # HINWEIS: Einige Regeln auskommentiert wegen NixOS-spezifischer Pfade
   security.audit.rules = [
     # Überwache Passwort-Dateien
     "-w /etc/passwd -p wa -k passwd_changes"
     "-w /etc/shadow -p wa -k shadow_changes"
     "-w /etc/group -p wa -k group_changes"
 
-    # Überwache Sudo-Nutzung
-    "-w /usr/bin/sudo -p x -k sudo_usage"
+    # Überwache SSH (falls aktiviert)
+    # "-w /etc/ssh/sshd_config -p wa -k sshd_config"
 
-    # Überwache SSH
-    "-w /etc/ssh/sshd_config -p wa -k sshd_config"
+    # HINWEIS: Folgende Pfade existieren in NixOS nicht unter /usr/bin oder /sbin
+    # In NixOS sind diese unter /run/current-system/sw/bin/ oder als Wrapper
+    # Aktiviere diese später mit korrekten Pfaden falls gewünscht:
 
-    # Überwache Kernel-Module
-    "-w /sbin/insmod -p x -k modules"
-    "-w /sbin/rmmod -p x -k modules"
-    "-w /sbin/modprobe -p x -k modules"
-
-    # Überwache Firewall-Änderungen
-    "-w /usr/bin/ufw -p x -k firewall_changes"
+    # "-w /run/current-system/sw/bin/sudo -p x -k sudo_usage"
+    # "-w /run/current-system/sw/bin/insmod -p x -k modules"
+    # "-w /run/current-system/sw/bin/rmmod -p x -k modules"
+    # "-w /run/current-system/sw/bin/modprobe -p x -k modules"
   ];
 
   # -------------------------------------------
