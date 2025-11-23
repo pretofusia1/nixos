@@ -66,7 +66,12 @@
   # Drucker-Support (CUPS)
   services.printing = {
     enable = true;
-    drivers = [ pkgs.gutenprint pkgs.hplip ];  # HP & allgemeine Drucker
+    drivers = [
+      pkgs.gutenprint           # Allgemeine Drucker (Canon, Epson, etc.)
+      pkgs.hplip                # HP Drucker
+      pkgs.splix                # Samsung SPL-Drucker
+      pkgs.samsung-unified-linux-driver  # Samsung proprietäre Treiber
+    ];
   };
 
   # Scanner-Support (SANE)

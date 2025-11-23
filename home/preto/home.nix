@@ -9,6 +9,14 @@
   programs.kitty.enable = true;
 
   ################################
+  ## Kitty Terminal (mit Pywal)
+  ################################
+  xdg.configFile."kitty/kitty.conf" = {
+    source = ./kitty/kitty.conf;
+    force = true;
+  };
+
+  ################################
   ## Waybar (aus dem Repo)
   ################################
   xdg.configFile."waybar/config.jsonc".source = ./waybar/config.jsonc;
