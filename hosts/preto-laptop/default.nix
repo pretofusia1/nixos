@@ -10,6 +10,9 @@
     ../../modules/desktop/hyprland.nix
     ../../modules/desktop/greetd.nix
     ../../modules/network/wireguard.nix
+    ../../modules/performance.nix        # Performance-Optimierungen
+    ../../modules/security-advanced.nix  # Erweiterte Security
+    ../../modules/workflow.nix           # Workflow-Verbesserungen
     inputs.home-manager.nixosModules.home-manager
   ];
 

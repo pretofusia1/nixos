@@ -9,6 +9,17 @@
   programs.kitty.enable = true;
 
   ################################
+  ## Direnv - Auto-Dev-Environments
+  ################################
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+    enableBashIntegration = true;
+    # Falls du zsh nutzt:
+    # enableZshIntegration = true;
+  };
+
+  ################################
   ## Kitty Terminal (mit Pywal)
   ################################
   xdg.configFile."kitty/kitty.conf" = {
@@ -121,6 +132,34 @@
   ################################
   programs.bash = {
     enable = true;
+
+    # Shell-Aliases für besseren Workflow
+    shellAliases = {
+      # NixOS Rebuild
+      rebuild = "sudo nixos-rebuild switch --flake .#preto-laptop";
+      rebuild-boot = "sudo nixos-rebuild boot --flake .#preto-laptop";
+      rebuild-test = "sudo nixos-rebuild test --flake .#preto-laptop";
+
+      # Nix Maintenance
+      nix-clean = "sudo nix-collect-garbage -d && sudo nix-store --optimise";
+      nix-update = "nix flake update";
+      nix-search = "nix search nixpkgs";
+
+      # System Info
+      nix-gen = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
+      nix-size = "nix path-info -Sh /run/current-system";
+
+      # Git Shortcuts
+      gs = "git status";
+      ga = "git add";
+      gc = "git commit";
+      gp = "git push";
+      gl = "git log --oneline";
+
+      # WireGuard (zusätzlich zu den bestehenden)
+      wg-check = "ip a show wg0";
+    };
+
     initExtra = ''
       # Home-Manager Session-Variablen (inkl. PATH-Erweiterungen)
       if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
@@ -173,17 +212,44 @@
         # 0=System, 1=Hell, 2=Dunkel
         "layout.css.prefers-color-scheme.content-override" = 2;
         "ui.systemUsesDarkTheme" = 1;
+
+        # Hardware-Acceleration (VAAPI)
+        "media.ffmpeg.vaapi.enabled" = true;
+        "media.hardware-video-decoding.enabled" = true;
+        "gfx.webrender.all" = true;
+        "media.navigator.mediadatadecoder_vpx_enabled" = true;
+
+        # Performance
+        "layers.acceleration.force-enabled" = true;
+        "gfx.webrender.compositor" = true;
       };
     };
+  };
+
+  programs.chromium = {
+    enable = true;
+    commandLineArgs = [
+      # Wayland-native
+      "--enable-features=UseOzonePlatform"
+      "--ozone-platform=wayland"
+
+      # Hardware-Acceleration
+      "--enable-features=VaapiVideoDecoder"
+      "--use-gl=egl"
+
+      # Performance
+      "--enable-gpu-rasterization"
+      "--enable-zero-copy"
+    ];
   };
 
   ################################
   ## Pakete
   ################################
   home.packages = with pkgs; [
-    # Editoren & Browser
+    # Editoren
     gedit
-    chromium               # für HA-Dashboard Kiosk-Mode (optimal ohne UI)
+    # chromium wird jetzt via programs.chromium verwaltet (siehe oben)
 
     # Office & Produktivität
     onlyoffice-bin         # Office-Suite (Word, Excel, PowerPoint)

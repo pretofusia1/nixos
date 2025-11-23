@@ -1,5 +1,48 @@
 #!/usr/bin/env bash
 
+# ============================================
+# WireGuard-Check & Auto-Connect
+# ============================================
+check_and_connect_wireguard() {
+    # Prüfe ob WireGuard Interface aktiv ist
+    if ip a show wg0 &>/dev/null && ip a show wg0 | grep -q "inet 10.10.0"; then
+        echo "[38;5;82m✓[0m WireGuard verbunden"
+        return 0
+    fi
+
+    echo "[38;5;226m⚠[0m WireGuard nicht verbunden"
+    echo "[38;5;75m→[0m Starte WireGuard-Verbindung..."
+    echo ""
+
+    # Starte WireGuard über NetworkManager
+    # Falls deine Verbindung anders heißt, ändere "wireguard" entsprechend
+    nmcli connection up wireguard
+
+    # Warte kurz und prüfe Verbindung
+    sleep 2
+
+    if ip a show wg0 &>/dev/null && ip a show wg0 | grep -q "inet 10.10.0"; then
+        echo ""
+        echo "[38;5;82m✓[0m WireGuard erfolgreich verbunden!"
+        echo ""
+        sleep 1
+        return 0
+    else
+        echo ""
+        echo "[38;5;196m✗[0m WireGuard-Verbindung fehlgeschlagen!"
+        echo "[38;5;196m✗[0m Bitte Verbindung manuell herstellen."
+        echo ""
+        exit 1
+    fi
+}
+
+# WireGuard-Check beim Script-Start ausführen
+check_and_connect_wireguard
+
+# ============================================
+# Claude Launcher - Hauptkonfiguration
+# ============================================
+
 # Pfade zu den Agenten
 AGENTS_DIR="/workspace/agents"
 IT_AGENT="$AGENTS_DIR/IT/it-agent.sh"
