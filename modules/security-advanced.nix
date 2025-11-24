@@ -51,26 +51,30 @@
   };
 
   # -------------------------------------------
-  # 3. USBGuard - USB-Angriffsprävention
+  # 3. USBGuard - USB-Angriffsprävention (DEAKTIVIERT)
   # -------------------------------------------
-  # Schützt vor BadUSB und unautorisierten USB-Geräten
-  services.usbguard = {
-    enable = true;
-    dbus.enable = true;
-    IPCAllowedUsers = [ "preto" ];
-    IPCAllowedGroups = [ "wheel" ];
-
-    # Policy: Erlaube alle bereits verbundenen Geräte beim Boot
-    rules = ''
-      # Erlaube alle Geräte die beim Boot verbunden sind
-      allow with-interface equals { 03:00:01 03:01:01 03:01:02 }  # Keyboards/Mice
-      allow with-interface equals { 08:*:* }                       # Mass Storage
-      allow with-interface equals { 0e:*:* }                       # Video (Webcam)
-
-      # Blockiere alles andere standardmäßig (wird via GUI genehmigt)
-      # reject
-    '';
-  };
+  # HINWEIS: Für Entwickler-Laptops mit häufig wechselnden USB-Geräten
+  # ist USBGuard overkill und blockiert zu viele legitime Geräte.
+  # Sinnvoll nur für High-Security-Umgebungen oder feste Desktop-PCs.
+  # Deaktiviert auf Wunsch des Users.
+  #
+  # services.usbguard = {
+  #   enable = true;
+  #   dbus.enable = true;
+  #   IPCAllowedUsers = [ "preto" ];
+  #   IPCAllowedGroups = [ "wheel" ];
+  #
+  #   # Policy: Erlaube alle bereits verbundenen Geräte beim Boot
+  #   rules = ''
+  #     # Erlaube alle Geräte die beim Boot verbunden sind
+  #     allow with-interface equals { 03:00:01 03:01:01 03:01:02 }  # Keyboards/Mice
+  #     allow with-interface equals { 08:*:* }                       # Mass Storage
+  #     allow with-interface equals { 0e:*:* }                       # Video (Webcam)
+  #
+  #     # Blockiere alles andere standardmäßig (wird via GUI genehmigt)
+  #     # reject
+  #   '';
+  # };
 
   # -------------------------------------------
   # 4. MAC-Adress-Randomisierung (DEAKTIVIERT)
