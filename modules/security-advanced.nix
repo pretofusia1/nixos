@@ -76,12 +76,12 @@
   # 4. MAC-Adress-Randomisierung
   # -------------------------------------------
   # Verhindert WiFi/Ethernet-Tracking
-  networking.networkmanager = {
-    wifi.macAddress = "random";
-    ethernet.macAddress = "random";
+#  networking.networkmanager = {
+#    wifi.macAddress = "random";
+#    ethernet.macAddress = "random";
     # Randomisiere bei jedem Connect (nicht nur Boot)
-    wifi.scanRandMacAddress = true;
-  };
+#    wifi.scanRandMacAddress = true;
+#  };
 
   # -------------------------------------------
   # 5. Erweiterte Netzwerk-Härtung
