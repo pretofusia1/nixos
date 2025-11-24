@@ -101,7 +101,7 @@
   # 6. Bash/Zsh-Completion
   # -------------------------------------------
   # Bessere Shell-Experience
-  programs.bash.enableCompletion = true;
+  programs.bash.completion.enable = true;  # FIX: Umbenannt von enableCompletion
   programs.zsh.enableCompletion = true;
 
   # -------------------------------------------
