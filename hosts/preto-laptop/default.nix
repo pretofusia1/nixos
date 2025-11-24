@@ -19,7 +19,18 @@
   ## Basis-Infos
   networking.hostName = "preto-laptop";
   time.timeZone = "Europe/Berlin";
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    dns = "systemd-resolved";
+  };
+
+  ## systemd-resolved - Modernes DNS Management
+  services.resolved = {
+    enable = true;
+    dnssec = "allow-downgrade";
+    domains = [ "~." ];
+    fallbackDns = [ "8.8.8.8" "1.1.1.1" ];
+  };
 
   ## Firmware & Microcode
   hardware.enableAllFirmware = true;
@@ -32,6 +43,32 @@
     alsa.enable = true;
     pulse.enable = true;
     wireplumber.enable = true;
+  };
+
+  ## TLP - Laptop Power Management
+  services.tlp = {
+    enable = true;
+    settings = {
+      # CPU Scaling Governor
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+      # CPU Turbo Boost
+      CPU_BOOST_ON_AC = 1;
+      CPU_BOOST_ON_BAT = 0;
+
+      # WiFi Power Saving
+      WIFI_PWR_ON_AC = "off";
+      WIFI_PWR_ON_BAT = "on";
+
+      # Battery Care (verhindert ständiges Laden auf 100%)
+      START_CHARGE_THRESH_BAT0 = 75;
+      STOP_CHARGE_THRESH_BAT0 = 80;
+
+      # Runtime Power Management für PCI(e) Geräte
+      RUNTIME_PM_ON_AC = "on";
+      RUNTIME_PM_ON_BAT = "auto";
+    };
   };
 
   ## User 'preto'

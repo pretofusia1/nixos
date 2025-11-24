@@ -92,4 +92,8 @@
     ];
     enableDefaultPackages = true;
   };
+
+  # Fish Shell - Moderne Shell mit besserer Auto-Completion
+  programs.fish.enable = true;
+  users.users.preto.shell = pkgs.fish;
 }
