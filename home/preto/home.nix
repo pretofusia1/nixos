@@ -167,15 +167,57 @@
       fi
     '';
   };
-  # Optional, falls du zsh verwendest
-  # programs.zsh = {
-  #   enable = true;
-  #   initExtra = ''
-  #     if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
-  #       . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-  #     fi
-  #   '';
-  # };
+
+  ################################
+  ## Fish Shell (mit Pywal)
+  ################################
+  programs.fish = {
+    enable = true;
+
+    # Gleiche Aliases wie Bash für Konsistenz
+    shellAliases = {
+      # NixOS Rebuild
+      rebuild = "sudo nixos-rebuild switch --flake .#preto-laptop";
+      rebuild-boot = "sudo nixos-rebuild boot --flake .#preto-laptop";
+      rebuild-test = "sudo nixos-rebuild test --flake .#preto-laptop";
+
+      # Nix Maintenance
+      nix-clean = "sudo nix-collect-garbage -d && sudo nix-store --optimise";
+      nix-update = "nix flake update";
+      nix-search = "nix search nixpkgs";
+
+      # System Info
+      nix-gen = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
+      nix-size = "nix path-info -Sh /run/current-system";
+
+      # Git Shortcuts
+      gs = "git status";
+      ga = "git add";
+      gc = "git commit";
+      gp = "git push";
+      gl = "git log --oneline";
+
+      # WireGuard
+      wg-check = "ip a show wg0";
+
+      # Modern ls replacements (optional, falls installiert)
+      ls = "eza";
+      ll = "eza -la";
+      tree = "eza --tree";
+    };
+
+    interactiveShellInit = ''
+      # Pywal-Farben in Fish-Shell laden
+      if test -e ~/.cache/wal/sequences
+        cat ~/.cache/wal/sequences
+      end
+
+      # Home-Manager Session-Variablen
+      if test -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+        bass source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+      end
+    '';
+  };
 
   ################################
   ## Dark-Themes: GTK + Firefox
@@ -265,6 +307,9 @@
     # Desktop-Tools
     xfce.xfconf            # optional nützlich für xfconf-query
     xfce.xfce4-settings    # enthält xfsettingsd
+
+    # Fish Shell Plugins
+    fishPlugins.bass       # Ermöglicht Bass-Scripts in Fish zu sourcen
     pyprland               # Scratchpad-Manager für Hyprland
 
     # Dateimanager & Archive
