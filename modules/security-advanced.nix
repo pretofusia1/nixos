@@ -137,10 +137,12 @@
   # 7. Sandboxing für Systemd-Services
   # -------------------------------------------
   # Härte systemd-Services (Beispiel für NetworkManager)
+  # HINWEIS: ProtectSystem="strict" deaktiviert, da NetworkManager Schreibzugriff auf
+  # /etc/resolv.conf und /run/NetworkManager benötigt für DNS-Verwaltung
   systemd.services.NetworkManager.serviceConfig = {
     PrivateTmp = true;
     NoNewPrivileges = true;
-    ProtectSystem = "strict";
+    ProtectSystem = "full";  # FIX: "full" statt "strict" - erlaubt /etc write access
     ProtectHome = true;
   };
 

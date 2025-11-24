@@ -21,16 +21,12 @@
   time.timeZone = "Europe/Berlin";
   networking.networkmanager = {
     enable = true;
-    dns = "systemd-resolved";
+    dns = "default";  # FIX: Lass NetworkManager DNS selbst verwalten
   };
 
-  ## systemd-resolved - Modernes DNS Management
-  services.resolved = {
-    enable = true;
-    dnssec = "allow-downgrade";
-    domains = [ "~." ];
-    fallbackDns = [ "8.8.8.8" "1.1.1.1" ];
-  };
+  ## systemd-resolved deaktiviert - NetworkManager verwaltet DNS selbst
+  # services.resolved aktiviert Konflikte, daher auskommentiert
+  # NetworkManager nutzt jetzt /etc/resolv.conf direkt
 
   ## Firmware & Microcode
   hardware.enableAllFirmware = true;
