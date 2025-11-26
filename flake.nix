@@ -8,8 +8,9 @@
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Hyprland (latest stable version)
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    # Hyprland (pinned to stable release v0.45.0 - prevents auto-update crashes)
+    # Falls Probleme mit v0.45.0: v0.44.0 oder v0.43.0 versuchen
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?ref=v0.45.0&submodules=1";
 
     # SOPS-nix (Secret Management)
     sops-nix.url = "github:Mic92/sops-nix";

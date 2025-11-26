@@ -183,12 +183,15 @@
   '';
 
   ## Automatische System-Updates (Flake-basiert)
+  ## DEAKTIVIERT: Hyprland-Updates können unstabil sein
+  ## Manuelles Update empfohlen: cd /home/preto/nixos && nix flake update && sudo nixos-rebuild switch --flake .#preto-laptop
   system.autoUpgrade = {
-    enable = true;
+    enable = false; # War: true - deaktiviert wegen Hyprland-Instabilität
     flake = "/home/preto/nixos"; # Pfad zu deinem lokalen Flake
     flags = [
       "--update-input" "nixpkgs"
       "--update-input" "home-manager"
+      # NICHT mehr: "--update-input" "hyprland" (manuell kontrollieren)
       "--commit-lock-file"
     ];
     dates = "weekly"; # Jeden Sonntag
