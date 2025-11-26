@@ -2,7 +2,11 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    # Option A: Stabile Version aus NixOS 24.11 (v0.45.2 - getestet!)
+    package = pkgs.hyprland;
+
+    # Option B: Gepinnte Version vom Hyprland-Repo (nur bei Problemen mit Option A)
+    # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   };
   environment.systemPackages = with pkgs; [
     hyprpaper
