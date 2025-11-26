@@ -158,6 +158,9 @@
 
       # WireGuard (zusätzlich zu den bestehenden)
       wg-check = "ip a show wg0";
+
+      # Unzip mit interaktivem Prompt
+      uz = "$HOME/bin/unzip_prompt.sh";
     };
 
     initExtra = ''
@@ -199,6 +202,9 @@
 
       # WireGuard
       wg-check = "ip a show wg0";
+
+      # Unzip mit interaktivem Prompt
+      uz = "$HOME/bin/unzip_prompt.sh";
 
       # Modern ls replacements (optional, falls installiert)
       ls = "eza";
