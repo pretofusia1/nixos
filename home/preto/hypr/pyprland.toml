@@ -34,11 +34,12 @@ lazy = true
 unfocus = "hide"
 
 # Home Assistant Dashboard (SUPER + A)
+# Hochformat wie Handy-Display, zentriert und über allen Fenstern
 [scratchpads.ha]
 command = "chromium --app=https://ha.fruehlingszimmer.de --class=ha-dashboard"
 class = "ha-dashboard"
-size = "90% 90%"
-position = "5% 5%"
+size = "28% 85%"         # Schmal und hoch (Handy-Format)
+position = "36% 7%"      # Zentriert auf dem Bildschirm
 animation = "fromTop"
 margin = 50
 lazy = true
