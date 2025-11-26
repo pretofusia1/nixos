@@ -296,8 +296,12 @@
     # Office & Produktivität
     onlyoffice-bin         # Office-Suite (Word, Excel, PowerPoint)
 
-    # Media
+    # Media & Viewer
     spotify                # für Music Scratchpad (MOD+M)
+    loupe                  # Moderner Bildbetrachter (GNOME)
+    okular                 # PDF-Viewer mit Annotationen/Bearbeitung (KDE)
+    rhythmbox              # Musik-Player (GNOME)
+    mpv                    # Leistungsstarker Video-Player
 
     # Themes & Icons
     adw-gtk3
@@ -344,6 +348,55 @@
       Restart = "on-failure";
     };
     Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  ################################
+  ## XDG MIME-Zuordnungen für Thunar
+  ################################
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      # Bilder
+      "image/jpeg" = "org.gnome.Loupe.desktop";
+      "image/png" = "org.gnome.Loupe.desktop";
+      "image/gif" = "org.gnome.Loupe.desktop";
+      "image/webp" = "org.gnome.Loupe.desktop";
+      "image/svg+xml" = "org.gnome.Loupe.desktop";
+      "image/bmp" = "org.gnome.Loupe.desktop";
+
+      # PDFs
+      "application/pdf" = "org.kde.okular.desktop";
+
+      # Dokumente (OnlyOffice)
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = "onlyoffice-desktopeditors.desktop";  # .docx
+      "application/vnd.oasis.opendocument.text" = "onlyoffice-desktopeditors.desktop";  # .odt
+      "application/msword" = "onlyoffice-desktopeditors.desktop";  # .doc
+      "text/plain" = "org.gnome.gedit.desktop";  # .txt
+
+      # Tabellen (OnlyOffice)
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" = "onlyoffice-desktopeditors.desktop";  # .xlsx
+      "application/vnd.oasis.opendocument.spreadsheet" = "onlyoffice-desktopeditors.desktop";  # .ods
+      "application/vnd.ms-excel" = "onlyoffice-desktopeditors.desktop";  # .xls
+      "text/csv" = "onlyoffice-desktopeditors.desktop";  # .csv
+
+      # Präsentationen (OnlyOffice)
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation" = "onlyoffice-desktopeditors.desktop";  # .pptx
+      "application/vnd.oasis.opendocument.presentation" = "onlyoffice-desktopeditors.desktop";  # .odp
+
+      # Audio (Rhythmbox)
+      "audio/mpeg" = "rhythmbox.desktop";  # .mp3
+      "audio/flac" = "rhythmbox.desktop";
+      "audio/x-wav" = "rhythmbox.desktop";
+      "audio/ogg" = "rhythmbox.desktop";
+      "audio/aac" = "rhythmbox.desktop";
+
+      # Video (MPV)
+      "video/mp4" = "mpv.desktop";
+      "video/x-matroska" = "mpv.desktop";  # .mkv
+      "video/webm" = "mpv.desktop";
+      "video/avi" = "mpv.desktop";
+      "video/quicktime" = "mpv.desktop";  # .mov
+    };
   };
 
   ####################################################################
