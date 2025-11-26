@@ -43,4 +43,4 @@ position = "36% 7%"      # Zentriert auf dem Bildschirm
 animation = "fromTop"
 margin = 50
 lazy = true
-unfocus = "hide"
+unfocus = "none"         # Bleibt sichtbar, auch wenn Focus verloren geht
