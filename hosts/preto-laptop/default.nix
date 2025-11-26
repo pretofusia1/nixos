@@ -204,6 +204,9 @@
     useUserPackages = true;
     users.preto = import ../../home/preto/home.nix;
     # extraSpecialArgs = { inherit inputs; }; # nur nötig, falls Inputs in home.nix gebraucht werden
+
+    # Automatisches Backup bei Dateikonflikten
+    backupFileExtension = "backup";
   };
 
   ## CLI 'home-manager' als Paket installieren (optional, aber praktisch)
