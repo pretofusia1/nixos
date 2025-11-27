@@ -92,6 +92,17 @@
       pkgs.hplipWithPlugin           # HP Scanner
       pkgs.samsung-unified-linux-driver  # Samsung Scanner (CLX-6260FD)
     ];
+
+    # Netzwerk-Scanner Konfiguration
+    netConf = "192.168.178.72";  # Samsung CLX-6260FD
+
+    # Zusätzliche Backend-Config für Samsung MFP
+    extraConfig = {
+      xerox_mfp = ''
+        # Samsung CLX-6260FD über Netzwerk
+        tcp 192.168.178.72
+      '';
+    };
   };
 
   # Benutzer in scanner & lp Gruppe
