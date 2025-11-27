@@ -126,6 +126,7 @@
     extraBackends = [
       pkgs.hplipWithPlugin           # HP Scanner
       pkgs.samsung-unified-linux-driver  # Samsung Scanner (CLX-6260FD)
+      pkgs.sane-airscan              # eSCL & WSD Netzwerk-Scanner (für Samsung)
     ];
   };
 
