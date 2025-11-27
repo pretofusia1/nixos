@@ -61,6 +61,10 @@
     # Clipboard-Manager
     wl-clipboard         # Wayland Clipboard (wl-copy/wl-paste)
     cliphist             # Clipboard-History für Hyprland
+
+    # Drucker & Scanner
+    system-config-printer  # GUI für Druckerverwaltung
+    simple-scan            # Einfacher Scanner (GNOME)
   ];
 
   # Drucker-Support (CUPS)
@@ -74,10 +78,20 @@
     ];
   };
 
+  # Avahi - Netzwerk-Drucker automatisch erkennen
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;  # .local Domain Support
+    openFirewall = true;
+  };
+
   # Scanner-Support (SANE)
   hardware.sane = {
     enable = true;
-    extraBackends = [ pkgs.hplipWithPlugin ];  # HP Scanner
+    extraBackends = [
+      pkgs.hplipWithPlugin           # HP Scanner
+      pkgs.samsung-unified-linux-driver  # Samsung Scanner (CLX-6260FD)
+    ];
   };
 
   # Benutzer in scanner & lp Gruppe
