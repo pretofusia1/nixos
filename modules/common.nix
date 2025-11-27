@@ -85,6 +85,41 @@
     openFirewall = true;
   };
 
+  # Automatische Drucker-Einrichtung beim Boot
+  systemd.services.setup-samsung-printer = {
+    description = "Setup Samsung CLX-6260FD printer automatically";
+    after = [ "cups.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      # Warte bis CUPS vollständig gestartet ist
+      sleep 3
+
+      # Prüfe ob Drucker bereits existiert
+      if ! ${pkgs.cups}/bin/lpstat -p Samsung-CLX-6260FD &>/dev/null 2>&1; then
+        echo "Samsung CLX-6260FD nicht gefunden, richte Drucker ein..."
+
+        # Drucker hinzufügen
+        ${pkgs.cups}/bin/lpadmin -p Samsung-CLX-6260FD \
+          -E \
+          -v ipp://192.168.178.72/ipp/print \
+          -m everywhere \
+          -L "Büro" \
+          -D "Samsung CLX-6260FD Multifunktionsgerät"
+
+        # Als Standard-Drucker setzen
+        ${pkgs.cups}/bin/lpadmin -d Samsung-CLX-6260FD
+
+        echo "Samsung CLX-6260FD erfolgreich eingerichtet!"
+      else
+        echo "Samsung CLX-6260FD bereits konfiguriert."
+      fi
+    '';
+  };
+
   # Scanner-Support (SANE)
   hardware.sane = {
     enable = true;
