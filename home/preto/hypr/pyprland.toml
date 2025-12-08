@@ -44,3 +44,14 @@ animation = "fromTop"
 margin = 50
 lazy = true
 unfocus = "none"         # Bleibt sichtbar, auch wenn Focus verloren geht
+
+# Thunderbird Mail-Client (SUPER + E)
+[scratchpads.mail]
+command = "thunderbird"
+class = "thunderbird"
+size = "75% 85%"
+position = "12% 7%"
+animation = "fromTop"
+margin = 50
+lazy = true
+unfocus = "hide"
