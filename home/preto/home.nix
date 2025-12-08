@@ -292,6 +292,16 @@
   };
 
   ################################
+  ## Thunderbird - Mail-Client mit Scratchpad (Entwürfe)
+  ################################
+  programs.thunderbird = {
+    enable = true;
+    profiles.default = {
+      isDefault = true;
+    };
+  };
+
+  ################################
   ## Pakete
   ################################
   home.packages = with pkgs; [
@@ -362,6 +372,9 @@
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
+      # E-Mail
+      "x-scheme-handler/mailto" = "thunderbird.desktop";
+
       # Bilder
       "image/jpeg" = "org.gnome.Loupe.desktop";
       "image/png" = "org.gnome.Loupe.desktop";
