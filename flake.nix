@@ -31,6 +31,7 @@
     in {
       nixosConfigurations = {
         preto-laptop = mkSystem "preto-laptop" "x86_64-linux";
+        preto-laptop2 = mkSystem "preto-laptop2" "x86_64-linux";
       };
     };
 }
