@@ -48,7 +48,6 @@
   ## Firmware & Microcode
   hardware.enableAllFirmware = true;
   hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
-  hardware.firmware.compressionLevel = 0;
 
   ## Sound via PipeWire
   services.pipewire = {
