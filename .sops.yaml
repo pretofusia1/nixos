@@ -1,10 +1,10 @@
-  keys:
-    - &preto_laptop age1xaz67qn7atmu3f42c8rh0vca4kjeqdlmlagq5qm7jg6c39j6neeqjc8zgu
-    - &proxmox_vm age1lfzuaw67qd9kdrdvykpy2n8wjxv0qd8xs0zsdwrnl4s04nxcvd7qzmlrm4
+keys:
+  - &preto_laptop age1xaz67qn7atmu3f42c8rh0vca4kjeqdlmlagq5qm7jg6c39j6neeqjc8zgu
+  - &proxmox_vm age1lfzuaw67qd9kdrdvykpy2n8wjxv0qd8xs0zsdwrnl4s04nxcvd7qzmlrm4
 
-  creation_rules:
-    - path_regex: secrets/secrets\.yaml$
-      key_groups:
-        - age:
-            - *preto_laptop
-            - *proxmox_vm
+creation_rules:
+  - path_regex: secrets/secrets\.yaml$
+    key_groups:
+      - age:
+          - *preto_laptop
+          - *proxmox_vm

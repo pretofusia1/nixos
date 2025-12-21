@@ -93,7 +93,7 @@
   ## SOPS - Secret Management
   sops = {
     defaultSopsFile = ../../secrets/secrets.yaml;
-    age.keyFile = "/home/preto/.config/sops/age/keys.txt";
+    age.keyFile = "/etc/ssh/ssh_host_ed25519_key";
 
     # WireGuard-Secret für VM
     secrets."wireguard/proxmox-vm_private" = {
