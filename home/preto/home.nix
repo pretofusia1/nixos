@@ -39,12 +39,19 @@
   xdg.configFile."dunst/dunstrc".source = ./dunst/dunstrc;
 
   ################################
-  ## Hyprland: Configs & Skripte
+  ## Hyprland: Dynamisch generierte Config
   ################################
-  xdg.configFile."hypr/hyprland.conf" = {
-    source = ./hypr/hyprland.conf;
-    force = true;   # überschreibt ggf. vorhandene Auto-Config
-  };
+  xdg.configFile."hypr/hyprland.conf".text =
+    # Laptop Monitor-Setup
+    ''
+      monitor=,preferred,auto,1
+
+      env = XCURSOR_SIZE,24
+      env = QT_QPA_PLATFORMTHEME,qt5ct
+
+    ''
+    # Gemeinsame Config aus shared file
+    + (builtins.readFile ./hypr/hyprland-shared.conf);
   xdg.configFile."hypr/hyprpaper.conf" = {
     source = ./hypr/hyprpaper.conf;
     force = true;

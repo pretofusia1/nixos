@@ -131,7 +131,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.preto = import ../../home/preto/home.nix;
+    users.preto = import ../../home/preto/home-vm.nix;  # VM-spezifische Config!
     backupFileExtension = "backup";
   };
 
