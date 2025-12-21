@@ -1,5 +1,5 @@
 keys:
-  - &preto_laptop age1xaz67qn7atmu3f42c8rh0vca4kjeqdlmlagq5qm7jg6c39j6neeqjc8zgu
+  - &preto_laptop age17z5jd5w8s6mxu20umzkx0vp2udlr450sx5d7f2ze4xrj6vj5sp0ssvgll5
   - &proxmox_vm age1lfzuaw67qd9kdrdvykpy2n8wjxv0qd8xs0zsdwrnl4s04nxcvd7qzmlrm4
 
 creation_rules:
