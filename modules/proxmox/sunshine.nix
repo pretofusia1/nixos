@@ -19,8 +19,30 @@
     openFirewall = true;
   };
 
-  # Optional: Zusätzliche Pakete für bessere Streaming-Qualität
-  # environment.systemPackages = with pkgs; [
-  #   libva-utils  # VA-API Debugging (vainfo)
-  # ];
+  # Intel GPU VAAPI Support für Hardware-Encoding
+  # Wichtig für performantes Streaming auf Virtual Display
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver  # iHD Driver für Intel GPU (TigerLake)
+      vaapiIntel          # Legacy VA-API
+      libvdpau-va-gl      # VDPAU Support
+    ];
+  };
+
+  # Environment Variables für Sunshine mit Virtual Display
+  environment.sessionVariables = {
+    # Intel GPU VAAPI Driver
+    LIBVA_DRIVER_NAME = "iHD";
+
+    # Wayland Display für Sunshine
+    # (wird automatisch von Hyprland gesetzt, hier als Fallback)
+    # WAYLAND_DISPLAY = "wayland-1";
+  };
+
+  # Debugging-Tools für VA-API und GPU-Encoding
+  environment.systemPackages = with pkgs; [
+    libva-utils        # vainfo - prüft VA-API Support
+    intel-gpu-tools    # intel_gpu_top - GPU-Monitoring
+  ];
 }
