@@ -92,16 +92,19 @@
   ## SOPS - Secret Management
   sops = {
     defaultSopsFile = ../../secrets/secrets.yaml;
-    age.keyFile = "/etc/ssh/ssh_host_ed25519_key";
 
-    # WireGuard-Secret für VM
+    # FALSCH (alter Weg):
+    # age.keyFile = "/etc/ssh/ssh_host_ed25519_key";
+
+    # RICHTIG (für SSH-Keys):
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
     secrets."wireguard/proxmox-vm_private" = {
       mode = "0400";
       owner = "root";
       group = "root";
     };
   };
-
   ## Sudo-Konfiguration (wie Laptops)
   security.sudo = {
     enable = true;
