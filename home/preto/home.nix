@@ -292,14 +292,15 @@
   };
 
   ################################
-  ## Thunderbird - Mail-Client mit Scratchpad (Entwürfe)
+  ## E-Mail-Client: Geary (schlank & modern)
   ################################
-  programs.thunderbird = {
-    enable = true;
-    profiles.default = {
-      isDefault = true;
-    };
-  };
+  # Thunderbird entfernt - ersetzt durch Geary
+  # programs.thunderbird = {
+  #   enable = true;
+  #   profiles.default = {
+  #     isDefault = true;
+  #   };
+  # };
 
   ################################
   ## Pakete
@@ -308,6 +309,9 @@
     # Editoren
     gedit
     # chromium wird jetzt via programs.chromium verwaltet (siehe oben)
+
+    # E-Mail-Client
+    geary                  # Moderner, schlanker GNOME Mail-Client
 
     # Office & Produktivität
     onlyoffice-bin         # Office-Suite (Word, Excel, PowerPoint)
@@ -373,7 +377,7 @@
     enable = true;
     defaultApplications = {
       # E-Mail
-      "x-scheme-handler/mailto" = "thunderbird.desktop";
+      "x-scheme-handler/mailto" = "org.gnome.Geary.desktop";
 
       # Bilder
       "image/jpeg" = "org.gnome.Loupe.desktop";
