@@ -1,5 +1,15 @@
 { config, pkgs, lib, ... }:
 
+let
+  # PhotoGIMP - Photoshop-Look für GIMP
+  # https://github.com/Diolinux/PhotoGIMP
+  photogimp = pkgs.fetchFromGitHub {
+    owner = "Diolinux";
+    repo = "PhotoGIMP";
+    rev = "1.1";
+    sha256 = "sha256-3gTRj71jc6ryFjsneQEaDXhpx0e0RhWvFn+Z5F1SYCg=";
+  };
+in
 {
   home.username = "preto";
   home.homeDirectory = "/home/preto";
@@ -18,7 +28,7 @@
   };
 
   ################################
-  ## Kitty Terminal
+  ## Kitty Terminal (mit Pywal)
   ################################
   xdg.configFile."kitty/kitty.conf" = {
     source = ./kitty/kitty.conf;
@@ -26,7 +36,7 @@
   };
 
   ################################
-  ## Waybar
+  ## Waybar (aus dem Repo)
   ################################
   xdg.configFile."waybar/config.jsonc".source = ./waybar/config.jsonc;
   xdg.configFile."waybar/style.css".source = ./waybar/style.css;
@@ -37,10 +47,10 @@
   xdg.configFile."dunst/dunstrc".source = ./dunst/dunstrc;
 
   ################################
-  ## Hyprland: Dynamisch generierte Config (VM Headless)
+  ## Hyprland: VM Headless Config (für Moonlight/Sunshine)
   ################################
   xdg.configFile."hypr/hyprland.conf".text =
-    # VM Virtual Display Setup
+    # VM Virtual Display Setup für Sunshine Streaming
     ''
       # Virtual Display für Headless Streaming
       monitor=WL-1,1920x1080@60,0x0,1
@@ -55,28 +65,398 @@
     # Gemeinsame Config aus shared file (identisch mit Laptop!)
     + (builtins.readFile ./hypr/hyprland-shared.conf);
 
-  ################################
-  ## Fish Shell
-  ################################
-  programs.fish = {
-    enable = true;
-    interactiveShellInit = ''
-      set fish_greeting
-    '';
+  xdg.configFile."hypr/hyprpaper.conf" = {
+    source = ./hypr/hyprpaper.conf;
+    force = true;
+  };
+  xdg.configFile."hypr/pyprland.toml" = {
+    source = ./hypr/pyprland.toml;
+    force = true;
+  };
+
+  # Hyprland-Skripte einzeln (ausführbar)
+  home.file.".config/hypr/scripts/toggle-scratchpad.sh" = {
+    source = ./hypr/scripts/toggle-scratchpad.sh;
+    executable = true;
+  };
+  home.file.".config/hypr/scripts/ha-kiosk.sh" = {
+    source = ./hypr/scripts/ha-kiosk.sh;
+    executable = true;
+  };
+  home.file.".config/hypr/scripts/wallpaper-wal.sh" = {
+    source = ./scripts/wallpaper-wal.sh;
+    executable = true;
+  };
+  home.file.".config/hypr/scripts/screenshot-area.sh" = {
+    source = ./scripts/screenshot-area.sh;
+    executable = true;
+  };
+  home.file.".config/hypr/scripts/screenshot-full.sh" = {
+    source = ./scripts/screenshot-full.sh;
+    executable = true;
   };
 
   ################################
-  ## Bash
+  ## ~/bin: Skripte ausführbar
+  ################################
+  home.file."bin/wlan_connect.sh" = {
+    source = ./scripts/wlan_connect.sh;
+    executable = true;
+  };
+  home.file."bin/git_commit_push_rebuild.sh" = {
+    source = ./scripts/git_commit_push_rebuild.sh;
+    executable = true;
+  };
+  home.file."bin/git_commit_push_rebuild_gc.sh" = {
+    source = ./scripts/git_commit_push_rebuild_gc.sh;
+    executable = true;
+  };
+  home.file."bin/update_system.sh" = {
+    source = ./scripts/update_system.sh;
+    executable = true;
+  };
+  home.file."bin/unzip_prompt.sh" = {
+    source = ./scripts/unzip_prompt.sh;
+    executable = true;
+  };
+
+  ################################
+  ## ~/scripts: Fastfetch Script
+  ################################
+  home.file."scripts/fastfetch-colored.sh" = {
+    source = ./scripts/fastfetch-colored.sh;
+    executable = true;
+  };
+
+  ################################
+  ## Claude Launcher Scripts
+  ################################
+  home.file.".config/hypr/scripts/claude-launcher.sh" = {
+    source = ./scripts/claude-launcher.sh;
+    executable = true;
+  };
+  home.file.".config/hypr/scripts/get-wallpaper-colors.sh" = {
+    source = ./scripts/get-wallpaper-colors.sh;
+    executable = true;
+  };
+  home.file.".config/hypr/scripts/waybar-launcher.sh" = {
+    source = ./scripts/waybar-launcher.sh;
+    executable = true;
+  };
+
+  # ~/bin in den PATH aufnehmen
+  home.sessionPath = [ "$HOME/bin" ];
+
+  ################################
+  ## Shell-Init (hm-session-vars)
   ################################
   programs.bash = {
     enable = true;
+
+    # Shell-Aliases für besseren Workflow (VM-spezifisch!)
+    shellAliases = {
+      # NixOS Rebuild - VM!
+      rebuild = "sudo nixos-rebuild switch --flake .#proxmox-vm";
+      rebuild-boot = "sudo nixos-rebuild boot --flake .#proxmox-vm";
+      rebuild-test = "sudo nixos-rebuild test --flake .#proxmox-vm";
+
+      # Nix Maintenance
+      nix-clean = "sudo nix-collect-garbage -d && sudo nix-store --optimise";
+      nix-update = "nix flake update";
+      nix-search = "nix search nixpkgs";
+
+      # System Info
+      nix-gen = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
+      nix-size = "nix path-info -Sh /run/current-system";
+
+      # Git Shortcuts
+      gs = "git status";
+      ga = "git add";
+      gc = "git commit";
+      gp = "git push";
+      gl = "git log --oneline";
+
+      # WireGuard
+      wg-check = "ip a show wg0";
+
+      # Unzip mit interaktivem Prompt
+      uz = "$HOME/bin/unzip_prompt.sh";
+    };
+
     initExtra = ''
-      # Pywal colors laden (falls vorhanden)
-      if [ -f ~/.cache/wal/sequences ]; then
-        cat ~/.cache/wal/sequences
+      # Home-Manager Session-Variablen (inkl. PATH-Erweiterungen)
+      if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+        . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
       fi
     '';
   };
 
+  ################################
+  ## Fish Shell (mit Pywal)
+  ################################
+  programs.fish = {
+    enable = true;
+
+    # Gleiche Aliases wie Bash für Konsistenz (VM-spezifisch!)
+    shellAliases = {
+      # NixOS Rebuild - VM!
+      rebuild = "sudo nixos-rebuild switch --flake .#proxmox-vm";
+      rebuild-boot = "sudo nixos-rebuild boot --flake .#proxmox-vm";
+      rebuild-test = "sudo nixos-rebuild test --flake .#proxmox-vm";
+
+      # Nix Maintenance
+      nix-clean = "sudo nix-collect-garbage -d && sudo nix-store --optimise";
+      nix-update = "nix flake update";
+      nix-search = "nix search nixpkgs";
+
+      # System Info
+      nix-gen = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
+      nix-size = "nix path-info -Sh /run/current-system";
+
+      # Git Shortcuts
+      gs = "git status";
+      ga = "git add";
+      gc = "git commit";
+      gp = "git push";
+      gl = "git log --oneline";
+
+      # WireGuard
+      wg-check = "ip a show wg0";
+
+      # Unzip mit interaktivem Prompt
+      uz = "$HOME/bin/unzip_prompt.sh";
+
+      # Modern ls replacements
+      ls = "eza";
+      ll = "eza -la";
+      tree = "eza --tree";
+    };
+
+    interactiveShellInit = ''
+      # Pywal-Farben in Fish-Shell laden
+      if test -e ~/.cache/wal/sequences
+        cat ~/.cache/wal/sequences
+      end
+
+      # Home-Manager Session-Variablen
+      if test -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+        bass source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+      end
+    '';
+  };
+
+  ################################
+  ## Dark-Themes: GTK + Firefox
+  ################################
+  gtk = {
+    enable = true;
+
+    # GTK3 Theme (dunkel)
+    theme = {
+      name = "adw-gtk3-dark";
+      package = pkgs.adw-gtk3;
+    };
+
+    # Dunkles Icon-Theme
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+  };
+
+  # Modern: dconf für GTK-Theme-Einstellungen
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      gtk-theme = "adw-gtk3-dark";
+      icon-theme = "Papirus-Dark";
+    };
+  };
+
+  programs.firefox = {
+    enable = true;
+    profiles.default = {
+      settings = {
+        # 0=System, 1=Hell, 2=Dunkel
+        "layout.css.prefers-color-scheme.content-override" = 2;
+        "ui.systemUsesDarkTheme" = 1;
+
+        # Hardware-Acceleration (VAAPI)
+        "media.ffmpeg.vaapi.enabled" = true;
+        "media.hardware-video-decoding.enabled" = true;
+        "gfx.webrender.all" = true;
+        "media.navigator.mediadatadecoder_vpx_enabled" = true;
+
+        # Performance
+        "layers.acceleration.force-enabled" = true;
+        "gfx.webrender.compositor" = true;
+      };
+    };
+  };
+
+  programs.chromium = {
+    enable = true;
+    commandLineArgs = [
+      # Wayland-native
+      "--enable-features=UseOzonePlatform"
+      "--ozone-platform=wayland"
+
+      # Hardware-Acceleration
+      "--enable-features=VaapiVideoDecoder"
+      "--use-gl=egl"
+
+      # Performance
+      "--enable-gpu-rasterization"
+      "--enable-zero-copy"
+    ];
+  };
+
+  ################################
+  ## Pakete
+  ################################
+  home.packages = with pkgs; [
+    # Editoren
+    gedit
+
+    # E-Mail-Client
+    geary
+
+    # Office & Produktivität
+    onlyoffice-bin
+
+    # Media & Viewer
+    spotify
+    loupe
+    okular
+    rhythmbox
+    mpv
+
+    # Themes & Icons
+    adw-gtk3
+    papirus-icon-theme
+    papirus-folders
+
+    # Desktop-Tools
+    xfce.xfconf
+    xfce.xfce4-settings
+
+    # Fish Shell Plugins
+    fishPlugins.bass
+    pyprland
+
+    # Dateimanager & Archive
+    xfce.thunar
+    xfce.thunar-archive-plugin
+    xarchiver
+
+    # Scanner-Frontend (falls über Netzwerk)
+    simple-scan
+  ];
+
+  #########################################################
+  ## XSettings-Daemon: setzt Theme/Icon live
+  #########################################################
+  systemd.user.services.xfsettingsd = {
+    Unit.Description = "XFCE Settings Daemon";
+    Service = {
+      ExecStart = "${pkgs.xfce.xfce4-settings}/libexec/xfsettingsd";
+      Restart = "on-failure";
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  #########################################################
+  ## Cliphist: Clipboard-History Daemon
+  #########################################################
+  systemd.user.services.cliphist = {
+    Unit.Description = "Clipboard History Daemon";
+    Service = {
+      ExecStart = "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store";
+      Restart = "on-failure";
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  ################################
+  ## XDG MIME-Zuordnungen für Thunar
+  ################################
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      # E-Mail
+      "x-scheme-handler/mailto" = "org.gnome.Geary.desktop";
+
+      # Bilder
+      "image/jpeg" = "org.gnome.Loupe.desktop";
+      "image/png" = "org.gnome.Loupe.desktop";
+      "image/gif" = "org.gnome.Loupe.desktop";
+      "image/webp" = "org.gnome.Loupe.desktop";
+      "image/svg+xml" = "org.gnome.Loupe.desktop";
+      "image/bmp" = "org.gnome.Loupe.desktop";
+
+      # PDFs
+      "application/pdf" = "org.kde.okular.desktop";
+
+      # Dokumente (OnlyOffice)
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = "onlyoffice-desktopeditors.desktop";
+      "application/vnd.oasis.opendocument.text" = "onlyoffice-desktopeditors.desktop";
+      "application/msword" = "onlyoffice-desktopeditors.desktop";
+      "text/plain" = "org.gnome.gedit.desktop";
+
+      # Tabellen (OnlyOffice)
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" = "onlyoffice-desktopeditors.desktop";
+      "application/vnd.oasis.opendocument.spreadsheet" = "onlyoffice-desktopeditors.desktop";
+      "application/vnd.ms-excel" = "onlyoffice-desktopeditors.desktop";
+      "text/csv" = "onlyoffice-desktopeditors.desktop";
+
+      # Präsentationen (OnlyOffice)
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation" = "onlyoffice-desktopeditors.desktop";
+      "application/vnd.oasis.opendocument.presentation" = "onlyoffice-desktopeditors.desktop";
+
+      # Audio (Rhythmbox)
+      "audio/mpeg" = "rhythmbox.desktop";
+      "audio/flac" = "rhythmbox.desktop";
+      "audio/x-wav" = "rhythmbox.desktop";
+      "audio/ogg" = "rhythmbox.desktop";
+      "audio/aac" = "rhythmbox.desktop";
+
+      # Video (MPV)
+      "video/mp4" = "mpv.desktop";
+      "video/x-matroska" = "mpv.desktop";
+      "video/webm" = "mpv.desktop";
+      "video/avi" = "mpv.desktop";
+      "video/quicktime" = "mpv.desktop";
+    };
+  };
+
+  ####################################################################
+  ## Deklarativ: Papirus-Ordnerfarbe dauerhaft auf "grey" umstellen
+  ####################################################################
+  home.activation.setPapirusFolderColor =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      set -eu
+      THEME_SRC="$HOME/.nix-profile/share/icons/Papirus-Dark"
+      THEME_DST="$HOME/.local/share/icons/Papirus-Dark"
+
+      if [ -d "$THEME_SRC" ]; then
+        mkdir -p "$HOME/.local/share/icons"
+        rsync -a --delete "$THEME_SRC/" "$THEME_DST/"
+        ${pkgs.papirus-folders}/bin/papirus-folders -C grey -t Papirus-Dark -u || true
+      else
+        echo "Warnung: Papirus-Dark nicht im Nutzerprofil gefunden."
+      fi
+    '';
+
+  ################################
+  ## GIMP - Photoshop-Style Konfiguration (PhotoGIMP)
+  ################################
+  xdg.configFile."GIMP/2.10" = {
+    source = "${photogimp}/.var/app/org.gimp.GIMP/config/GIMP/2.10";
+    recursive = true;
+  };
+
+  ################################
+  ## Home-Manager CLI
+  ################################
   programs.home-manager.enable = true;
 }

@@ -17,8 +17,8 @@
     ../../modules/desktop/hyprland.nix
     ../../modules/desktop/greetd.nix
 
-    # Netzwerk
-    ../../modules/network/wireguard.nix
+    # Netzwerk - VM-spezifisch mit eigener WireGuard-IP (10.10.0.12)
+    ../../modules/network/wireguard-vm.nix
 
     # OPTIONAL: Performance-Modul kann für VM nützlich sein
     # ../../modules/performance.nix

@@ -65,6 +65,13 @@
     # Drucker & Scanner
     system-config-printer  # GUI für Druckerverwaltung
     simple-scan            # Einfacher Scanner (GNOME)
+
+    # Office Suite - LibreOffice mit Word-Look
+    libreoffice-fresh      # Neueste Version
+
+    # Grafik - GIMP mit Photoshop-Style
+    # gimp-with-plugins enthält alle Standard-Plugins
+    gimp-with-plugins
   ];
 
   # Drucker-Support (CUPS)
@@ -150,6 +157,11 @@
       noto-fonts-cjk-sans
       noto-fonts-color-emoji  # Umbenannt in nixos-24.11
       (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "NerdFontsSymbolsOnly" ]; })
+
+      # MS-kompatible Fonts für LibreOffice Word-Look
+      corefonts              # Arial, Times New Roman, Courier New, etc.
+      vistafonts             # Calibri, Cambria, Consolas, etc.
+      liberation_ttf         # Metrisch kompatibel mit MS Fonts (Fallback)
     ];
     enableDefaultPackages = true;
   };

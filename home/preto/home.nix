@@ -1,5 +1,15 @@
 { config, pkgs, lib, ... }:
 
+let
+  # PhotoGIMP - Photoshop-Look für GIMP
+  # https://github.com/Diolinux/PhotoGIMP
+  photogimp = pkgs.fetchFromGitHub {
+    owner = "Diolinux";
+    repo = "PhotoGIMP";
+    rev = "1.1";
+    sha256 = "sha256-3gTRj71jc6ryFjsneQEaDXhpx0e0RhWvFn+Z5F1SYCg=";
+  };
+in
 {
   home.username = "preto";
   home.homeDirectory = "/home/preto";
@@ -448,6 +458,40 @@
         echo "Warnung: Papirus-Dark nicht im Nutzerprofil gefunden."
       fi
     '';
+
+  ################################
+  ## GIMP - Photoshop-Style Konfiguration (PhotoGIMP)
+  ################################
+  # PhotoGIMP bringt:
+  # - Photoshop-ähnliches Layout (Werkzeuge links, Ebenen rechts)
+  # - Photoshop-Shortcuts (Ctrl+D = Deselect, etc.)
+  # - Dunkles Theme
+  # - Angepasste Splash-Screens
+  #
+  # Hinweis: Beim ersten GIMP-Start werden die Konfigurationen angewendet.
+  # Falls GIMP bereits konfiguriert war, vorher ~/.config/GIMP/2.10 löschen.
+  xdg.configFile."GIMP/2.10" = {
+    source = "${photogimp}/.var/app/org.gimp.GIMP/config/GIMP/2.10";
+    recursive = true;
+  };
+
+  ################################
+  ## LibreOffice - Word-Look Konfiguration
+  ################################
+  # Hinweis: LibreOffice speichert Konfiguration in ~/.config/libreoffice/4/user/
+  # Die registrymodifications.xcu wird beim ersten Start automatisch erstellt.
+  # Diese Einstellungen werden dann gemerged.
+  #
+  # Für vollständige Word-Look Konfiguration:
+  # 1. LibreOffice öffnen
+  # 2. Ansicht → Benutzeroberfläche → "Tabbed" wählen
+  # 3. Extras → Optionen → Laden/Speichern → Allgemein:
+  #    - "Immer speichern als" → "Microsoft Word 2007-365 (.docx)"
+  # 4. Extras → Optionen → LibreOffice Writer → Grundschriften:
+  #    - Standard: Calibri, Größe 11
+  #
+  # Diese Einstellungen werden in registrymodifications.xcu gespeichert.
+  # Bei Bedarf kann die Datei von einem konfigurierten System kopiert werden.
 
   ################################
   ## Home-Manager CLI (optional)
