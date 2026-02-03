@@ -45,13 +45,3 @@ margin = 50
 lazy = true
 unfocus = "none"         # Bleibt sichtbar, auch wenn Focus verloren geht
 
-# Geary Mail-Client (SUPER + E) - Schlank & Modern
-[scratchpads.mail]
-command = "geary"
-class = "geary"
-size = "75% 85%"
-position = "12% 7%"
-animation = "fromTop"
-margin = 50
-lazy = true
-unfocus = "hide"
