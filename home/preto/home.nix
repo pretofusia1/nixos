@@ -363,6 +363,14 @@ in
   ];
 
   #########################################################
+  ## GNOME Keyring: Secret Service für Geary, etc.
+  #########################################################
+  services.gnome-keyring = {
+    enable = true;
+    components = [ "secrets" ];
+  };
+
+  #########################################################
   ## XSettings-Daemon: setzt Theme/Icon live (optional)
   #########################################################
   systemd.user.services.xfsettingsd = {
