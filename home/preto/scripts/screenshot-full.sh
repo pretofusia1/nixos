@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-grim ~/Pictures/Screenshots/$(date +%F_%T).png
+mkdir -p ~/Pictures/Screenshots
+grim ~/Pictures/Screenshots/$(date +%F_%T).png && notify-send "Screenshot gespeichert"
