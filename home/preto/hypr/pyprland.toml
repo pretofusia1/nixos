@@ -48,7 +48,7 @@ unfocus = "none"         # Bleibt sichtbar, auch wenn Focus verloren geht
 # Geary Mail-Client (SUPER + E) - Schlank & Modern
 [scratchpads.mail]
 command = "geary"
-class = "Geary"
+class = "org.gnome.Geary"
 size = "75% 85%"
 position = "12% 7%"
 animation = "fromTop"
