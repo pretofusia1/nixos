@@ -330,6 +330,10 @@ in
     # E-Mail-Client
     geary                  # Moderner, schlanker GNOME Mail-Client
 
+    # Messenger
+    signal-desktop         # Signal Messenger
+    schildichat-desktop    # Matrix-Client (Element Fork)
+
     # Office & Produktivität
     onlyoffice-bin         # Office-Suite (Word, Excel, PowerPoint)
 
