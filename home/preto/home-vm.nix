@@ -11,6 +11,8 @@ let
   };
 in
 {
+  imports = [ ./packages-shared.nix ];
+
   home.username = "preto";
   home.homeDirectory = "/home/preto";
   home.stateVersion = "24.11";
@@ -311,47 +313,7 @@ in
     ];
   };
 
-  ################################
-  ## Pakete
-  ################################
-  home.packages = with pkgs; [
-    # Editoren
-    gedit
-
-    # E-Mail-Client
-    geary
-
-    # Office & Produktivität
-    onlyoffice-bin
-
-    # Media & Viewer
-    spotify
-    loupe
-    okular
-    rhythmbox
-    mpv
-
-    # Themes & Icons
-    adw-gtk3
-    papirus-icon-theme
-    papirus-folders
-
-    # Desktop-Tools
-    xfce.xfconf
-    xfce.xfce4-settings
-
-    # Fish Shell Plugins
-    fishPlugins.bass
-    pyprland
-
-    # Dateimanager & Archive
-    xfce.thunar
-    xfce.thunar-archive-plugin
-    xarchiver
-
-    # Scanner-Frontend (falls über Netzwerk)
-    simple-scan
-  ];
+  # Pakete: siehe packages-shared.nix (gemeinsam mit Laptop)
 
   #########################################################
   ## XSettings-Daemon: setzt Theme/Icon live

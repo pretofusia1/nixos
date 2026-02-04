@@ -11,6 +11,8 @@ let
   };
 in
 {
+  imports = [ ./packages-shared.nix ];
+
   home.username = "preto";
   home.homeDirectory = "/home/preto";
   home.stateVersion = "24.11";
@@ -319,52 +321,7 @@ in
   #   };
   # };
 
-  ################################
-  ## Pakete
-  ################################
-  home.packages = with pkgs; [
-    # Editoren
-    gedit
-    # chromium wird jetzt via programs.chromium verwaltet (siehe oben)
-
-    # E-Mail-Client
-    geary                  # Moderner, schlanker GNOME Mail-Client
-
-    # Chat & Messaging
-    signal-desktop         # Signal Messenger
-    element-desktop        # Matrix Client (Ersatz für schildichat)
-
-    # Office & Produktivität
-    onlyoffice-bin         # Office-Suite (Word, Excel, PowerPoint)
-
-    # Media & Viewer
-    spotify                # für Music Scratchpad (MOD+M)
-    loupe                  # Moderner Bildbetrachter (GNOME)
-    okular                 # PDF-Viewer mit Annotationen/Bearbeitung (KDE)
-    rhythmbox              # Musik-Player (GNOME)
-    mpv                    # Leistungsstarker Video-Player
-
-    # Themes & Icons
-    adw-gtk3
-    papirus-icon-theme
-    papirus-folders        # für Ordnerfarb-Umstellung
-
-    # Desktop-Tools
-    xfce.xfconf            # optional nützlich für xfconf-query
-    xfce.xfce4-settings    # enthält xfsettingsd
-
-    # Fish Shell Plugins
-    fishPlugins.bass       # Ermöglicht Bass-Scripts in Fish zu sourcen
-    pyprland               # Scratchpad-Manager für Hyprland
-
-    # Dateimanager & Archive
-    xfce.thunar            # falls nicht schon installiert
-    xfce.thunar-archive-plugin  # Archive-Integration in Thunar
-    xarchiver              # GUI für Archive (ZIP, 7Z, RAR, etc.)
-
-    # Scanner-Frontend
-    simple-scan            # einfaches Scanner-GUI (GNOME)
-  ];
+  # Pakete: siehe packages-shared.nix (gemeinsam mit VM)
 
   #########################################################
   ## GNOME Keyring: Secret Service für Geary, etc.
