@@ -34,6 +34,12 @@
   ## Firmware & Microcode
   hardware.enableAllFirmware = true;
   hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
+
+  ## Bluetooth
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
   # Bei AMD statt Intel: hardware.cpu.amd.updateMicrocode = lib.mkDefault true;
 
   ## Sound via PipeWire
@@ -43,6 +49,9 @@
     pulse.enable = true;
     wireplumber.enable = true;
   };
+
+  ## RTKit - Echtzeit-Priorität für Audio
+  security.rtkit.enable = true;
 
   ## GNOME Keyring - für Passwort-Speicherung (Geary, etc.)
   services.gnome.gnome-keyring.enable = true;
