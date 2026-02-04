@@ -44,6 +44,10 @@
     wireplumber.enable = true;
   };
 
+  ## GNOME Keyring - für Passwort-Speicherung (Geary, etc.)
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
+
   ## TLP - Laptop Power Management
   services.tlp = {
     enable = true;
