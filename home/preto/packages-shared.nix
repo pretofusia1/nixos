@@ -14,8 +14,13 @@
     geary
 
     # Messenger
-    signal-desktop-bin     # Offizielle Binary (immer aktuell)
+    signal-desktop             # Signal Messenger
     element-desktop
+
+    # GIMP Plugins (Photoshop-Feeling)
+    gmic                   # G'MIC CLI
+    gmic-qt                # G'MIC Plugin (600+ Filter)
+    darktable              # RAW Editor
 
     # Media & Viewer
     spotify
