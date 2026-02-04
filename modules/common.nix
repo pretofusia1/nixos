@@ -4,6 +4,36 @@
   ## Flatpak - für Apps die immer aktuell sein sollen (z.B. Signal)
   services.flatpak.enable = true;
 
+  # Flatpak-Apps deklarativ installieren beim Boot
+  systemd.services.flatpak-install = {
+    description = "Install Flatpak apps declaratively";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      # Flathub hinzufügen falls nicht vorhanden
+      ${pkgs.flatpak}/bin/flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+      # Liste der gewünschten Flatpaks
+      FLATPAKS="
+        org.signal.Signal
+      "
+
+      for app in $FLATPAKS; do
+        if ! ${pkgs.flatpak}/bin/flatpak list --app | grep -q "$app"; then
+          echo "Installiere $app..."
+          ${pkgs.flatpak}/bin/flatpak install -y flathub "$app"
+        else
+          echo "$app bereits installiert."
+        fi
+      done
+    '';
+  };
+
   i18n.defaultLocale = "de_DE.UTF-8";
   console.keyMap = "de";
   services.xserver.xkb.layout = "de";
