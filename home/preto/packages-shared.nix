@@ -14,7 +14,7 @@
     geary
 
     # Messenger
-    signal-desktop             # Signal Messenger
+    # signal-desktop → jetzt via Flatpak (immer aktuell)
     element-desktop
 
     # GIMP Plugins (Photoshop-Feeling)

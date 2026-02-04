@@ -1,6 +1,9 @@
 { config, pkgs, ... }: {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  ## Flatpak - für Apps die immer aktuell sein sollen (z.B. Signal)
+  services.flatpak.enable = true;
+
   i18n.defaultLocale = "de_DE.UTF-8";
   console.keyMap = "de";
   services.xserver.xkb.layout = "de";
