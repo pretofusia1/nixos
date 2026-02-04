@@ -14,7 +14,7 @@
     geary
 
     # Messenger
-    signal-desktop
+    signal-desktop-bin     # Offizielle Binary (immer aktuell)
     element-desktop
 
     # Media & Viewer
