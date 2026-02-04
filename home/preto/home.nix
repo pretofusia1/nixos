@@ -330,9 +330,9 @@ in
     # E-Mail-Client
     geary                  # Moderner, schlanker GNOME Mail-Client
 
-    # Messenger
+    # Chat & Messaging
     signal-desktop         # Signal Messenger
-    schildichat-desktop    # Matrix-Client (Element Fork)
+    element-desktop        # Matrix Client (Ersatz für schildichat)
 
     # Office & Produktivität
     onlyoffice-bin         # Office-Suite (Word, Excel, PowerPoint)
