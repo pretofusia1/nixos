@@ -35,11 +35,8 @@
   hardware.enableAllFirmware = true;
   hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
 
-  ## Bluetooth
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-  };
+  ## Bluetooth (Details in modules/security-advanced.nix)
+  hardware.bluetooth.enable = true;
   # Bei AMD statt Intel: hardware.cpu.amd.updateMicrocode = lib.mkDefault true;
 
   ## Sound via PipeWire
