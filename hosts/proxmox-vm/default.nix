@@ -34,6 +34,12 @@
     # Doppelter Import verursacht Probleme mit der Package-Aktivierung.
   ];
 
+  ## Headless Hyprland Environment (GPU-Passthrough, kein physisches Display)
+  environment.sessionVariables = {
+    WLR_BACKENDS = "headless";
+    WLR_LIBINPUT_NO_DEVICES = "1";
+  };
+
   ## Basis-Infos
   networking.hostName = "proxmox-vm";
   time.timeZone = "Europe/Berlin";
