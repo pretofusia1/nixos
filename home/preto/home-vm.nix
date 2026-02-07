@@ -7,7 +7,7 @@ let
     owner = "Diolinux";
     repo = "PhotoGIMP";
     rev = "1.1";
-    sha256 = "sha256-3gTRj71jc6ryFjsneQEaDXhpx0e0RhWvFn+Z5F1SYCg=";
+    sha256 = "sha256-5AK/4mrbKp8fqgbEDxBrfcHS9myIGgF5bFauYCxvZ6c=";
   };
 in
 {
