@@ -63,6 +63,9 @@ in
       env = XCURSOR_SIZE,24
       env = QT_QPA_PLATFORMTHEME,qt5ct
 
+      # Debug-Logs aktivieren (temporär für Troubleshooting)
+      debug:disable_logs = false
+
       # Sunshine braucht graphical-session.target (NixOS Modul-Bug #339865)
       exec-once = systemctl --user start graphical-session.target
 
