@@ -20,14 +20,18 @@
     # Netzwerk - VM-spezifisch mit eigener WireGuard-IP (10.10.0.12)
     ../../modules/network/wireguard-vm.nix
 
+    # Workflow-Modul (nix-tools, cachix, garbage-collection, dev-tools)
+    ../../modules/workflow.nix
+
     # OPTIONAL: Performance-Modul kann für VM nützlich sein
     # ../../modules/performance.nix
 
     # NICHT inkludiert: security-advanced.nix (Fail2ban, Audit)
     # Grund: Übertrieben für lokale VM, siehe notes.md Sicherheitsempfehlungen
 
-    # Home-Manager
-    inputs.home-manager.nixosModules.home-manager
+    # Home-Manager wird NICHT hier importiert!
+    # Es wird bereits in flake.nix als Modul geladen (home-manager.nixosModules.home-manager)
+    # Doppelter Import verursacht Probleme mit der Package-Aktivierung.
   ];
 
   ## Basis-Infos
@@ -48,6 +52,9 @@
   ## Firmware & Microcode
   hardware.enableAllFirmware = true;
   hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
+
+  ## RTKit - Echtzeit-Priorität für Audio (notwendig für PipeWire)
+  security.rtkit.enable = true;
 
   ## Sound via PipeWire
   services.pipewire = {
@@ -157,9 +164,10 @@
     backupFileExtension = "backup";
   };
 
-  ## CLI 'home-manager'
+  ## CLI 'home-manager' + PipeWire-Tools
   environment.systemPackages = with pkgs; [
     (inputs.home-manager.packages.${pkgs.system}.home-manager)
+    pulseaudio   # liefert pactl (PipeWire-kompatibel) für Audio-Kontrolle
   ];
 
   ## NixOS Versions-Flag

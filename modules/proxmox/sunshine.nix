@@ -19,16 +19,10 @@
     openFirewall = true;
   };
 
-  # Intel GPU VAAPI Support für Hardware-Encoding
-  # Wichtig für performantes Streaming auf Virtual Display
-  hardware.graphics = {
-    enable = true;
-    extraPackages = with pkgs; [
-      intel-media-driver  # iHD Driver für Intel GPU (TigerLake)
-      vaapiIntel          # Legacy VA-API
-      libvdpau-va-gl      # VDPAU Support
-    ];
-  };
+  # Intel GPU VAAPI Support wird in gpu.nix konfiguriert!
+  # hardware.graphics.enable + extraPackages sind dort definiert.
+  # Hier NICHT duplizieren - gpu.nix hat die vollständige GPU-Config
+  # (intel-media-driver, libva, mesa, vulkan-loader).
 
   # Environment Variables für Sunshine mit Virtual Display
   environment.sessionVariables = {
