@@ -66,6 +66,11 @@ in
       # Debug-Logs aktivieren (temporär für Troubleshooting)
       debug:disable_logs = false
 
+      # Wayland-Umgebung an systemd propagieren (WICHTIG für Sunshine/PipeWire)
+      # Ohne das kennen systemd-user-services WAYLAND_DISPLAY nicht
+      exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY
+      exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY
+
       # Sunshine braucht graphical-session.target (NixOS Modul-Bug #339865)
       exec-once = systemctl --user start graphical-session.target
 
