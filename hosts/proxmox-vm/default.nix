@@ -55,6 +55,20 @@
     alsa.enable = true;
     pulse.enable = true;
     wireplumber.enable = true;
+
+    # Virtueller Audio-Sink für Headless-Streaming (Sunshine/Moonlight)
+    # Ohne physisches Audio-Gerät braucht Sunshine einen Sink zum Capturen
+    extraConfig.pipewire."91-null-sinks" = {
+      "context.objects" = [{
+        factory = "spa-node-factory";
+        args = {
+          "factory.name" = "support.null-audio-sink";
+          "node.name" = "Headless-Sink";
+          "media.class" = "Audio/Sink";
+          "audio.position" = "FL,FR";
+        };
+      }];
+    };
   };
 
   ## User 'preto'
@@ -62,6 +76,12 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "audio" "input" "networkmanager" ];
   };
+
+  ## uinput-Berechtigung für Sunshine/Moonlight Input (Maus/Tastatur)
+  # Ohne diese Regel funktioniert die Fernsteuerung via Moonlight NICHT
+  services.udev.extraRules = ''
+    KERNEL=="uinput", MODE="0660", GROUP="input", SYMLINK+="uinput"
+  '';
 
   ## SSH-Server (GEHÄRTET für VM)
   # VM braucht SSH für Remote-Zugriff

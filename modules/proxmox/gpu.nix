@@ -12,9 +12,8 @@
     vulkan-loader
   ];
 
-  # Headless/Framebuffer-Fix für Proxmox VMs
-  # Verhindert Konflikte mit EFI-Framebuffer
-  boot.kernelParams = [ "video=efifb:off" ];
+  # i915 früh laden für GPU-Zugriff in der VM
+  boot.initrd.kernelModules = [ "i915" ];
 
   # User-Gruppen für GPU-Zugriff
   # video = VA-API, render = Vulkan/DRM

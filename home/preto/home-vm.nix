@@ -55,13 +55,16 @@ in
     # VM Virtual Display Setup für Sunshine Streaming
     ''
       # Virtual Display für Headless Streaming
-      monitor=WL-1,1920x1080@60,0x0,1
+      # HEADLESS-1 ist der korrekte Output-Name bei WLR_BACKENDS=headless
+      monitor=HEADLESS-1,1920x1080@60,0x0,1
 
       # Headless Backend Environment
       env = WLR_BACKENDS,headless
-      env = WLR_RENDERER_ALLOW_SOFTWARE,1
       env = XCURSOR_SIZE,24
       env = QT_QPA_PLATFORMTHEME,qt5ct
+
+      # Sunshine braucht graphical-session.target (NixOS Modul-Bug #339865)
+      exec-once = systemctl --user start graphical-session.target
 
     ''
     # Gemeinsame Config aus shared file (identisch mit Laptop!)
