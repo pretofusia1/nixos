@@ -34,10 +34,33 @@
     # Doppelter Import verursacht Probleme mit der Package-Aktivierung.
   ];
 
-  ## Headless Hyprland Environment (GPU-Passthrough, kein physisches Display)
+  ## Headless Hyprland + Sunshine (GPU-Passthrough, kein physisches Display)
+  ##
+  ## STRATEGIE: Virtuelles EDID an DP-1/HDMI-A-1 faken, damit der DRM-Backend
+  ## einen "angeschlossenen" Monitor sieht. Hyprland startet dann normal mit
+  ## dem DRM-Backend und Sunshine kann den Output capturen.
+  ##
+  ## HINWEIS: WLR_BACKENDS=headless funktioniert NICHT mit Aquamarine!
+  ## Aquamarine (ab Hyprland 0.42+) ignoriert alle WLR_* Variablen.
+  ## Stattdessen nutzen wir drm.edid_firmware + video= Kernel-Parameter.
+
+  ## Kernel-Parameter: EDID an DP-1 faken + Output erzwingen
+  ## "edid/1920x1080.bin" ist ein Built-in EDID im Linux-Kernel
+  ## (kein echter File nötig - der Kernel hat 1920x1080 eingebaut!)
+  ## "video=DP-1:1920x1080@60e" erzwingt den Output als "enabled" (das 'e' am Ende)
+  ## Falls DP-1 nicht der richtige Connector ist, DP-1 durch HDMI-A-1 ersetzen.
+  boot.kernelParams = [
+    "drm.edid_firmware=DP-1:edid/1920x1080.bin"
+    "video=DP-1:1920x1080@60e"
+  ];
+
+  ## Aquamarine Environment (NICHT wlroots!)
   environment.sessionVariables = {
-    WLR_BACKENDS = "headless";
-    WLR_LIBINPUT_NO_DEVICES = "1";
+    # WLR_BACKENDS = "headless";      # BROKEN - Aquamarine ignoriert das!
+    # WLR_LIBINPUT_NO_DEVICES = "1";  # BROKEN - Aquamarine ignoriert das!
+
+    # Aquamarine Trace-Logging (zum Debuggen, danach auf 0 oder entfernen)
+    AQ_TRACE = "1";
   };
 
   ## Basis-Infos

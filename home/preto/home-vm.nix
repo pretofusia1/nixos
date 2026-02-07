@@ -53,21 +53,60 @@ in
   ################################
   xdg.configFile."hypr/hyprland.conf".text =
     # VM Virtual Display Setup für Sunshine Streaming
+    #
+    # STRATEGIE (2 Wege, je nachdem was die GPU bietet):
+    #
+    # Weg 1 (Primary): EDID-Trick in Kernel-Params fakt einen Monitor an DP-1.
+    #   Hyprland sieht DP-1 als "connected" und nutzt den DRM-Backend normal.
+    #   Sunshine captured diesen DP-1 Output via KMS oder wlr-screencopy.
+    #
+    # Weg 2 (Fallback): Kein DRM-Monitor gefunden -> greetd-Wrapper erstellt
+    #   HEADLESS-1 via "hyprctl output create headless".
+    #   Sunshine braucht dafuer >= v2025.628.4510 (wlr-screencopy Support).
+    #
     ''
-      # Virtual Display für Headless Streaming
-      # HEADLESS-1 ist der korrekte Output-Name bei WLR_BACKENDS=headless
-      monitor=HEADLESS-1,1920x1080@60,0x0,1
+      # ============================================
+      # MONITOR SETUP (VM Headless mit GPU-Passthrough)
+      # ============================================
 
-      # Headless Backend Environment
-      env = WLR_BACKENDS,headless
+      # DP-1: Durch EDID-Trick im Kernel als "connected" erkannt
+      # Falls der Kernel-Trick greift, wird DP-1 als DRM-Output verfuegbar
+      monitor = DP-1, 1920x1080@60, 0x0, 1
+
+      # HDMI-A-1: Falls die GPU HDMI statt DP hat
+      # (nur einer von beiden wird aktiv sein)
+      monitor = HDMI-A-1, 1920x1080@60, 0x0, 1
+
+      # HEADLESS-1: Fallback falls kein DRM-Output gefunden wird
+      # (wird vom greetd-Wrapper erstellt wenn noetig)
+      monitor = HEADLESS-1, 1920x1080@60, 0x0, 1
+
+      # Catch-all fuer unbekannte Outputs
+      monitor = , preferred, auto, 1
+
+      # ============================================
+      # ENVIRONMENT (Aquamarine - NICHT wlroots!)
+      # ============================================
+      # WICHTIG: WLR_BACKENDS wird von Aquamarine IGNORIERT!
+      # env = WLR_BACKENDS,headless   # <-- FUNKTIONIERT NICHT!
+
       env = XCURSOR_SIZE,24
       env = QT_QPA_PLATFORMTHEME,qt5ct
 
-      # Debug-Logs aktivieren (temporär für Troubleshooting)
+      # Intel VA-API Driver fuer Sunshine Hardware-Encoding
+      env = LIBVA_DRIVER_NAME,iHD
+
+      # ============================================
+      # DEBUG (nach erfolgreicher Einrichtung entfernen!)
+      # ============================================
       debug:disable_logs = false
 
-      # Wayland-Umgebung an systemd propagieren (WICHTIG für Sunshine/PipeWire)
+      # ============================================
+      # SYSTEMD INTEGRATION (KRITISCH fuer Sunshine)
+      # ============================================
+      # Wayland-Umgebung an systemd propagieren
       # Ohne das kennen systemd-user-services WAYLAND_DISPLAY nicht
+      # HINWEIS: Wird auch vom greetd-Wrapper gemacht, hier als Backup
       exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY
       exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY
 
