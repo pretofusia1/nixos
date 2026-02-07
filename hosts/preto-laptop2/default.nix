@@ -44,6 +44,16 @@
     wireplumber.enable = true;
   };
 
+  ## PAM für Hyprlock - ermöglicht Passwort-Verifizierung im Lockscreen
+  security.pam.services.hyprlock = {};
+
+  ## Lid-Switch: Lock + Suspend beim Deckel-Schließen
+  services.logind = {
+    lidSwitch = "suspend";              # Deckel zu = Suspend
+    lidSwitchExternalPower = "suspend"; # Auch am Strom: Suspend
+    lidSwitchDocked = "ignore";         # Externer Monitor: nichts tun
+  };
+
   ## TLP - Laptop Power Management
   services.tlp = {
     enable = true;

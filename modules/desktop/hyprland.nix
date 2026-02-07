@@ -20,7 +20,8 @@
     slurp
     swappy
     # Programme aus hyprland.conf Keybindings
-    swaylock        # SUPER+Escape (Bildschirmsperre)
+    hyprlock        # Bildschirmsperre (nativer Hyprland-Lockscreen)
+    hypridle        # Idle-Management (Auto-Lock, DPMS, Suspend)
     wlogout         # SUPER+SHIFT+E (Abmeldemanager)
     brightnessctl   # Media-Keys (Helligkeitssteuerung)
     dunst           # Notification Daemon
