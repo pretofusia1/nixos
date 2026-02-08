@@ -9,6 +9,7 @@
     ./hardware-configuration.nix
     ../../modules/desktop/hyprland.nix
     ../../modules/desktop/greetd.nix
+    ../../modules/desktop/usb-automount.nix  # USB-Automount (udisks2 + udiskie)
     ../../modules/network/wireguard.nix
     ../../modules/performance.nix        # Performance-Optimierungen
     ../../modules/security-advanced.nix  # Erweiterte Security

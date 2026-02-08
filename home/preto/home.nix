@@ -126,6 +126,10 @@ in
     source = ./scripts/unzip_prompt.sh;
     executable = true;
   };
+  home.file."bin/usb-mount.sh" = {
+    source = ./scripts/usb-mount.sh;
+    executable = true;
+  };
 
   ################################
   ## ~/scripts: Fastfetch Script
@@ -188,6 +192,11 @@ in
 
       # Unzip mit interaktivem Prompt
       uz = "$HOME/bin/unzip_prompt.sh";
+
+      # USB-Mount
+      usb = "$HOME/bin/usb-mount.sh";
+      usb-status = "$HOME/bin/usb-mount.sh status";
+      usb-eject = "$HOME/bin/usb-mount.sh eject";
     };
 
     initExtra = ''
@@ -232,6 +241,11 @@ in
 
       # Unzip mit interaktivem Prompt
       uz = "$HOME/bin/unzip_prompt.sh";
+
+      # USB-Mount
+      usb = "$HOME/bin/usb-mount.sh";
+      usb-status = "$HOME/bin/usb-mount.sh status";
+      usb-eject = "$HOME/bin/usb-mount.sh eject";
 
       # Modern ls replacements (optional, falls installiert)
       ls = "eza";
@@ -347,6 +361,24 @@ in
     Service = {
       # Richtiger Pfad im Paket xfce4-settings:
       ExecStart = "${pkgs.xfce.xfce4-settings}/libexec/xfsettingsd";
+      Restart = "on-failure";
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  #########################################################
+  ## Udiskie: USB-Automount Daemon
+  #########################################################
+  # Mounted USB-Sticks automatisch unter /run/media/preto/<label>
+  # Zeigt Dunst-Benachrichtigung bei Mount/Unmount
+  # Oeffnet Thunar automatisch beim Einstecken
+  systemd.user.services.udiskie = {
+    Unit = {
+      Description = "USB Automount Daemon (udiskie)";
+      After = [ "graphical-session.target" ];
+    };
+    Service = {
+      ExecStart = "${pkgs.udiskie}/bin/udiskie --automount --notify --tray --file-manager thunar";
       Restart = "on-failure";
     };
     Install.WantedBy = [ "graphical-session.target" ];
