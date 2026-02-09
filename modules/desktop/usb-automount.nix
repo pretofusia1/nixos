@@ -30,9 +30,8 @@
   # --- Benoetigte Pakete ---
   environment.systemPackages = with pkgs; [
     udiskie          # Automount-Daemon (userspace)
-    udisks          # CLI-Tools (udisksctl)
     ntfs3g           # NTFS-Support (Windows USB-Sticks)
-    exfat            # exFAT-Support (grosse USB-Sticks)
+    exfatprogs       # exFAT userspace-Tools (nativer Kernel-Treiber seit 5.8)
   ];
 
   # --- User "preto" zur storage-Gruppe hinzufuegen ---
