@@ -366,23 +366,9 @@ in
     Install.WantedBy = [ "graphical-session.target" ];
   };
 
-  #########################################################
-  ## Udiskie: USB-Automount Daemon
-  #########################################################
-  # Mounted USB-Sticks automatisch unter /run/media/preto/<label>
-  # Zeigt Dunst-Benachrichtigung bei Mount/Unmount
-  # Oeffnet Thunar automatisch beim Einstecken
-  systemd.user.services.udiskie = {
-    Unit = {
-      Description = "USB Automount Daemon (udiskie)";
-      After = [ "graphical-session.target" ];
-    };
-    Service = {
-      ExecStart = "${pkgs.udiskie}/bin/udiskie --automount --notify --tray --file-manager thunar";
-      Restart = "on-failure";
-    };
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
+  # Udiskie: USB-Automount wird direkt via Hyprland exec-once gestartet
+  # (graphical-session.target wird von greetd nicht aktiviert)
+  # Siehe: hyprland-shared.conf
 
   #########################################################
   ## Cliphist: Clipboard-History Daemon
