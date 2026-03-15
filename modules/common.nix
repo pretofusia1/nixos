@@ -189,11 +189,12 @@
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-color-emoji  # Umbenannt in nixos-24.11
-      (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "NerdFontsSymbolsOnly" ]; })
-
+      nerd-fonts.fira-code
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.symbols-only
       # MS-kompatible Fonts für LibreOffice Word-Look
       corefonts              # Arial, Times New Roman, Courier New, etc.
-      vistafonts             # Calibri, Cambria, Consolas, etc.
+      vista-fonts             # Calibri, Cambria, Consolas, etc.
       liberation_ttf         # Metrisch kompatibel mit MS Fonts (Fallback)
     ];
     enableDefaultPackages = true;

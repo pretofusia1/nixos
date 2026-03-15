@@ -4,7 +4,7 @@ let
   # === deine VPN-Parameter hier anpassen ===
   endpointHost = "168.119.159.48"; # z.B. 49.13.x.x
   endpointPort = 51820;
-  serverPubKey = "pzo6fnTRP/r+Lac8wvpwIsV+QVDmfie0Gbg26LPrglo=";    # aus /etc/wireguard/server_public.key
+  serverPubKey = "U8NbnEX4uY5oG5ar7qKEqzdQv1O/Ib56D6M5+DVoY30=";    # aus /etc/wireguard/server_public.key
 
   # SICHERHEIT: Private Key über sops-nix (verschlüsselt)
   # Falls sops-nix nicht eingerichtet ist, nutze Fallback auf unverschlüsselten Pfad

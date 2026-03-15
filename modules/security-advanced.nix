@@ -186,7 +186,6 @@
 
     # Security-Audit-Tools
     lynis          # Security-Audit
-    chkrootkit     # Rootkit-Detection
   ];
 
   # -------------------------------------------

@@ -25,7 +25,7 @@
     # Media & Viewer
     spotify
     loupe                  # Bildbetrachter (GNOME)
-    okular                 # PDF-Viewer
+    kdePackages.okular                 # PDF-Viewer
     rhythmbox              # Musik-Player
     mpv                    # Video-Player
 
