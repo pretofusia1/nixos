@@ -122,13 +122,16 @@
   # -------------------------------------------
   # Falls Bluetooth aktiviert ist (siehe hosts/preto-laptop/default.nix)
   hardware.bluetooth = {
-    powerOnBoot = false;              # Nur bei Bedarf (spart Akku + Security)
+    powerOnBoot = true;               # Automatisch beim Boot einschalten
     settings = {
       General = {
         Experimental = true;          # Bessere Codec-Unterstützung
         ControllerMode = "dual";      # Dual-Mode für BLE
         JustWorksRepairing = "never"; # Verhindere automatisches Pairing
         Privacy = "device";           # Privacy-Mode
+      };
+      Policy = {
+        AutoEnable = true;            # Bluetooth nach suspend/resume automatisch aktivieren
       };
     };
   };

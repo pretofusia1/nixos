@@ -29,6 +29,12 @@
     blueman         # blueman-applet
     pavucontrol     # Volume-Control GUI
   ];
+  # Blueman D-Bus Service (nötig damit blueman-applet im Hyprland-Autostart funktioniert)
+  services.blueman.enable = true;
+
+  # libinput - Pflicht für Touchpad-Gesten unter Wayland/Hyprland
+  services.libinput.enable = true;
+
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 }
