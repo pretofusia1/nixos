@@ -81,7 +81,7 @@
     networkmanager       # bringt nmcli fürs WLAN-Skript
 
     # Editoren
-    gedit
+    gnome-text-editor
 
     # Security
     sops                 # Secret Management

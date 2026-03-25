@@ -8,7 +8,7 @@
 
   home.packages = with pkgs; [
     # Editoren
-    gedit
+    gnome-text-editor
 
     # E-Mail-Client
     geary

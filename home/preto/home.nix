@@ -406,7 +406,7 @@ in
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = "onlyoffice-desktopeditors.desktop";  # .docx
       "application/vnd.oasis.opendocument.text" = "onlyoffice-desktopeditors.desktop";  # .odt
       "application/msword" = "onlyoffice-desktopeditors.desktop";  # .doc
-      "text/plain" = "org.gnome.gedit.desktop";  # .txt
+      "text/plain" = "org.gnome.TextEditor.desktop";  # .txt
 
       # Tabellen (OnlyOffice)
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" = "onlyoffice-desktopeditors.desktop";  # .xlsx

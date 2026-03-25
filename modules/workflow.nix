@@ -86,7 +86,7 @@
     nix-tree              # Visualisiere Nix-Store-Abhängigkeiten
     nix-diff              # Zeige Unterschiede zwischen Derivations
     nix-du                # Analysiere Store-Größen
-    nix-index             # Package-Index für command-not-found
+    # nix-index: wird bereits durch programs.nix-index.enable = true installiert
 
     # Nix-Development
     nil                   # Nix LSP Server (für VS Code/Neovim)
@@ -98,11 +98,10 @@
   ];
 
   # -------------------------------------------
-  # 6. Bash/Zsh-Completion
+  # 6. Bash-Completion
   # -------------------------------------------
-  # Bessere Shell-Experience
-  programs.bash.completion.enable = true;  # FIX: Umbenannt von enableCompletion
-  programs.zsh.enableCompletion = true;
+  # Bessere Shell-Experience (zsh nicht konfiguriert, daher nur bash)
+  programs.bash.completion.enable = true;
 
   # -------------------------------------------
   # 7. Documentation

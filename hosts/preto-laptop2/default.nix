@@ -13,7 +13,7 @@
     ../../modules/performance.nix        # Performance-Optimierungen
     ../../modules/security-advanced.nix  # Erweiterte Security
     ../../modules/workflow.nix           # Workflow-Verbesserungen
-    inputs.home-manager.nixosModules.home-manager
+    # home-manager wird bereits global in flake.nix injiziert (kein Doppel-Import nötig)
   ];
 
   ## Basis-Infos
