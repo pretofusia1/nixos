@@ -355,16 +355,17 @@ in
 
   #########################################################
   ## XSettings-Daemon: setzt Theme/Icon live (optional)
+  ## DEAKTIVIERT: Verursacht Fehler unter Hyprland/Wayland
   #########################################################
-  systemd.user.services.xfsettingsd = {
-    Unit.Description = "XFCE Settings Daemon";
-    Service = {
-      # Richtiger Pfad im Paket xfce4-settings:
-      ExecStart = "${pkgs.xfce.xfce4-settings}/libexec/xfsettingsd";
-      Restart = "on-failure";
-    };
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
+  # systemd.user.services.xfsettingsd = {
+  #   Unit.Description = "XFCE Settings Daemon";
+  #   Service = {
+  #     # Richtiger Pfad im Paket xfce4-settings:
+  #     ExecStart = "${pkgs.xfce.xfce4-settings}/libexec/xfsettingsd";
+  #     Restart = "on-failure";
+  #   };
+  #   Install.WantedBy = [ "graphical-session.target" ];
+  # };
 
   # Udiskie: USB-Automount wird direkt via Hyprland exec-once gestartet
   # (graphical-session.target wird von greetd nicht aktiviert)

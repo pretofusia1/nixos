@@ -199,9 +199,6 @@
     enable = false; # War: true - deaktiviert wegen Hyprland-Instabilität
     flake = "/home/preto/nixos"; # Pfad zu deinem lokalen Flake
     flags = [
-      "--update-input" "nixpkgs"
-      "--update-input" "home-manager"
-      # NICHT mehr: "--update-input" "hyprland" (manuell kontrollieren)
       "--commit-lock-file"
     ];
     dates = "weekly"; # Jeden Sonntag
