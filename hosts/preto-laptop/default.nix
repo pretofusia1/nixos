@@ -38,6 +38,7 @@
 
   ## Bluetooth (Details in modules/security-advanced.nix)
   hardware.bluetooth.enable = true;
+  boot.extraModprobeConfig = "options btusb enable_autosuspend=0";
   # Bei AMD statt Intel: hardware.cpu.amd.updateMicrocode = lib.mkDefault true;
 
   ## Sound via PipeWire
@@ -94,7 +95,7 @@
   ## User 'preto'
   users.users.preto = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "video" "audio" "input" "networkmanager" ];
+    extraGroups = [ "wheel" "video" "audio" "input" "networkmanager" "plugdev" ];
   };
 
   ## SOPS - Secret Management
@@ -234,6 +235,17 @@
   environment.systemPackages = with pkgs; [
     (inputs.home-manager.packages.${pkgs.system}.home-manager)
   ];
+
+  ## DJ Hardware - udev Rules
+  services.udev.packages = [ pkgs.mixxx ];
+  services.udev.extraRules = ''
+    # Pioneer DDJ-SP1 (HID)
+    SUBSYSTEM=="usb", ATTR{idVendor}=="2b73", ATTR{idProduct}=="0006", MODE="0666", GROUP="plugdev"
+    SUBSYSTEM=="hidraw", ATTRS{idVendor}=="2b73", ATTRS{idProduct}=="0006", MODE="0666", GROUP="plugdev"
+    # Serato SL3 (Rane USB Audio)
+    SUBSYSTEM=="usb", ATTR{idVendor}=="154e", ATTR{idProduct}=="0020", MODE="0666", GROUP="plugdev"
+    SUBSYSTEM=="usb", ATTR{idVendor}=="154e", ATTR{idProduct}=="0021", MODE="0666", GROUP="plugdev"
+  '';
 
   ## NixOS Versions-Flag
   system.stateVersion = "24.11";

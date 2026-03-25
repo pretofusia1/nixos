@@ -49,5 +49,8 @@
 
     # Scanner
     simple-scan
+
+    # DJ Setup
+    mixxx
   ];
 }
