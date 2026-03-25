@@ -60,10 +60,10 @@
   security.pam.services.hyprlock = {};
 
   ## Lid-Switch: Lock + Suspend beim Deckel-Schließen
-  services.logind = {
-    lidSwitch = "suspend";              # Deckel zu = Suspend
-    lidSwitchExternalPower = "suspend"; # Auch am Strom: Suspend
-    lidSwitchDocked = "ignore";         # Externer Monitor: nichts tun
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";              # Deckel zu = Suspend
+    HandleLidSwitchExternalPower = "suspend"; # Auch am Strom: Suspend
+    HandleLidSwitchDocked = "ignore";         # Externer Monitor: nichts tun
   };
 
   ## TLP - Laptop Power Management
