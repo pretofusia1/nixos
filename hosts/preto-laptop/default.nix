@@ -36,12 +36,14 @@
   hardware.enableAllFirmware = true;
   hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
 
-  ## Bluetooth (Details in modules/security-advanced.nix)
+  ## Bluetooth
   hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
   boot.extraModprobeConfig = "options btusb enable_autosuspend=0";
   services.blueman.enable = true;  # Blueman-Daemon (wird als Autostart in hyprland.conf gestartet)
-  # Race Condition fix: bluetooth.service erst nach btusb-Treiber starten
-  systemd.services.bluetooth.after = lib.mkAfter [ "sys-subsystem-bluetooth-devices.device" ];
+  # KEIN manuelles systemd.services.bluetooth.after mehr!
+  # Das war der Boot-Fehler: sys-subsystem-bluetooth-devices.device existiert beim Boot
+  # noch nicht, bluetooth.service wartete ewig und lief in Timeout.
   # Bei AMD statt Intel: hardware.cpu.amd.updateMicrocode = lib.mkDefault true;
 
   ## Sound via PipeWire
