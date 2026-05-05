@@ -8,7 +8,7 @@ stdenv.mkDerivation {
     owner = "nvgeele";
     repo = "snd-rane-sl3";
     rev = "01099892261b55ec5ee814292d840eeb664c1904";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-kW7b8HWmlo5YaDjo8XIxj0CcVT5L8v/ngyiu2otVSsg=";
   };
 
   sourceRoot = "source/snd-rane-sl3";
