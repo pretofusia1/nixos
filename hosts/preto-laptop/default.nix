@@ -51,7 +51,19 @@
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
+    jack.enable = true;
     wireplumber.enable = true;
+
+    # Low-Latency für DJ-Betrieb (256 samples @ 48kHz = ~5ms)
+    # Bei Knacksern/Aussetzern auf 512 erhöhen
+    extraConfig.pipewire."10-dj-latency" = {
+      "context.properties" = {
+        "default.clock.rate" = 48000;
+        "default.clock.quantum" = 256;
+        "default.clock.min-quantum" = 256;
+        "default.clock.max-quantum" = 512;
+      };
+    };
   };
 
   ## RTKit - Echtzeit-Priorität für Audio
