@@ -9,6 +9,15 @@ let
     rev = "1.1";
     sha256 = "sha256-5AK/4mrbKp8fqgbEDxBrfcHS9myIGgF5bFauYCxvZ6c";
   };
+
+  # Mixxx DDJ-SP1 Mapping
+  # https://github.com/theaugy/sp1
+  mixxxSp1 = pkgs.fetchFromGitHub {
+    owner = "theaugy";
+    repo = "sp1";
+    rev = "66a1a04bdbb98b6457abdd909302e227bc561149";
+    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+  };
 in
 {
   imports = [ ./packages-shared.nix ];
@@ -488,6 +497,14 @@ in
   #
   # Diese Einstellungen werden in registrymodifications.xcu gespeichert.
   # Bei Bedarf kann die Datei von einem konfigurierten System kopiert werden.
+
+  ################################
+  ## Mixxx - DDJ-SP1 Controller Mapping
+  ################################
+  home.file.".mixxx/controllers/Pioneer_DDJ-SP1_MIDI_1.midi.xml".source =
+    "${mixxxSp1}/Pioneer_DDJ-SP1_MIDI_1.midi.xml";
+  home.file.".mixxx/controllers/sp1.js".source =
+    "${mixxxSp1}/sp1.js";
 
   ################################
   ## Home-Manager CLI (optional)
