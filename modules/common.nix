@@ -7,12 +7,14 @@
   # Flatpak-Apps deklarativ installieren beim Boot
   systemd.services.flatpak-install = {
     description = "Install Flatpak apps declaratively";
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
+    after = [ "network-online.target" "nss-lookup.target" ];
+    wants = [ "network-online.target" "nss-lookup.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "30s";
     };
     script = ''
       # Flathub hinzufügen falls nicht vorhanden

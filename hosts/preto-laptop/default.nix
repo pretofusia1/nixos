@@ -145,8 +145,8 @@
   ## Bootloader (UEFI)
   boot.loader.systemd-boot = {
     enable = true;
-    # Behalte nur letzte 10 Generationen (spart Platz auf /boot)
-    configurationLimit = 10;
+    # Behalte nur letzte 3 Generationen (99MB EFI-Partition ist sehr klein!)
+    configurationLimit = 3;
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
