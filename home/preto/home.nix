@@ -16,7 +16,7 @@ let
     owner = "theaugy";
     repo = "sp1";
     rev = "66a1a04bdbb98b6457abdd909302e227bc561149";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-ldKTuGVGPSdgzfoVYSQEPYoFUiHCMv9/cnHTUfFyWAo=";
   };
 in
 {
