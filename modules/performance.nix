@@ -66,7 +66,7 @@
   boot = {
     loader = {
       timeout = 1;                     # Schnellerer Boot (1 Sekunde Timeout)
-      systemd-boot.configurationLimit = 10;  # Max. 10 Boot-Einträge
+      systemd-boot.configurationLimit = 3;  # Max. 3 Boot-Einträge (EFI-Partition nur 99MB!)
     };
 
     # Kernel-Parameter für schnelleren Boot

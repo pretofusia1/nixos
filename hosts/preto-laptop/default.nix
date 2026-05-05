@@ -145,8 +145,7 @@
   ## Bootloader (UEFI)
   boot.loader.systemd-boot = {
     enable = true;
-    # Behalte nur letzte 3 Generationen (99MB EFI-Partition ist sehr klein!)
-    configurationLimit = 3;
+    # configurationLimit wird in modules/performance.nix gesetzt (3 Generationen)
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
