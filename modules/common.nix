@@ -4,6 +4,23 @@
   ## Flatpak - für Apps die immer aktuell sein sollen (z.B. Signal)
   services.flatpak.enable = true;
 
+  # Flatpak-Apps täglich updaten (Persistent: holt nach falls Laptop aus war)
+  systemd.services.flatpak-update = {
+    description = "Update Flatpak apps";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    serviceConfig = { Type = "oneshot"; };
+    script = "${pkgs.flatpak}/bin/flatpak update -y";
+  };
+
+  systemd.timers.flatpak-update = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "daily";
+      Persistent = true;
+    };
+  };
+
   # Flatpak-Apps deklarativ installieren beim Boot
   systemd.services.flatpak-install = {
     description = "Install Flatpak apps declaratively";
