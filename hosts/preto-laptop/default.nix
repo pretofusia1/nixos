@@ -237,6 +237,12 @@
     (inputs.home-manager.packages.${pkgs.system}.home-manager)
   ];
 
+  ## Serato SL3 Kernel-Modul (Out-of-Tree, wird gegen aktuellen Kernel gebaut)
+  boot.extraModulePackages = [
+    (config.boot.kernelPackages.callPackage ../../modules/snd-rane-sl3.nix {})
+  ];
+  boot.kernelModules = [ "snd-rane-sl3" ];
+
   ## DJ Hardware - udev Rules
   services.udev.packages = [ pkgs.mixxx ];
   services.udev.extraRules = ''
