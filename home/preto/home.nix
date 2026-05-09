@@ -30,6 +30,16 @@ in
   programs.kitty.enable = true;
 
   ################################
+  ## GPG + SSH Agent
+  ################################
+  programs.gpg.enable = true;
+
+  services.gpgAgent = {
+    enable = true;
+    enableSshSupport = true;
+  };
+
+  ################################
   ## Direnv - Auto-Dev-Environments
   ################################
   programs.direnv = {
