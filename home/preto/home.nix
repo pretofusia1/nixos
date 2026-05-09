@@ -29,15 +29,7 @@ in
   programs.git.enable = true;
   programs.kitty.enable = true;
 
-  ################################
-  ## GPG + SSH Agent
-  ################################
   programs.gpg.enable = true;
-
-  services.gpgAgent = {
-    enable = true;
-    enableSshSupport = true;
-  };
 
   ################################
   ## Direnv - Auto-Dev-Environments
@@ -282,6 +274,9 @@ in
       if test -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
         bass source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
       end
+
+      # GPG-Agent als SSH-Agent setzen
+      set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
     '';
   };
 

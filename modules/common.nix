@@ -57,6 +57,11 @@
   console.keyMap = "de";
   services.xserver.xkb.layout = "de";
 
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
   # NetworkManager-Dienst aktivieren (für nmcli & WLAN-Skript)
   networking.networkmanager.enable = true;
   # Optional (empfohlen für stabileres WLAN):
