@@ -60,6 +60,7 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
+    pinentryPackage = pkgs.pinentry-gnome3;
   };
 
   # NetworkManager-Dienst aktivieren (für nmcli & WLAN-Skript)
