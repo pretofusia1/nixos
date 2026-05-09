@@ -6,7 +6,6 @@
 set -euo pipefail
 
 WG_ALLOWED_IPS="10.10.0.0/24"
-WG_ADDR="10.10.0.10/32"
 
 if ! ip link show wg0 &>/dev/null 2>&1; then
   echo "wg0 ist nicht aktiv."
