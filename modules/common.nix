@@ -105,6 +105,7 @@
     # Security
     sops                 # Secret Management
     age                  # Verschlüsselung für sops-nix
+    yubikey-manager      # ykman CLI (für wg-up / allgemein)
 
     # PDF & Bilder
     zathura              # minimaler PDF-Viewer (vim-keys)
@@ -218,6 +219,9 @@
     ];
     enableDefaultPackages = true;
   };
+
+  # pcscd - PC/SC-Daemon für YubiKey (benötigt von KeePassXC Challenge-Response)
+  services.pcscd.enable = true;
 
   # Fish Shell - Moderne Shell mit besserer Auto-Completion
   programs.fish.enable = true;

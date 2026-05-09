@@ -1,91 +1,57 @@
 { config, lib, pkgs, ... }:
 
 let
-  # === deine VPN-Parameter hier anpassen ===
-  endpointHost = "168.119.159.48"; # z.B. 49.13.x.x
+  # === VPN-Parameter ===
+  # Müssen mit den Werten in scripts/wg-up.sh und scripts/wg-down.sh übereinstimmen!
+  endpointHost = "168.119.159.48";
   endpointPort = 51820;
-  serverPubKey = "U8NbnEX4uY5oG5ar7qKEqzdQv1O/Ib56D6M5+DVoY30=";    # aus /etc/wireguard/server_public.key
-
-  # SICHERHEIT: Private Key über sops-nix (verschlüsselt)
-  # Falls sops-nix nicht eingerichtet ist, nutze Fallback auf unverschlüsselten Pfad
-  # TODO: Migriere zu sops-nix! Siehe: https://github.com/Mic92/sops-nix
-  privKeyFile = if config.sops.secrets ? "wireguard/laptop_private"
-                then config.sops.secrets."wireguard/laptop_private".path
-                else "/etc/secret/wireguard/laptop_private.key";
+  serverPubKey = "U8NbnEX4uY5oG5ar7qKEqzdQv1O/Ib56D6M5+DVoY30=";
+  clientAddress = "10.10.0.10/32";
+  vpnSubnet    = "10.10.0.0/24";
 in
 {
-  imports = [ ];
+  # === Pakete: WireGuard-Tools, KeePassXC-CLI, YubiKey-Manager ===
+  environment.systemPackages = with pkgs; [
+    wireguard-tools   # wg, wg-quick (wg-quick nicht genutzt, wg direkt)
+    keepassxc         # keepassxc-cli
+    yubikey-manager   # ykman
 
-  # WireGuard (wg-quick) aktivieren
-  networking.wg-quick.interfaces = {
-    # --- Split-Tunnel: nur internes VPN-Netz ---
-    wg0 = {
-      autostart = false;
-      address = [ "10.10.0.10/32" ];
-      privateKeyFile = privKeyFile;
-      peers = [{
-        publicKey = serverPubKey;
-        endpoint  = "${endpointHost}:${toString endpointPort}";
-        persistentKeepalive = 25;
-        allowedIPs = [ "10.10.0.0/24" ];
-      }];
-      # Optional: MTU setzen, falls nötig
-      # mtu = 1420;
-    };
+    # wg-up: Tunnel manuell starten, Key kommt aus KeePassXC via YubiKey
+    # Das Skript baut das Interface direkt via ip + wg auf (kein wg-quick)
+    (pkgs.writeShellApplication {
+      name = "wg-up";
+      runtimeInputs = [ pkgs.wireguard-tools pkgs.keepassxc pkgs.yubikey-manager pkgs.iproute2 ];
+      text = builtins.readFile ../../scripts/wg-up.sh;
+    })
 
-    # --- Full-Tunnel: gesamter Traffic über Gateway ---
-    wg0full = {
-      autostart = false;
-      address = [ "10.10.0.10/32" ];
-      privateKeyFile = privKeyFile;
-      peers = [{
-        publicKey = serverPubKey;
-        endpoint  = "${endpointHost}:${toString endpointPort}";
-        persistentKeepalive = 25;
-        allowedIPs = [ "0.0.0.0/0" "::/0" ];  # IPv6 CIDR korrigiert
-      }];
-      # mtu = 1420;
-    };
-  };
-
-  # bequeme Aliases zum Umschalten
-  environment.shellAliases = {
-    wg-up      = "sudo systemctl start wg-quick-wg0";
-    wg-down    = "sudo systemctl stop wg-quick-wg0";
-    wg-full    = "sudo systemctl start wg-quick-wg0full";
-    wg-fulloff = "sudo systemctl stop  wg-quick-wg0full";
-    wg-stat    = "sudo wg show";
-  };
-
-  # Firewall-Regeln für WireGuard Client
-  # WICHTIG: Als Client brauchen wir KEINE offenen Ports!
-  # WireGuard baut ausgehende Verbindungen auf (stateful firewall erlaubt Antworten)
-  networking.firewall = {
-    enable = true;
-    # KEINE offenen Ports - Laptop ist Client, nicht Server!
-    allowedUDPPorts = [ ];
-    allowedTCPPorts = [ ];
-
-    # SICHERHEIT: NICHT blind vertrauen! Nur spezifische Ports über WireGuard erlauben
-    # Falls du SSH über WireGuard nutzen möchtest, entkommentiere:
-    # interfaces.wg0.allowedTCPPorts = [ 22 ];
-    # interfaces.wg0full.allowedTCPPorts = [ 22 ];
-
-    # VERALTET (zu permissiv): trustedInterfaces = [ "wg0" "wg0full" ];
-    # Begründung: Falls VPN-Server kompromittiert wird, hätte ein Angreifer
-    # vollen Zugriff auf deinen Laptop. Besser: Explicit Deny by Default!
-  };
-
-  # Stelle sicher, dass das Secret existiert / korrekte Rechte hat
-  systemd.tmpfiles.rules = [
-    "d /etc/secret/wireguard 0700 root root -"
+    # wg-down: Tunnel sauber beenden
+    (pkgs.writeShellApplication {
+      name = "wg-down";
+      runtimeInputs = [ pkgs.iproute2 ];
+      text = builtins.readFile ../../scripts/wg-down.sh;
+    })
   ];
 
-  # === SOPS-NIX SETUP ===
-  # SOPS ist jetzt konfiguriert! Der verschlüsselte Private Key wird aus
-  # secrets/secrets.yaml geladen. Die SOPS-Secret-Definition befindet sich
-  # in hosts/preto-laptop/default.nix.
-  #
-  # Der entschlüsselte Key wird zur Laufzeit bereitgestellt unter:
-  # config.sops.secrets."wireguard/laptop_private".path
+  # === Shell-Alias für Status-Abfrage ===
+  environment.shellAliases = {
+    wg-stat = "sudo wg show";
+  };
+
+  # === Firewall ===
+  # Als Client keine eingehenden Ports nötig.
+  # Ausgehende UDP-Verbindungen werden von der stateful firewall erlaubt.
+  networking.firewall = {
+    enable = true;
+    allowedUDPPorts = [ ];
+    allowedTCPPorts = [ ];
+    # Optional: SSH nur über WireGuard erlauben:
+    # interfaces.wg0.allowedTCPPorts = [ 22 ];
+  };
+
+  # === Hinweise ===
+  # - Kein autoStart, kein wg-quick systemd-Service
+  # - Interface wird via 'wg-up' manuell gestartet
+  # - PrivateKey wird NICHT in /etc gespeichert - er kommt aus KeePassXC
+  # - SOPS-Secret 'wireguard/laptop_private' ist in hosts/preto-laptop/default.nix noch definiert
+  #   → wird von diesem Modul NICHT mehr genutzt → in Phase 2 entfernen
 }

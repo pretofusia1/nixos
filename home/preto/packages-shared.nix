@@ -50,6 +50,9 @@
     # Scanner
     simple-scan
 
+    # Passwort-Manager
+    keepassxc
+
     # DJ Setup
     mixxx
   ];
