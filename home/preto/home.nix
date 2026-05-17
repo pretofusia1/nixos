@@ -511,6 +511,13 @@ in
   home.file.".mixxx/controllers/sp1.js".source =
     "${mixxxSp1}/sp1.js";
 
+  # PipeWire blockiert PortMIDI - Wrapper mit PIPEWIRE_ALSA=0
+  home.packages = [
+    (pkgs.writeShellScriptBin "mixxx" ''
+      exec env PIPEWIRE_ALSA=0 ${pkgs.mixxx}/bin/mixxx "$@"
+    '')
+  ];
+
   ################################
   ## Home-Manager CLI (optional)
   ################################
