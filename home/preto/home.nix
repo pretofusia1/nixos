@@ -507,7 +507,7 @@ in
   ## Mixxx - DDJ-SP1 Controller Mapping
   ################################
   home.file.".mixxx/controllers/Pioneer_DDJ-SP1_MIDI_1.midi.xml".source =
-    "${mixxxSp1}/Pioneer_DDJ-SP1_MIDI_1.midi.xml";
+    ./mixxx/Pioneer_DDJ-SP1_MIDI_1.midi.xml;
   home.file.".mixxx/controllers/sp1.js".source =
     "${mixxxSp1}/sp1.js";
 
